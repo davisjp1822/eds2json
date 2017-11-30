@@ -17,6 +17,5 @@ include(GNUInstallDirs)
 # find_package(MyOtherLibrary REQUIRED)
 
 # Targets that we develop here
-#enable_testing()
 add_subdirectory(libeds)
 add_subdirectory(eds2json)
