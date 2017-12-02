@@ -1,0 +1,139 @@
+[File]
+	DescText    = "PowerFlex 755";
+	CreateDate  = 08-11-2014;
+	CreateTime  = 11:00:00;
+	ModDate     = 08-11-2014;
+	ModTime     = 11:00:00;
+	Revision    = 1.1;
+	HomeURL     = "http://www.ab.com/networks/eds/EN/0001008F08900A00.eds";
+
+[Device]
+	VendCode    = 0x01;
+	VendName    = "Rockwell Automation - Allen-Bradley";
+	ProdType    = 0x8F;
+	ProdTypeStr = "PowerFlex 750-Series via Embedded EtherNet/IP";
+	ProdCode    = 0x0890;
+	MajRev      = 10;
+	MinRev      = 1;
+	ProdName    = "PowerFlex 755";
+	Catalog     = "20G...";
+	Icon        = "PF755.ico";
+
+[Device Classification]
+	Class1 = 1_RSNetWorx_Adapter;
+	Class2 = EtherNetIP;
+
+[Port]
+	Port2 = TCP,
+		"EtherNet/IP port",
+		"20 F5 24 01",
+		2;
+
+[Params]
+	Param1 =
+	 	0,                      $ first field shall equal 0
+		,,                      $ path size,path
+		0x0000,                 $ descriptor
+		2,                      $ data type : 16-bit Unsigned Integer
+		2,                      $ data size in bytes
+		"Output Size",          $ name
+		"",                     $ units
+		"",                     $ help string
+		8,72,8,                 $ min,max,default data values
+		0,0,0,0,                $ mult,dev,base,offset scaling not used
+		0,0,0,0,                $ mult,dev,base,offset link not used
+		0;                      $ decimal places not used
+
+	Enum1 =
+		8, "0 Datalinks", 
+		12, "1 Datalink",
+		16, "2 Datalinks",
+		20, "3 Datalinks",
+		24, "4 Datalinks",
+		28, "5 Datalinks",
+		32, "6 Datalinks",
+		36, "7 Datalinks",
+		40, "8 Datalinks",
+		44, "9 Datalinks",
+		48, "10 Datalinks",
+		52, "11 Datalinks",
+		56, "12 Datalinks",
+		60, "13 Datalinks",
+		64, "14 Datalinks",
+		68, "15 Datalinks",
+		72, "16 Datalinks";
+
+	Param2 =
+	 	0,                      $ first field shall equal 0
+		,,                      $ path size,path
+		0x0000,                 $ descriptor
+		2,                      $ data type : 16-bit Unsigned Integer
+		2,                      $ data size in bytes
+		"Input Size",           $ name
+		"",                     $ units
+		"",                     $ help string
+		12,76,12,                 $ min,max,default data values
+		0,0,0,0,                $ mult,dev,base,offset scaling not used
+		0,0,0,0,                $ mult,dev,base,offset link not used
+		0;                      $ decimal places not used
+
+	Enum2 =
+		12, "0 Datalinks", 
+		16, "1 Datalink",
+		20, "2 Datalinks",
+		24, "3 Datalinks",
+		28, "4 Datalinks",
+		32, "5 Datalinks",
+		36, "6 Datalinks",
+		40, "7 Datalinks",
+		44, "8 Datalinks",
+		48, "9 Datalinks",
+		52, "10 Datalinks",
+		56, "11 Datalinks",
+		60, "12 Datalinks",
+		64, "13 Datalinks",
+		68, "14 Datalinks",
+		72, "15 Datalinks",
+		76, "16 Datalinks";
+
+[Connection Manager]
+	Connection1 =
+		0x04010002,		     	$ trigger & transport 
+						$   0-15   = supported transport classes (class 1)
+						$   16     = cyclic (1 = supported)
+						$   17     = change of state (0 = not supported)
+						$   18     = on demand (0 = not supported)
+						$   19-23  = reserved (must be zero)
+						$   24-27  = exclusive owner
+						$   28-30  = reserved (must be zero)
+						$   31     = client 0 (don't care for classes 0 and 1)
+		0x44244405,		     	$ point/multicast & priority & realtime format
+                                                $   0      = O=>T fixed (1 = supported)
+                                                $   1      = O=>T variable (0 = not supported)
+                                                $   2      = T=>O fixed (1 = supported)
+                                                $   3      = T=>O variable (0 = not supported)
+						$   4-7	   = reserved (must be zero)
+						$   8-10   = O=>T header (4 byte run/idle)
+						$   11     = reserved (must be zero)
+						$   12-14  = T=>O header (4 byte run/idle)
+						$   15     = reserved (must be zero)
+						$   16-19  = O=>T point-to-point 
+						$   20-23  = T=>O multicast
+						$   24-27  = O=>T scheduled
+						$   28-31  = T=>O scheduled
+		,Param1,,		    	$ O=>T range,default,description (sizes in bytes)
+		,Param2,,		     	$ T=>O range,default,description (sizes in bytes)
+		,,				$ config part 1 (private configuration)
+		,,				$ config part 2 (module configuration)
+		"Discrete Exclusive Owner",   	$ connection name
+		"",				$ Help string
+		"20 04 24 06 2C 02 2C 01";	$ path
+
+	1_PLC5C_RTD_Format1 = 1_PLC5C_1794_Discrete_RTD_Format;
+
+[Capacity]
+	TSpec1 = TxRx, 2,  1000;
+	TSpec2 = TxRx, 76, 1000;
+
+	MaxCIPConnections    = 16;
+	MaxConsumersPerMcast = 1;

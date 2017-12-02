@@ -1,0 +1,110 @@
+$ EZ-EDS Version 3.9 Generated Electronic Data Sheet
+
+[File]
+        DescText = "Hardy HI4000";
+        CreateDate = 05-25-2007;
+        CreateTime = 07:13:18;
+        ModDate = 05-30-2007;
+        ModTime = 14:06:53;
+        Revision = 1.0;
+
+[Device]
+        VendCode = 258;
+        VendName = "Hardy Instruments";
+        ProdType = 0;
+        ProdTypeStr = "Generic Device";
+        ProdCode = 1;
+        MajRev = 2;
+        MinRev = 5;
+        ProdName = "Hardy 4050";
+
+[Device Classification]
+        Class1 = EtherNetIP;
+
+[Assembly]
+        Assem1 =
+                "Input",
+                "20 04 24 64 30 03",
+                256,
+                0x0001,
+                ,,
+                2048,;
+        Assem2 =
+                "Output",
+                "20 04 24 70 30 03",
+                256,
+                0x0001,
+                ,,
+                2048,;
+
+[Connection Manager]
+        Connection1 =
+                0x04010002,             $ TRIGGER AND TRANSPORT MASK
+                                        $     BIT=VAL DESCRIPTION
+                                        $        0 = 0  (class 0:null)
+                                        $        1 = 1  (class 1:dup. detect)
+                                        $        2 = 0  (class 2:acknowledged)
+                                        $        3 = 0  (class 3:verified)
+                                        $        4 = 0  (class 4:non-block)
+                                        $        5 = 0  (class 5:non-block, frag)
+                                        $        6 = 0  (class 6:multicast, frag)
+                                        $   7-15 = 0  (class  :reserved)
+                                        $      16 = 1  (trigger: cyclic)
+                                        $      17 = 0  (trigger: cos)
+                                        $      18 = 0  (trigger: appl)
+                                        $ 19-23 = 0  (trigger: reserved (must be zero))
+                                        $      24 = 0  (transport type: listen-only)
+                                        $      25 = 0  (transport type: input-only)
+                                        $      26 = 1  (transport type: exclusive-owner)
+                                        $      27 = 0  (transport type: redundant-owner)
+                                        $ 28-30 = 0  (reserved (must be zero))
+                                        $      31 = 1  (client = 0 / server = 1)
+                0x44240405,             $ CONNECTION PARAMETERS BIT ASSIGNMENTS
+
+                                        $     BIT=VAL DESCRIPTION
+                                        $        0 = 1  (O=>T fixed)
+                                        $        1 = 0  (O=>T variable)
+                                        $        2 = 1  (T=>O fixed)
+                                        $        3 = 0  (T=>O variable)
+                                        $     4-7 = 0  (reserved (must be zero))
+                                        $   8-10 = 4  (O=>T header (4 byte run/idle))
+                                        $      11 = 0  (reserved (must be zero))
+                                        $ 12-14 = 0  (T=>O header (pure data))
+                                        $      15 = 0  (reserved (must be zero))
+                                        $      16 = 0  (O=>T connection type: NULL)
+                                        $      17 = 0  (O=>T connection type: MULTI)
+                                        $      18 = 1  (O=>T connection type: P2P)
+                                        $      19 = 0  (O=>T connection type: RSVD)
+                                        $      20 = 0  (T=>O connection type: NULL)
+                                        $      21 = 1  (T=>O connection type: MULTI)
+                                        $      22 = 0  (T=>O connection type: P2P)
+                                        $      23 = 0  (T=>O connection type: RSVD)
+                                        $      24 = 0  (O=>T priority: LOW)
+                                        $      25 = 0  (O=>T priority: HIGH)
+                                        $      26 = 1  (O=>T priority: SCHEDULED)
+                                        $      27 = 0  (O=>T priority: RSVD)
+                                        $      28 = 0  (T=>O priority: LOW)
+                                        $      29 = 0  (T=>O priority: HIGH)
+                                        $      30 = 1  (T=>O priority: SCHEDULED)
+                                        $      31 = 0  (T=>O priority: RSVD)
+                30000,,Assem2,          $ O=>T RPI, size in bytes, format
+                30000,,Assem1,          $ T=>O RPI, size in bytes, format
+                ,,                      $ config part 1 (dynamic assemblies)
+                ,,                      $ config part 2 (module configuration)
+                "Exclusive Owner",      $ connection name
+                "",                     $ Help string
+                "20 04 24 80 2C 70 2C 64";    $ exclusive owner path
+
+[Port]
+        Port1 =
+                TCP,
+                "EtherNet/IP Port",
+                "20 F5 24 01",
+                1;
+
+[Capacity]
+        MaxIOConnections = 10;
+        MaxMsgConnections = 10;
+        MaxConsumersPerMcast = 10;
+        TSpec1 = TxRx, 256, 400;
+

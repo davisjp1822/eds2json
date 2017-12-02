@@ -1,0 +1,1816 @@
+$ EZ-EDS Version 3.3 Generated Electronic Data Sheet
+
+
+[File]
+        DescText = "HI 1769-2WS EDS file";
+        CreateDate = 09-15-2009;
+        CreateTime = 15:14:07;
+        ModDate = 09-15-2009;
+        ModTime = 15:14:10;
+        Revision = 1.00;
+        HomeURL = "http://www.hardyinst.com";
+                                              
+
+[Device]
+        VendCode = 258;
+        VendName = "Hardy Instruments";
+        ProdType = 100;
+        ProdTypeStr = "Weigh Scale";
+        ProdCode = 5;
+        MajRev = 2;
+        MinRev = 1;
+        ProdName = "Hardy 1769-2WS";
+        Catalog = "HI 1769-2WS";
+        Icon = "1769-Green.ico";
+
+$ Structure of Input, Output, and Config data with 2 Channels
+$ =====================
+$ Input - 32 UINTs total for Ch0 and Ch1
+$  
+$ "InCh0Word0 (CmdEcho)"
+$ "InCh0Word1"
+$ "InCh0Word2"
+$ ...
+$ "InCh0Word15"
+$ "InCh1Word0 (CmdEcho)"
+$ "InCh1Word1"
+$ "InCh1Word2"
+$ ...
+$ "InCh1Word15"
+$ ====================
+$ Output - 32 UINTs total for Ch0 and Ch1
+$  
+$ "OutCh0Word0 (Command)"
+$ "OutCh0Word1"
+$ "OutCh0Word2"
+$ ...
+$ "OutCh0Word15"
+$ "OutCh1Word0 (Command)"
+$ "OutCh1Word1"
+$ "OutCh1Word2"
+$ ...
+$ "OutCh1Word15"
+$ =====================
+$  
+$ The Config data - 48 words (16 bit) total - assumes Metric bit6=0 with bits 0-2 = 0 for 0 decimal places]
+$  
+$ INT	"Ch0CopyConfig"
+$ INT	"Ch0En"
+$ INT	"Ch0Metric"
+$ INT	"Ch0Waversaver"
+$ INT	"Ch0NumAverages"
+$ INT	"Ch0ZeroTrackEnHidden"
+$ DINT	"Ch0AutoZeroTolerance"
+$ DINT	"Ch0MotionTolerance"
+$ DINT	"Ch0ZeroTolerance"
+$ DINT	"Ch0SpanWeight"
+$ DINT	"Ch0CalLowWeight"
+$ INT	"Ch0Spare1"
+$ INT	"Ch0CopyCal"
+$ DINT	"Ch0CalZeroCount"
+$ DINT	"Ch0CalHighCount"
+$ INT	"Ch0Spare2"
+$ INT	"Ch0Spare3"
+
+$ INT	"Ch1CopyConfig"
+$ INT	"Ch1En"
+$ INT	"Ch1Metric"
+$ INT	"Ch1Waversaver"
+$ INT	"Ch1NumAverages"
+$ INT	"Ch1ZeroTrackEnHidden"
+$ DINT	"Ch1AutoZeroTolerance"
+$ DINT	"Ch1MotionTolerance"
+$ DINT	"Ch1ZeroTolerance"
+$ DINT	"Ch1SpanWeight"
+$ DINT	"Ch1CalLowWeight"
+$ INT	"Ch1Spare1"
+$ INT	"Ch1CopyCal"
+$ DINT	"Ch1CalZeroCount"
+$ DINT	"Ch1CalHighCount"
+$ INT	"Ch1Spare2"
+$ INT	"Ch1Spare3"
+
+$ Word 0 "CopyConfig" - 16 bit integer, must be 1 for module to accept Config data when sent to module, default 1
+$ Word 1 "En" - ChanActive 16 bit integer, set to 1 if the channel is active, 0 if not active
+$ Word 2 "Metric" - Select Floating Point or Integer (0-7 decimals) for Weight. If bit 7=1 weight in kilograms, default is 0 for pounds.
+$ Word 3 "Waversaver"  - Wavesaver frequency, 16 bit integer, 0=No WAVERSAVER, 1=4Hz, 2=2Hz, 3=1Hz, 4=0.5Hz, 5=0.25Hz
+$ Word 4 "NumAverages" - 16 bit integer, 1-255, with default = 20
+$ Word 5 "ZeroTrackEnHidden" - ZeroTrackEnable, 16 bit integer, 0 turns auto-zero tracking off, 1 turn on, default is off (0)
+$ Word 6,7 "AutoZeroTolerance" - 32 bit weight value, format determined by value of Metric Parameter, default 10.0 lbs/kg
+$ Word 8,9 "ZeroTolerance" - 32 bit weight value, format determined by value of Metric Parameter, default 10.0 lbs/kg
+$ Word 10,11 "Motion Tolerance" - 32 bit weight value, format determined by value of Metric Parameter, 5 lbs/kg
+$ Word 12,13 "SpanWeight" - 32 bit weight value, format determined by value of Metric Parameter, default 10,000.0 lbs/kg
+$ Span Weight is the test weight used at the high step of a hard calibration.
+$ Word 14,15 "CalLowWeight" - 32 bit weight value, format determined by value of Metric Parameter, default 0 lbs/kg
+$ CalLowWeight is the test weight used at the low step of a hard calibration and as Ref Point for C2 Calibration
+$ Word 16 "Ch1Spare1"
+$ Word 17 "Ch1CopyCal" 16 bit integer, must be 1 for module to accept Calibration data when sent to module, default 0
+$ Word 18,19 "Ch1CalZeroCount" - 32 bit count, default 0
+$ Word 20,21 "Ch1CalHighCount" - 32 bit count, default 0
+$ Word 22 "Ch1Spare2"
+$ Word 23 "Ch1Spare3"
+
+[Params]
+
+    $ ***********************************
+    $ 	Input array data
+    $ ***********************************
+        Param200 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word0 (CmdEcho)",
+                "",
+                "Channel 0, Input Word 0, Command Echo",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param201 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word1",
+                "",
+                "Channel 0, Input Word 1",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param202 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word2",
+                "",
+                "Channel 0, Input Word 2",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param203 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word3",
+                "",
+                "Channel 0, Input Word 3",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param204 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word4",
+                "",
+                "Channel 0, Input Word 4",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param205 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word5",
+                "",
+                "Channel 0, Input Word 5",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param206 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word6",
+                "",
+                "Channel 0, Input Word 6",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param207 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word7",
+                "",
+                "Channel 0, Input Word 7",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param208 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word8",
+                "",
+                "Channel 0, Input Word 8",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param209 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word9",
+                "",
+                "Channel 0, Input Word 9",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param210 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word10",
+                "",
+                "Channel 0, Input Word 10",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param211 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word11",
+                "",
+                "Channel 0, Input Word 11",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param212 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word12",
+                "",
+                "Channel 0, Input Word 12",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param213 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word13",
+                "",
+                "Channel 0, Input Word 13",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param214 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word14",
+                "",
+                "Channel 0, Input Word 14",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param215 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh0Word15",
+                "",
+                "Channel 0, Input Word 15",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param220 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word0 (CmdEcho)",
+                "",
+                "Channel 1, Input Word 0, Command Echo",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param221 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word1",
+                "",
+                "Channel 1, Input Word 1",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param222 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word2",
+                "",
+                "Channel 1, Input Word 2",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param223 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word3",
+                "",
+                "Channel 1, Input Word 3",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param224 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word4",
+                "",
+                "Channel 1, Input Word 4",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param225 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word5",
+                "",
+                "Channel 1, Input Word 5",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param226 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word6",
+                "",
+                "Channel 1, Input Word 6",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param227 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word7",
+                "",
+                "Channel 1, Input Word 7",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param228 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word8",
+                "",
+                "Channel 1, Input Word 8",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param229 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word9",
+                "",
+                "Channel 1, Input Word 9",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param230 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word10",
+                "",
+                "Channel 1, Input Word 10",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param231 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word11",
+                "",
+                "Channel 1, Input Word 11",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param232 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word12",
+                "",
+                "Channel 1, Input Word 12",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param233 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word13",
+                "",
+                "Channel 1, Input Word 13",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param234 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word14",
+                "",
+                "Channel 1, Input Word 14",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param235 =
+                0,
+                ,,
+                0x0010,
+                0xC7,
+                2,                      $ UINT
+                "InCh1Word15",
+                "",
+                "Channel 1, Input Word 15",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+    $ ***********************************
+    $ 	Output array data
+    $ ***********************************
+        Param300 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word0 (Command)",
+                "",
+                "Channel 0, Output Word 0, Command",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param301 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word1",
+                "",
+                "Channel 0, Output Word 1",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param302 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word2",
+                "",
+                "Channel 0, Output Word 2",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param303 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word3",
+                "",
+                "Channel 0, Output Word 3",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param304 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word4",
+                "",
+                "Channel 0, Output Word 4",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param305 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word5",
+                "",
+                "Channel 0, Output Word 5",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param306 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word6",
+                "",
+                "Channel 0, Output Word 6",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param307 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word7",
+                "",
+                "Channel 0, Output Word 7",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param308 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word8",
+                "",
+                "Channel 0, Output Word 8",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param309 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word9",
+                "",
+                "Channel 0, Output Word 9",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param310 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word10",
+                "",
+                "Channel 0, Output Word 10",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param311 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word11",
+                "",
+                "Channel 0, Output Word 11",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param312 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word12",
+                "",
+                "Channel 0, Output Word 12",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param313 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word13",
+                "",
+                "Channel 0, Output Word 13",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param314 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word14",
+                "",
+                "Channel 0, Output Word 14",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param315 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh0Word15",
+                "",
+                "Channel 0, Output Word 15",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param320 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word0 (Command)",
+                "",
+                "Channel 1, Output Word 0, Command",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param321 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word1",
+                "",
+                "Channel 1, Output Word 1",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param322 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word2",
+                "",
+                "Channel 1, Output Word 2",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param323 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word3",
+                "",
+                "Channel 1, Output Word 3",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param324 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word4",
+                "",
+                "Channel 1, Output Word 4",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param325 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word5",
+                "",
+                "Channel 1, Output Word 5",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param326 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word6",
+                "",
+                "Channel 1, Output Word 6",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param327 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word7",
+                "",
+                "Channel 1, Output Word 7",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param328 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word8",
+                "",
+                "Channel 1, Output Word 8",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param329 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word9",
+                "",
+                "Channel 1, Output Word 9",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param330 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word10",
+                "",
+                "Channel 1, Output Word 10",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param331 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word11",
+                "",
+                "Channel 1, Output Word 11",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param332 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word12",
+                "",
+                "Channel 1, Output Word 12",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param333 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word13",
+                "",
+                "Channel 1, Output Word 13",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param334 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word14",
+                "",
+                "Channel 1, Output Word 14",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+        Param335 =
+                0,
+                ,,
+                0x0000,
+                0xC7,
+                2,                      $ UINT
+                "OutCh1Word15",
+                "",
+                "Channel 1, Output Word 15",
+                0,0xFFFF,0,
+                ,,,,
+                ,,,,
+                ;
+
+    $ ***********************************
+    $ 	Config data
+    $ ***********************************
+        Param400 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0CopyConfig",        $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0x0001,1,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum400 =
+                0,"Ch0CopyConfig Disabled",
+                1,"Ch0CopyConfig Enabled (must be 1)";
+
+        Param401 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0En",                $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0x0001,1,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum401 =
+                0,"Ch0 Disabled",
+                1,"Ch0 Enabled";
+
+        Param402 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC7,                   $ UINT Data Type
+                2,                      $ Data Size in bytes
+                "Ch0Metric",            $ name
+                "",                     $ units
+                "Ch0ConfigWord2-Metric",$ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum402 =
+                0,"Ch0_INT_Lbs_0 decimal",
+                1,"Ch0_INT_Lbs_1 decimal",
+                2,"Ch0_INT_Lbs_2 decimal",
+                3,"Ch0_INT_Lbs_3 decimal",
+                4,"Ch0_INT_Lbs_4 decimal",
+                5,"Ch0_INT_Lbs_5 decimal",
+                6,"Ch0_INT_Lbs_6 decimal",
+                7,"Ch0_INT_Lbs_7 decimal",
+                64,"Ch0_FLOAT_Lbs",
+                128,"Ch0_INT_Kgs_0 decimal",
+                129,"Ch0_INT_Kgs_1 decimal",
+                130,"Ch0_INT_Kgs_2 decimal",
+                131,"Ch0_INT_Kgs_3 decimall",
+                132,"Ch0_INT_Kgs_4 decimal",
+                133,"Ch0_INT_Kgs_5 decimal",
+                134,"Ch0_INT_Kgs_6 decimal",
+                135,"Ch0_INT_Kgs_7 decimal",
+                192,"Ch0_FLOAT_Kgs";
+
+        Param403 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0Waversaver",        $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0x0005,3,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum403 =
+                0,"Waversaver OFF",
+                1,"Waversaver = 4Hz",
+                2,"Waversaver = 2Hz",
+                3,"Waversaver = 1Hz",   $ default
+                4,"Waversaver = 0.5Hz",
+                5,"Waversaver =- 0.25Hz";
+
+        Param404 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0NumAverages",       $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0,255,20,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param405 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0ZeroTrackEnHidden", $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum405 =
+                0,"ZeroTracking OFF",
+                1,"ZeroTracking ON";
+
+        Param406 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0AutoZeroTolerance", $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,10,      $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param407 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0MotionTolerance",   $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,5,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param408 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0ZeroTolerance",     $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param409 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0SpanWeight",        $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,10000,   $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param410 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0CalLowWeight ",     $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param411 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0Spare1",            $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param412 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0CopyCal",           $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum412 =
+                0,"Ch0CopyCal diabled",
+                1,"Ch0CopyCal enabled";
+
+        Param413 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0CalZeroCount ",     $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param414 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch0CalHighCount",      $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param415 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0Spare2",            $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param416 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0Spare3",            $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param500 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1CopyConfig",        $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,1,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum500 =
+                0,"Ch1CopyConfig Disabled",
+                1,"Ch1CopyConfig Enabled (must be 1)";
+
+
+        Param501 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1En",                $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,1,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum501 =
+                0,"Ch1 Disabled",
+                1,"Ch1 Enabled";
+
+        Param502 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC7,                   $ UINT Data Type
+                2,                      $ Data Size in bytes
+                "Ch1Metric",            $ name
+                "",                     $ units
+                "Ch1ConfigWord2-Metric",$ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum502 =
+                0,"Ch1_INT_Lbs_0 decimal",
+                1,"Ch1_INT_Lbs_1 decimal",
+                2,"Ch1_INT_Lbs_2 decimal",
+                3,"Ch1_INT_Lbs_3 decimal",
+                4,"Ch1_INT_Lbs_4 decimal",
+                5,"Ch1_INT_Lbs_5 decimal",
+                6,"Ch1_INT_Lbs_6 decimal",
+                7,"Ch1_INT_Lbs_7 decimal",
+                64,"Ch1_FLOAT_LBS",
+                128,"Ch1_INT_Kgs_0 decimal",
+                129,"Ch1_INT_Kgs_1 decimal",
+                130,"Ch1_INT_Kgs_2 decimal",
+                131,"Ch1_INT_Kgs_3 decimall",
+                132,"Ch1_INT_Kgs_4 decimal",
+                133,"Ch1_INT_Kgs_5 decimal",
+                134,"Ch1_INT_Kgs_6 decimal",
+                135,"Ch1_INT_Kgs_7 decimal",
+                192,"Ch1_FLOAT_Kgs";
+
+        Param503 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1Waversaver",        $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,3,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum503 =
+                0,"Waversaver OFF",
+                1,"Waversaver = 4Hz",
+                2,"Waversaver = 2Hz",
+                3,"Waversaver = 1Hz",   $ default
+                4,"Waversaver = 0.5Hz",
+                5,"Waversaver =- 0.25Hz";
+
+        Param504 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1NumAverages",       $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,20,          $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param505 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1ZeroTrackEnHidden", $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum505 =
+                0,"ZeroTracking OFF",
+                1,"ZeroTracking ON";
+
+        Param506 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1AutoZeroTolerance", $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,10,      $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param507 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1MotionTolerance",   $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,5,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param508 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1ZeroTolerance",     $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param509 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1SpanWeight",        $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,10000,   $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param510 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1CalLowWeight ",     $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param511 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1Spare1",            $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param512 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1CopyCal",           $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum512 =
+                0,"Ch1CopyCal disabled",
+                1,"Ch1CopyCal enabled";
+
+        Param513 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1CalZeroCount ",     $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param514 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "Ch1CalHighCount",      $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFFFFFF,0,       $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param515 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1Spare2",            $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param516 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1Spare3",            $ name
+                "",                     $ units
+                "New Help String",      $ help string
+                0x0,0xFFFF,0,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        ProxiedParam4 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                32,32,32,
+                ,,,,
+                ,,,,
+                ;                       $ Input data size
+
+        ProxiedEnum4 =
+                32,"All Input Data (32 Words)";
+
+        ProxiedParam5 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                32,32,32,
+                ,,,,
+                ,,,,
+                ;                       $ Output data size
+
+        ProxiedEnum5 =
+                32,"All Output Data (32 Word)";
+
+        ProxiedParam6 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                0,2,2,
+                ,,,,
+                ,,,,
+                ;                       $ Electronic Keying
+        ProxiedEnum6 =
+                0,"Disable Keying",
+                1,"Exact Match",
+                2,"Compatible Module";
+
+        ProxiedParam7 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                1,255,1,
+                ,,,,
+                ,,,,
+                ;                       $ Configured Minor Revision
+
+        ProxiedParam8 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                1,255,1,
+                ,,,,
+                ,,,,
+                ;                       $ Actual Minor Revision
+
+        ProxiedParam9 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                0,1,1,
+                ,,,,
+                ,,,,
+                ;                       $ Using external power source
+        ProxiedEnum9 =
+                0,"Yes",
+                1,"No";
+
+[Groups]
+        Group1 =
+                "Ch0 Config Data",
+                17,
+                400,401,402,403,404,405,406,407,408,409,
+                410,411,412,413,414,415,416;
+        Group2 =
+                "Ch1 Config Data",
+                17,
+                500,501,502,503,504,505,506,507,508,509,
+                510,511,512,513,514,515,516;
+
+
+[Assembly]
+
+        ProxiedAssem4 =
+                "Configuration",
+                ,
+                ,
+                0x0000,
+                ,,
+                16,Param400,
+                16,Param401,
+                16,Param402,
+                16,Param403,
+                16,Param404,
+                16,Param405,
+                32,Param406,
+                32,Param407,
+                32,Param408,
+                32,Param409,
+                32,Param410,
+                16,Param411,
+                16,Param412,
+                32,Param413,
+                32,Param414,
+                16,Param415,
+                16,Param416,
+                16,Param500,
+                16,Param501,
+                16,Param502,
+                16,Param503,
+                16,Param504,
+                16,Param505,
+                32,Param506,
+                32,Param507,
+                32,Param508,
+                32,Param509,
+                32,Param510,
+                16,Param511,
+                16,Param512,
+                32,Param513,
+                32,Param514,
+                16,Param515,
+                16,Param516;
+
+        ProxiedAssem100 =
+                "Output Array",
+                ,
+                ,
+                0x0000,
+                ,,
+                16,Param300,
+                16,Param301,
+                16,Param302,
+                16,Param303,
+                16,Param304,
+                16,Param305,
+                16,Param306,
+                16,Param307,
+                16,Param308,
+                16,Param309,
+                16,Param310,
+                16,Param311,
+                16,Param312,
+                16,Param313,
+                16,Param314,
+                16,Param315,
+                16,Param320,
+                16,Param321,
+                16,Param322,
+                16,Param323,
+                16,Param324,
+                16,Param325,
+                16,Param326,
+                16,Param327,
+                16,Param328,
+                16,Param329,
+                16,Param330,
+                16,Param331,
+                16,Param332,
+                16,Param333,
+                16,Param334,
+                16,Param335;
+        ProxiedAssem101 =
+                "Input Array",
+                ,
+                ,
+                0x0000,
+                ,,
+                16,Param200,
+                16,Param201,
+                16,Param202,
+                16,Param203,
+                16,Param204,
+                16,Param205,
+                16,Param206,
+                16,Param207,
+                16,Param208,
+                16,Param209,
+                16,Param210,
+                16,Param211,
+                16,Param212,
+                16,Param213,
+                16,Param214,
+                16,Param215,
+                16,Param220,
+                16,Param221,
+                16,Param222,
+                16,Param223,
+                16,Param224,
+                16,Param225,
+                16,Param226,
+                16,Param227,
+                16,Param228,
+                16,Param229,
+                16,Param230,
+                16,Param231,
+                16,Param232,
+                16,Param233,
+                16,Param234,
+                16,Param235;
+
+[Modular]
+        Width = 1;
+        Rack1 =
+                1,108,91,1,1,,,,
+                1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37;    $ Legal slots
+
+        ExternalID = "02 01 64 00 05 00 02";
+
+
+[1_1769Audit]
+        1_5vdcPwrLoad = 200;
+        1_24vdcPwrLoad = 0;
+        1_DistRating = 8;
+

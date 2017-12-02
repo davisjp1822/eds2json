@@ -1,0 +1,145 @@
+$ EZ-EDS Version 3.9 Generated Electronic Data Sheet
+
+[File]
+        DescText = "IB-E04F";
+        CreateDate = 04-24-2014;
+        CreateTime = 10:51:07;
+        ModDate = 04-24-2014;
+        ModTime = 10:51:05;
+        Revision = 1.1;
+
+[Device]
+        VendCode = 533;
+        VendName = "ITOH DENKI CO.,LTD";
+        ProdType = 43;
+        ProdTypeStr = "Generic Device";
+        ProdCode = 1714;
+        MajRev = 1;
+        MinRev = 1;
+        ProdName = "IB-E04F";
+
+[Device Classification]
+        Class1 = EtherNetIP;
+
+[Params]
+        Param1 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Input Size",           $ name
+                "",                     $ units
+                "",                     $ help string
+                0,64,64,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param2 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Output Size",          $ name
+                "",                     $ units
+                "",                     $ help string
+                0,64,64,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param3 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Input Assembly ID",    $ name
+                "",                     $ units
+                "",                     $ help string
+                100,768,101,            $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                0;                      $ decimal places
+        Param4 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Output Assembly ID",   $ name
+                "",                     $ units
+                "",                     $ help string
+                100,769,100,            $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                0;                      $ decimal places
+
+[Connection Manager]
+        Connection1 =
+                0x04010002,             $ 0-15    = supported transport classes
+                                        $ 16      = trigger: cyclic
+                                        $ 17      = trigger: change of state
+                                        $ 18      = trigger: application
+                                        $ 19-23   = trigger: reserved
+                                        $ 24      = transport type: listen-only
+                                        $ 25      = transport type: input-only
+                                        $ 26      = transport type: exclusive-owner
+                                        $ 27      = transport type: redundant-owner
+                                        $ 28-30   = reserved
+                                        $ 31      = Client = 0 / Server = 1
+                0x44640405,             $ 0       = O->T fixed size supported
+                                        $ 1       = O->T variable size supported
+                                        $ 2       = T->O fixed size supported
+                                        $ 3       = T->O variable size supported
+                                        $ 4-5     = O->T number of bytes per slot (obsolete)
+                                        $ 6-7     = T->O number of bytes per slot (obsolete)
+                                        $ 8-10    = O->T Real time transfer format
+                                        $ 11      = reserved
+                                        $ 12-14   = T->O Real time transfer format
+                                        $ 15      = reserved
+                                        $ 16      = O->T connection type: NULL
+                                        $ 17      = O->T connection type: MULTICAST
+                                        $ 18      = O->T connection type: POINT2POINT
+                                        $ 19      = O->T connection type: reserved
+                                        $ 20      = T->O connection type: NULL
+                                        $ 21      = T->O connection type: MULTICAST
+                                        $ 22      = T->O connection type: POINT2POINT
+                                        $ 23      = T->O connection type: reserved
+                                        $ 24      = O->T priority: LOW
+                                        $ 25      = O->T priority: HIGH
+                                        $ 26      = O->T priority: SCHEDULED
+                                        $ 27      = O->T priority: reserved
+                                        $ 28      = T->O priority: LOW
+                                        $ 29      = T->O priority: HIGH
+                                        $ 30      = T->O priority: SCHEDULED
+                                        $ 31      = T->O priority: reserved
+                ,Param2,,               $ O->T RPI, size, format
+                ,Param1,,               $ T->O RPI, size, format
+                ,,                      $ config #1 size, format
+                ,,                      $ config #2 size, format
+                "I/O Connection",       $ Connection Name
+                "",                     $ help string
+                "20 04 24 66 2D 00 [Param4] 2D 00 [Param3]";    $ Path
+
+[Port]
+        Port1 =
+                TCP,
+                "TCP",
+                "20 F5 24 01",
+                2;
+
+[Capacity]
+        MaxIOConnections = 4;
+        MaxMsgConnections = 8;
+        TSpec1 = TxRx, 2, 3000;
+        TSpec2 = TxRx, 64, 3000;
+
+[Ethernet Link Class]
+        Revision = 03;
+        MaxInst = 02;
+        Number_Of_Static_Instances = 02;
+        Max_Number_Of_Dynamic_Instances = 0;
+        InterfaceLabel1 = "internal1";
+        InterfaceLabel2 = "internal2";
+

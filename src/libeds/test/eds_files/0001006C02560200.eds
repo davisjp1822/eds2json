@@ -1,0 +1,82 @@
+$ EZ-EDS Version 3.11 (Beta, May-09, 2012) Generated Electronic Data Sheet
+
+[File]
+        DescText = "1719-A824 Ex I/O 8 Slot Base + 24 Slot Extension Chassis EDS File";
+        CreateDate = 07-01-2015;
+        CreateTime = 08:16:00;
+        ModDate = 10-12-2016;
+        ModTime = 10:16:40;
+        Revision = 1.4;
+        HomeURL = "http://www.rockwellautomation.com/support/networks/overview.page";
+
+[Device]
+        VendCode = 1;
+        VendName = "Rockwell Automation";
+        ProdType = 108;
+        ProdTypeStr = "Chassis";
+        ProdCode = 598;
+        MajRev = 2;
+        MinRev = 1;
+        ProdName = "1719-A824/A Ex I/O 8 Slot Base + 24 Slot Extension Chassis";
+        Catalog = "1719-A824/A";
+        Icon = "1719A824chas.ico";
+        1_RSNetWorx_Slot_Width = 18;
+        1_RSNetWorx_Slot_Height = 48;
+
+[Device Classification]
+        Class1 = 1_RSNetWorx_Chassis;
+
+[Params]
+        Param1 =
+                0,                      $ shall be zero
+                ,,                      $ path size, path - not addressable
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type - UINT
+                2,                      $ data size in bytes
+                "Slot Naming Convention",    $ name
+                "",                     $ units
+                "The Adapter Only slot in the base chassis is for the network adapter module. This slot is not accessible on the backplane. The power supply slot on the far right side is not numbered and cannot be accessed from the backplane. The slots between the Adapter Only slot and the Power Supply slot in the base chassis, and all the slots to the left of the power supply slot in the expansion chassis may only contain I/O modules. These slots are numbered from left to right, starting with slot 1 in the base chassis and starting with 9 in the expansion chassis.",    $ help string
+                0,32,0,                 $ Min, Max, Default data values
+                ,,,,                    $ Mult, div, base, offset scaling - not used
+                ,,,,                    $ Mult, div, base, offset link - not used
+                0;                      $ Decimal places - not used
+        Enum1 =
+                0,"Adapter Only Slot",
+                1,"1",
+                2,"2",
+                3,"3",
+                4,"4",
+                5,"5",
+                6,"6",
+                7,"7",
+                8,"8",
+                9,"9",
+                10,"10",
+                11,"11",
+                12,"12",
+                13,"13",
+                14,"14",
+                15,"15",
+                16,"16",
+                17,"17",
+                18,"18",
+                19,"19",
+                20,"20",
+                21,"21",
+                22,"22",
+                23,"23",
+                24,"24",
+                25,"25",
+                26,"26",
+                27,"27",
+                28,"28",
+                29,"29",
+                30,"30",
+                31,"31",
+                32,"32";
+
+[Modular]
+        DefineSlotsInRack = 33;
+        SlotDisplayRule = Param1;
+
+

@@ -1,0 +1,672 @@
+$ EZ-EDS Version 3.11.1.20151008 Generated Electronic Data Sheet
+
+$ EDS file for SMDxxE2 and SD4840E2 stepper drive and motor.
+
+$ All references to Vol1 of the CIP specifications are to Vol1
+
+[File]
+        DescText = "SMD23E2";
+        CreateDate = 03-29-2012;
+        CreateTime = 14:01:47;
+        ModDate = 05-24-2016;
+        ModTime = 13:57:27;
+        Revision = 1.6;
+        HomeURL = "http://www.amci.com/driver files/SMD23E2_v1_5.eds";
+
+        1_IOC_Details_License = 0xDFE8039A;    $ unlocks the EDS for RA systems to read properly the I/O formats
+
+[Device]
+        VendCode = 10;
+        VendName = "Advanced Micro Controls, Inc. (AMCI)";
+        ProdType = 12;
+        ProdTypeStr = "Communications Adapter";
+        ProdCode = 29;
+        MajRev = 1;
+        MinRev = 6;                     $ For devices with earlier firmware, use EDS v1.4
+        ProdName = "SMD23E2";
+        Catalog = "SMD23E2";
+        Icon = "SMD23E.ico";
+        IconContents =
+                "AAABAAEAICAAAAEACACoCAAAFgAAACgAAAAgAAAAQAAAAAEACAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAD5+fkAFhWoABAPkgAVE5oAFh+QAPb69AAOF5QA"
+                "CAqNADQ6pQAjKIgAJS6IABcOiwAcI4QAREGTAIiPrgAREVoAIShxAJOUugB7"
+                "e3sAX2JsACcoRQAiJkYAQURTADg6OgAhISEASUhIAIGCggC4uLgAERAOAA4Q"
+                "EAASEREAEw8VABkYIwAeHSYAY2NjAKCgoACoqKgAEA4OAAoJCQAHCQkAAAAA"
+                "ABkZGQCWmZkAkpGRABYYGACMkJEAio2OAJGVlgBBQkIAPkBBAHRycgCGiYkA"
+                "wsHBAPLz9AA9P0AAaGpoAG9wbgBvcXEAmpmZALe3twCurq4AeoKCADc4NgAy"
+                "MjIAWlpaABsfGwCooqMATExMAMLBvQBNSEUAwru5ALCrqgDKwsIAmpGRAEdI"
+                "SQAFBQUASEREALq2tQDAs7MAzL6/ANnLyQDs3tgA/OvoAPvw6wD5+PcA08vJ"
+                "AO7s7ACEgH0ArqmmAMzJyQC2sK0AvrOzAPPi2QD+9e4AdnZ2AJSJhQDFubMA"
+                "lIuKAJiMjQCnm5sA9u7qAIqHgABaWlYAGBUTAIJ8egBSUE8Ayb+4AOfm3gBj"
+                "YVgAnpmSAIJ7dgConZkA/PDlADElGwBbU0wAUlJQAMzHyACJfnsAkYWEAIqB"
+                "fACxqqcA5trQABIUDwAbGBcAjoaGAEVAPwBQTUwAaV5eAHVoZgCQhn8ArJ2U"
+                "APzs4AB8eHUA29HKAAoKBgB1bWoAnJCOAPPh1gDa2toALC0rAB0dHQDq29IA"
+                "4dbSADg1MQBsZmMAraCaAOHTzgB+fXwAjIKAAI2EgQB6dHIAy8O7AKKZlQCw"
+                "o6EAFREOAMzHxQDWycMApaGeALmyrADBtbIACQYGANjW1gC5rasA6ejkAJqW"
+                "kQBjXVcAdHBrADMxLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAABURFYAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAVjopRaanpgAAAAAAAAAAAAAAAAAAAAAAAAAAozxjOkltpH1ubqVoAAAA"
+                "AAAAAAAAAAAAAAAAAAA7EkeenkdCQpEjQnhaom6gRAAAAAAAAAAAAAAAAAAA"
+                "ADedSJeXnpZud0l4np6fdZaghqEAAAAAAAAAAAAAAAAASJuchZh3d3doaHZO"
+                "TmCVlpolhiVkAAAAAAAAAAAAAAAal5KYd5R3lHd2dplgYJWEmhwcHiUeAAAA"
+                "AAAAAAAAAFqFeRqUYZRfdl9igmpPlZZnHBweHBwwGAAAAAAAAAAAVY4rK31u"
+                "j5CBYWGRhZJ3aHscHmceHh4ek5QAAAAAAACFhWFzizA/jG5hYmqNjYFoHGcc"
+                "HBweex4ybCsAAAAAAIWFK2J2TCmGRYeIiYlcgWhnLBx7HmdnexIZK4oAAAAA"
+                "VVVhYXx9GH5/gIGCg4NfV3osHHssex4phGk6OjoAAAB0VUlJYXV2YnZ3eHlw"
+                "cF9oehwsHnsee3sSc2M6OgAAAFVZSWJJYkliYWJvU3BxclccHiwcLCwsKRJz"
+                "IzojAAAASFlGYUlJYWJfalNda2xtbiweLB4sLCwpV2kjIyMAAABVWUhgYWFi"
+                "Y05TU1RTZGVmLB4sHiwsZyloaSM6IwAAAFlISDRGWltVXFJTXV5XXxxLHhws"
+                "HiwsLBoZQjo6AAAAJEhNREZOT1BRUlNUVVZXJiYdKCYeLB4eGkxYOisAAABD"
+                "REVCRkdGSEcjSTozShwdHiYdJidLHR4uTCQjKwAAABs8ODc6KiotPRMZMDAx"
+                "IR0eJh0mHSY+P0BBNCRCAAAAAAAAADUiNjE2MTYxMDAYGCEeHh0mHjcYODkt"
+                "OjsAAAAAAAAAAAAAABIwMDAxMSwdHSYnJiYpMh4aMy00AAAAAAAAAAAAAAAA"
+                "AAAAGjAXJicoKB4YKSkeLC4tIwAAAAAAAAAAAAAAAAAAAAAAAAApJigdKCgo"
+                "KCgpLS4vAAAAAAAAAAAAAAAAAAAAAAAAACUmJikoJygoKCwtLSoAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAHiUmHCcmKCgoKSorKwAAAAAAAAAAAAAAAAAAAAAAAAAc"
+                "HR4fHyAhIR4eIiMkAAAAAAAAAAAAAAAAAAAAAAAAAAAAEhMUFRYXGBkaGwAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAADg8QEQAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAKCwwNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYHCAkA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIDBAUAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+
+[Device Classification]
+        Class1 = EtherNetIP;
+
+$ *********************************************************************************
+[Params]
+
+        Param1 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xD2,                   $ Data Type= Bit String 16-bit	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 2 bytes
+                "CONFIGURATION WORD 0", $ name
+                "individual bit-fields",$ units
+                "Configuration Word 0", $ help string
+                ,,1024,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum1 =
+                0,"IN1 function bit 0",
+                1,"IN1 function bit 1",
+                2,"IN1 function bit 2",
+                3,"IN2 function bit 0",
+
+                4,"IN2 function bit 1",
+                5,"IN2 function bit 2",
+
+
+                10,"Use Encoder",
+                11,"Use Backplane Proximity",
+
+                13,"Enable Stall Detection",
+                14,"Disable Antiresonance";
+
+        Param2 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xD2,                   $ Data Type= Bit String 16-bit	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 2 bytes
+                "CONFIGURATION WORD 1", $ name
+                "individual bit-fields",$ units
+                "Configuration Word 1", $ help string
+                ,,771,                  $ min, max, default - default data format is binary
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum2 =
+                0,"IN1 Active level",
+                1,"IN2 Active level",
+                8,"Binary_Output_Format",    $ 1=Binary, 0 = x1000 format
+                9,"Binary_Input_Format";$ 1=Binary, 0 = x1000 format
+
+
+        Param3 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC8,                   $ Data Type= Unsigned 32-bit Integer	see vol1 C-6.1
+                4,                      $ Data Size in bytes = 4 bytes
+                "STARTING SPEED st/s",  $ name
+                "steps per second",     $ units
+                "Starting Speed",       $ help string
+                1,1999999,50,           $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+
+        Param4 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC7,                   $ Data Type= Unsigned 16-bit Integer	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 2 bytes
+                "MOTOR RESOLUTION st/rev",    $ name
+                "Counts",               $ units
+                "Motor Resolution",     $ help string
+                200,32767,2048,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+        Param5 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC7,                   $ Data Type= Unsigned 16-bit Integer	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 2 bytes
+                "ENCODER RESOLUTION p/rev",    $ name
+                "Counts",               $ units
+                "Encoder Resolution",   $ help string
+                0,4096,2048,            $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param6 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC7,                   $ Data Type= Unsigned 16-bit Integer	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 2 bytes
+                "IDLE CURRENT REDUCTION %",    $ name
+                "Percent",              $ units
+                "Idle Current Reduction",    $ help string
+                0,100,20,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param7 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC7,                   $ Data Type= Unsigned 16-bit Integer	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 2 bytes
+                "MOTOR CURRENT 10x Amps",    $ name
+                "10x Amps",             $ units
+                "Motor Current",        $ help string
+                10,34,28,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+        Param8 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8
+                0xC8,                   $ Data Type
+                4,                      $ Data Size in bytes
+                "RPI Range",            $ name
+                "micro seconds",        $ units
+                "RPI Range",            $ help string
+                1000,3200000,8000,      $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+    $ --------Output Array--------------
+        Param10 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8
+                0xD2,                   $ Data Type= WORD = bit string 16-bit
+                2,                      $ Data Size in bytes
+                "COMMAND_WORD_0",       $ name
+                "data",                 $ units
+                "Command word 0",       $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum10 =
+                0,"Absolute Move",
+                1,"Relative Move",
+                2,"Hold Move",
+                3,"Resume Move",
+
+                4,"Immediate Stop",
+                5,"Find Home CW",
+                6,"Find Home CCW",
+                7,"Jog CW",
+
+                8,"Jog CCW",
+                9,"Preset position",
+                10,"Reset Errors",
+                11,"Program Assembled",
+
+                12,"Read Assembled Data",
+                13,"Run Assembled Move",
+                14,"Preset Encoder",
+                15,"Mode Select Bit";
+
+        Param11 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8
+                0xD2,                   $ Data Type= WORD = bit string 16-bit
+                2,                      $ Data Size in bytes
+                "COMMAND_WORD_1",       $ name
+                "data",                 $ units
+                "Command word 1",       $ help string
+                ,,32768,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum11 =
+                1,"Motor Current Key",
+                2,"Encoder Registration Move",
+
+                4,"Reverse Blend Direction",
+                5,"Save to Flash",
+                7,"Registration Move",
+
+                8,"Indexed Command",
+                9,"Assembled Move Type",
+                11,"Backplane Proximity Bit",
+
+                12,"Virtual Position Follower",
+                13,"Copy Encoder to Position",
+                14,"Virtual Encoder Follower",
+                15,"Enable Driver";
+
+    $ -----Position and Distance-----
+        Param12 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC4,                   $ Data Type= Signed 32-bit Integer INT	see vol1 C-6.1
+                4,                      $ Data Size in bytes = 4 bytes
+                "POSITION or DISTANCE ",$ name
+                "steps",                $ units
+                "Position or Distance", $ help string
+                0,8388000,5000,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Velocity-----
+        Param14 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC4,                   $ Data Type= Signed 16-bit Integer INT	see vol1 C-6.1
+                4,                      $ Data Size in bytes = 4 bytes
+                "PROGRAMMED SPEED st/s",        $ name
+                "steps per second",     $ units
+                "PROGRAMMED SPEED",             $ help string
+                1,2999999,10000,        $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Acceleration-----
+        Param16 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC7,                   $ Data Type= Unsigned 16-bit Integer INT	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 4 bytes
+                "ACCELERATION st/s/ms", $ name
+                "steps per sec per ms", $ units
+                "Acceleration st/s/ms", $ help string
+                1,5000,100,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Deceleration-----
+        Param17 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC7,                   $ Data Type= Unsigned 16-bit Integer INT	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 4 bytes
+                "DECELERATION st/s/ms", $ name
+                "steps per sec per ms", $ units
+                "Deceleration st/s/ms", $ help string
+                1,5000,100,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+    $ -----Motor Current or Registration move minimum travel LSW-----
+        Param18 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC3,                   $ Data Type= Unsigned 16-bit Integer INT	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 4 bytes
+                "SET CURRENT or LSW Min Reg",    $ name
+                "Amps x10",             $ units
+                "Set Motor Current",    $ help string
+                10,34,28,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Jerk or Registration move minimum travel MSW----------
+        Param19 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC3,                   $ Data Type= Unsigned 16-bit Integer INT	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 4 bytes
+                "JERK or MSW Min Reg",  $ name
+                "custom",               $ units
+                "Jerk",                 $ help string
+                0,5000,0,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+
+    $ --------Input Array--------------
+        Param20 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8
+                0xD2,                   $ Data Type= WORD = bit string 16-bit
+                2,                      $ Data Size in bytes
+                "STATUS_WORD_0",        $ name
+                "data",                 $ units
+                "Status Word 0",        $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20 =
+                0,"Moving CW",
+                1,"Moving CCW",
+                2,"In Hold State",
+                3,"Stopped",
+
+                4,"At Home",
+                5,"Accelerating",
+                6,"Decelerating",
+                7,"Move Complete",
+
+                8,"In Assembled Mode",
+                9,"Wait For Assembled Segment",
+                10,"Position Invalid",
+                11,"Input Error",
+
+                12,"Command Error",
+                13,"Configuration Error",
+                14,"Module OK",
+                15,"Mode Flag";
+
+        Param21 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8
+                0xD2,                   $ Data Type= WORD = bit string 16-bit
+                2,                      $ Data Size in bytes
+                "STATUS_WORD_1",        $ name
+                "data",                 $ units
+                "Status Word 1",        $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum21 =
+                0,"IN1 active",
+                1,"IN2 active",
+
+                4,"Temperature Above 90C",
+                5,"PLC in PROG Mode",
+                6,"Connection Was Lost",
+                7,"Driver Fault",
+
+                9,"Invalid Jog Change",
+                10,"Limit Condition",
+                11,"Heartbeat Bit",
+
+                12,"Multi-turn Encoder Error",
+                13,"Acknowledge Flag",
+                14,"Stall Detected",
+                15,"Drive Is Enabled";
+
+    $ -----Position-----
+        Param22 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC4,                   $ Data Type= Signed 32-bit Integer INT	see vol1 C-6.1
+                4,                      $ Data Size in bytes = 4 bytes
+                "MOTOR_POSITION",       $ name
+                "steps",                $ units
+                "Motor Position",       $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Encoder Position-----
+        Param24 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC4,                   $ Data Type= Signed 32-bit Integer INT	see vol1 C-6.1
+                4,                      $ Data Size in bytes = 4 bytes
+                "ENCODER_POSITION",     $ name
+                "counts",               $ units
+                "Encoder Position",     $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Trapped Encoder Position-----
+        Param26 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC4,                   $ Data Type= Signed 32-bit Integer INT	see vol1 C-6.1
+                4,                      $ Data Size in bytes = 4 bytes
+                "TRAPPED_ENCODER_POSITION",    $ name
+                "counts",               $ units
+                "Trapped Encoder Position",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Motor Current-----
+        Param28 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC3,                   $ Data Type= Signed 16-bit Integer INT	see vol1 C-6.1
+                2,                      $ Data Size in bytes = 4 bytes
+                "PROGRAMMED MOTOR CURRENT",    $ name
+                "Amps x10",             $ units
+                "Motor Current",        $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ -----Jerk-----
+        Param29 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Path Size, Path
+                0x0000,                 $ Descriptor see vol1 Table 5-14.8, Not Addressable
+                0xC3,                   $ Data Type= Unsigned 16-bit Integer INT	see vol1 C-6.1	!!! If you out C7, RSLogix doesn't interprite at all the input data
+                2,                      $ Data Size in bytes = 4 bytes
+                "JERK_STATUS",          $ name
+                "custom",               $ units
+                "Jerk Status",          $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+$ *********************************************************************************
+[Assembly]      $ see Vol1-3.5  7-3.6.7 Assembly Section
+        Revision = 2;
+        MaxInst = 3;
+        Number_Of_Static_Instances = 3;
+        Max_Number_Of_Dynamic_Instances = 0;
+
+        Assem100 =
+                "Input Assembly Instance 100",
+                "20 04 24 64 30 03",    $ path - address of the data block
+                20,                     $ size in bytes of the data section
+                0x0000,                 $ Descriptor - data cannot be edited
+                ,,
+                ,Param20,
+                ,Param21,
+                ,Param22,
+                ,Param24,
+                ,Param26,
+                ,Param28,
+                ,Param29;
+
+
+
+        Assem110 =
+                "Configuration Assembly 110: Configuration parameters",
+                "20 04 24 6E 30 03",    $ path - address of the data block
+                16,                     $ size in bytes of the data section
+                0x0001,                 $ Descriptor - data can be edited
+                ,,
+                $ First Cfg word bit definition
+                16,Param1,              $ Configuration Word 0
+                16,Param2,              $ Configuration Word 1
+                32,Param3,              $ Starting Speed
+                16,Param4,              $ Motor Resolution
+                16,Param5,              $ Encoder Resolution
+                16,Param6,              $ Idle current reduction
+                16,Param7;              $ Motor Current
+
+
+        Assem150 =
+                "Output Assembly Instance 150",
+                "20 04 24 96 30 03",    $ path - address of the data block
+                20,                     $ size in bytes of the data section
+                0x0001,                 $ Descriptor - data can be edited
+                ,,
+                ,Param10,
+                ,Param11,
+                ,Param12,
+                ,Param14,
+                ,Param16,
+                ,Param17,
+                ,Param18,
+                ,Param19;
+
+
+
+$ *********************************************************************************
+[Connection Manager]
+        Connection1 =
+                0x04010002,             $ trigger & transport
+                                        $  0-15  = supported transport classes
+                                        $  16 = cyclic (1 = supported)
+                                        $  17 = change of state (0 = not supported)
+                                        $  18 = trigger: application (0)
+                                        $  19-23 = reserved (must be zero)
+                                        $  24-27 = exclusive owner
+                                        $  28-30 = reserved (must be zero)
+                                        $  31 = client 0 (don't care for classes 0 and 1)
+                $ Connection to Input and Output Assembbly Instance 100 and 150
+                0x44640405,             $ point/multicast & priority & realtime format
+                                        $   0     = O=>T fixed (1 = supported)
+                                        $   1     = O=>T variable (0 = not supported)
+                                        $   2     = T=>O fixed (1 = supported)
+                                        $   3     = T=>O variable (0 = not supported)
+                                        $  4-7   = reserved (must be zero)
+                                        $  8-10  = O=>T header (4 byte run/idle)
+                                        $  11  = reserved (must be zero)
+                                        $  12-14 = T=>O header 0=connection is pure data (modeless)
+                                        $  15  = reserved (must be zero)
+                                        $  16-19 = O=>T point-to-point
+                                        $  20-23 = T=>O multicast, point-to-point
+                                        $  24-27 = O=>T scheduled
+                                        $  28-31 = T=>O scheduled
+                Param8,,Assem150,       $ O=>T RPI,Size,Format
+                Param8,,Assem100,       $ T=>O RPI,Size,Format
+                ,,                      $ config #1 size, format
+                ,Assem110,              $ config #2 size, format
+                "Connection to the IO assemblies ",    $ Connection Name
+                "Connection to Assembly Instances 150 and 100",    $ help string
+                "20 04 24 6E 2C 96 2C 64";    $ connection path with configuration data
+
+
+
+[Capacity]
+        MaxCIPConnections = 3;
+        TSpec1 = TxRx, 8, 1000;
+
+[DLR Class]
+        Revision = 2;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Ring_Supervisor_Capable = No;
+
+[Ethernet Link Class]
+        Revision = 3;
+        MaxInst = 2;
+        Number_Of_Static_Instances = 2;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                1,
+                2,
+                3,
+                6,
+                7;
+        Instance_Attributes =
+                1,
+                2,
+                3,
+                6,
+                7,
+                8,
+                10;
+        Class_Services = 0x0E;
+        Instance_Services =
+                0x0E,
+                0x10;
+        InterfaceLabel1 = "Port 1";
+        InterfaceLabel2 = "Port 2";
+        InterfaceType1 = 2;
+        InterfaceType2 = 2;
+
+
+
+$ Advanced Micro Controls, Inc.
+$ 20 Gear Drive,
+$ Plymouth Industrial Park,
+$ Terryville, CT 06786, USA
+$ Tel.: 1(860) 585-1254
+$  
+$ www.amci.com

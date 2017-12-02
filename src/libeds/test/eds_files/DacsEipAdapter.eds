@@ -1,0 +1,492 @@
+$ EZ-EDS Version 3.9 (Beta, January-12, 2011) Generated Electronic Data Sheet
+
+[File]
+        DescText = "Dialight EtherNet/IP Adapter";
+        CreateDate = 07-07-2016;
+        CreateTime = 10:00:00;
+        ModDate = 07-07-2016;
+        ModTime = 12:23:00;
+        Revision = 2.1;
+        HomeURL = "http://www.dialight.com/";
+
+[Device]
+        VendCode = 1401;
+        VendName = "Dialight";
+        ProdType = 43;
+        ProdTypeStr = "Generic Device";
+        ProdCode = 1;
+        MajRev = 2;
+        MinRev = 1;
+        ProdName = "DACS EtherNet/IP Adapter";
+        Catalog = "DACS EtherNet/IP Adapter";
+        Icon = "DacsEipAdapter.ico";
+
+[Device Classification]
+        Class1 = EtherNetIP;
+
+
+[Params]
+        Param1 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GatewayListSize",      $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param2 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "AlertListSize",        $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param3 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "ScheduleListSize",     $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param4 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GroupListSize",        $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param5 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "DeviceListSize",       $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param6 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "EmergencyOverride",    $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param7 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "MotionSensed",         $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param8 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GwyDeviceListSize",    $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param9 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GrpLightLevel",        $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param10 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GrpOverride",          $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param11 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GrpDeviceListSize",    $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param12 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GrpScheduleListSize",  $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param13 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GrpWosEnabled",        $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param14 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "GrpWdlhEnabled",       $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param15 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "SchEventListSize",     $ name
+                "",                     $ units
+                "",                     $ help string
+                -128,127,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+[Assembly]
+        Revision = 2;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;    $ MAX_ASSEMBLIES-Number_Of_Static_Instances
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x04,
+                0x6,
+                0x7;                    $ "Standard" class attributes
+        Instance_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x4;
+        Class_Services =
+                0x08,                   $ Create supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x9,                    $ Delete supported
+                0xE,
+                0x10,                   $ Get/SetAttributeSingle supported
+                0x18,
+                0x19;                   $ Get/Set_Member service to instances supported
+        Assem1 =
+                "DACS Event Counts",
+                ,
+                128,
+                0x0000,
+                ,,
+                8,,
+                8,Param1,
+                8,Param2,
+                8,Param3,
+                8,Param4,
+                8,Param5,
+                8,Param6,
+                8,Param7,
+                8,Param8,
+                8,Param9,
+                8,Param10,
+                8,Param11,
+                8,Param12,
+                8,Param13,
+                8,Param14,
+                8,Param15,
+                896,;
+
+[Connection Manager]
+        Revision = 1;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x04,
+                0x6,
+                0x7;                    $ "Standard" class attributes
+        Instance_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x4,
+                0x5,
+                0x6,
+                0x7,
+                0x8;                    $ statistics attributes
+        Class_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x01,
+                0x2,                    $ Get/SetAttributeAll supported
+                0xE,
+                0x10,                   $ Get/SetAttributeSingle supported
+                0x54,
+                0x5B,                   $ FwdOpen, LargeFwdOpen supported
+                0x4E,                   $ FwdClose supported
+                0x52;                   $ UnconnectedSend supported
+
+        Connection1 =
+                0x02070003,             $ trigger & transport
+                                        $  0-15  = supported transport classes (class 0+1)
+                                        $  16 = cyclic (1 = supported)
+                                        $  17 = change of state (1 = supported)
+                                        $  18 = on demand (1 = supported)
+                                        $  19-23 = reserved (must be zero)
+                                        $  24-27 = input only
+                                        $  28-30 = reserved (must be zero)
+                                        $  31 = client 0 (don't care for classes 0 and 1)
+                0x44660305,             $ connection parameters
+                                        $ 	0	= O=>T fixed (1 = supported)
+                                        $ 	1	= O=>T variable (1 = supported)
+                                        $ 	2	= T=>O fixed (1 = supported)
+                                        $ 	3	= T=>O variable (1 = supported)
+                                        $ 4-7 = reserved (must be zero)
+                                        $ 8-11  = O=>T header (heartbeat)
+                                        $ 12-15 = T=>O header (modeless)
+                                        $ 16-19	= O=>T connection type (multicast & point-to-point)
+                                        $ 20-23	= T=>O connection type (multicast & point-to-point)
+                                        $ 24-27 = O=>T priority (scheduled)
+                                        $ 28-31 = T=>O priority (scheduled)
+                ,0,,                    $ O=>T RPI,Size,Format
+                ,128,Assem1,            $ T=>O RPI,Size,Format
+                ,,                      $ config part 1 (not used)
+                ,,                      $ config part 2 (not used)
+                "Event Monitor",        $ connection name
+                "",                     $ Help string
+                "20 04 24 01 2C C6 2C 64";    $ inputs only path
+
+[Port]
+        Revision = 1;
+        MaxInst = 3;
+        Number_Of_Static_Instances = 2;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x6,
+                0x7,
+                0x8,
+                0x9;
+        Instance_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x4,
+                0x7;
+        Class_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Port2 =
+                TCP,
+                "Ethernet Port",
+                "20 F5 24 01",
+                2;
+
+[Capacity]
+        MaxMsgConnections = 128;
+
+        MaxIOProducers = 128;
+        MaxIOConsumers = 128;
+        TSpec1 = TxRx, 4, 30000;
+        TSpec2 = TxRx, 500, 20000;
+
+
+[TCP/IP Interface Class]
+        Revision = 3;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x4,
+                0x5,
+                0x6,
+                0x7;
+        Instance_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x4,
+                0x5,
+                0x6,
+                0x8,
+                0x9,
+                0xD;
+        Class_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x01,
+                0x2,                    $ Get/SetAttributeAll supported
+                0xE,
+                0x10;                   $ Get/SetAttributeSingle supported
+
+[Ethernet Link Class]
+        Revision = 3;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x4,
+                0x6,
+                0x7;
+        Instance_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x7,
+                0x8,
+                0x9,
+                0xa;
+        Class_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE,
+                0x10,                   $ Get/SetAttributeSingle supported
+                0x4C;                   $ Get and Clear supported
+
+[Identity Class]
+        Revision = 1;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x04,
+                0x6,
+                0x7;                    $ "Standard" class attributes
+        Instance_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x04,
+                0x05,
+                0x6,
+                0x7;                    $ "Required" attributes
+        Class_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x01,                   $ GetAttributeAll supported
+                0x5,                    $ Reset supported
+                0xE,
+                0x10;                   $ Get/SetAttributeSingle supported
+
+[Message Router Class]
+        Revision = 1;
+        MaxInst = 1;
+        Number_Of_Static_Instances = 1;
+        Max_Number_Of_Dynamic_Instances = 0;
+        Class_Attributes =
+                0x01,
+                0x2,
+                0x3,
+                0x04,
+                0x05,
+                0x6,
+                0x7;                    $ "Standard" class attributes
+        Instance_Attributes =
+                0x01,
+                0x2;                    $ "Required" attributes
+        Class_Services =
+                0x01,                   $ GetAttributeAll supported
+                0xE;                    $ GetAttributeSingle supported
+        Instance_Services =
+                0x01,                   $ GetAttributeAll supported
+                0x8,                    $ Multiple Service Request supported
+                0xE;                    $ GetAttributeSingle supported
+

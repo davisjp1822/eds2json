@@ -1,0 +1,2268 @@
+$ EZ-EDS Version 2.0 Generated Electronic Data Sheet
+
+$ Revision History
+$ 1.001  07-27-05  jgm  Initial Version
+$ 1.002  08-23-05  jgm  Updated 1_24vdcPwrLoad
+$ 1.003  12-14-05  jgm  Updated to support standardization guidelines
+$ 1.004  03-22-06  jgm  Removed Enums and combined params per DPI group review
+
+[File]
+        DescText = "1769sc-OF4IH EDS File";
+        CreateDate = 12-18-2007;
+        CreateTime = 09:59:20;
+        ModDate = 12-19-2007;
+        ModTime = 14:45:44;
+    $ Added the ability to selct the size of the input and output image.
+        Revision = 2.1;
+        HomeURL = "www.spectrumcontrols.com";
+
+[Device]
+        VendCode = 58;
+        VendName = "Spectrum Controls, Inc.";
+        ProdType = 10;
+        ProdTypeStr = "General Purpose Analog I/O";
+        ProdCode = 5;
+        MajRev = 2;
+        MinRev = 2;
+        ProdName = "1769-4 Channel Isolated HART Current Output/A";
+        Catalog = "1769sc-OF4IH";
+        Icon = "1769-Brown.ico";
+
+[Params]
+
+
+
+    $ ***********************************
+    $   Output array data - 50 word
+    $ ***********************************
+
+        Param11 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0CommandValue",      $ name
+                "",                     $ units
+                "Analog Output Signal", $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param12 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1CommandValue",      $ name
+                "",                     $ units
+                "Analog Output Signal", $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param13 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch2CommandValue",      $ name
+                "",                     $ units
+                "Analog Output Signal", $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param14 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch3CommandValue",      $ name
+                "",                     $ units
+                "Analog Output Signal", $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param17 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0002,                 $ Descriptor (Enum)
+                0xC6,
+                1,                      $ BYTE
+                "AlarmUnlatch",
+                "",
+                "Unlatch process alarms",
+                0,0xFF,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum17 =
+                0,"Ch0UnlatchHigh",
+                1,"Ch0UnlatchLow",
+                2,"Ch1UnlatchHigh",
+                3,"Ch1UnlatchLow",
+                4,"Ch2UnlatchHigh",
+                5,"Ch2UnlatchLow",
+                6,"Ch3UnlatchHigh",
+                7,"Ch3UnlatchLow";
+        Param18 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "SuspendHart",          $ name
+                "",                     $ units
+                "Suspend hart on selected channels",    $ help string
+                0,0xF0,0,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum18 =
+                4,"Ch0SuspendHart",
+                5,"Ch1SuspendHart",
+                6,"Ch2SuspendHart",
+                7,"Ch3SuspendHart";
+        Param19 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "PacketJustScanned",    $ name
+                "",                     $ units
+                "Identifies the packet just scanned",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MessageMasterControl", $ name
+                "",                     $ units
+                "Used for HART messaging",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param21 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MessageRequestSize",   $ name
+                "",                     $ units
+                "Used for HART messaging",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param22 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MessageRequestBuffer", $ name
+                "",                     $ units
+                "Used for HART messaging",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ ***********************************
+    $   Input array data - 70 words
+    $ ***********************************
+
+    $ Input Word 0 - Analog Input Channel 0 Data Value
+        Param10001 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0010,                 $ Descriptor (Read Only)
+                0xC3,
+                2,                      $ INT
+                "Ch0Command",
+                "",
+                "Contains channel 0 analog Output value.",
+                -32768,32767,0,
+                ,,,,
+                ,,,,
+                ;
+
+    $ Input Word 1 - Analog Input Channel 1 Data Value
+        Param10101 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0010,                 $ Descriptor (Read Only)
+                0xC3,
+                2,                      $ INT
+                "Ch1Command",
+                "",
+                "Contains channel 1 analog Output value.",
+                -32768,32767,0,
+                ,,,,
+                ,,,,
+                ;
+
+    $ Input Word 2 - Analog Input Channel 2 Data Value
+        Param10201 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0010,                 $ Descriptor (Read Only)
+                0xC3,
+                2,                      $ INT
+                "Ch2Command",
+                "",
+                "Contains channel 2 analog output value.",
+                -32768,32767,0,
+                ,,,,
+                ,,,,
+                ;
+
+    $ Input Word 3 - Analog Input Channel 3 Data Value
+        Param10301 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0010,                 $ Descriptor (Read Only)
+                0xC3,
+                2,                      $ INT
+                "Ch3Command",
+                "",
+                "Contains channel 3 analog Output value.",
+                -32768,32767,0,
+                ,,,,
+                ,,,,
+                ;
+
+    $ Input Word 5 Bit 0 - Status Word 1 Bit 0 - Channel 0 General Status
+        Param10501 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0012,                 $ Descriptor (Read Only, Enum)
+                0xD1,
+                1,                      $ BYTE
+                "CombinedStatus",
+                "",
+                "Set if any error condition exists - High, Low, Over, Under",
+                0,0x0F,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum10501 =
+                0,"Ch0Status",
+                1,"Ch1Status",
+                2,"Ch2Status",
+                3,"Ch3Status";
+        Param10502 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0012,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "OutOfService",         $ name
+                "",                     $ units
+                "Channel out of service indicator ",    $ help string
+                0,0xF0,0,               $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum10502 =
+                4,"Ch0OutOfService",
+                5,"Ch1OutOfService",
+                6,"Ch2OutOfService",
+                7,"Ch3OutOfService";
+
+    $ Input Word 6
+        Param10601 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0012,                 $ Descriptor (Read Only, Enum)
+                0xD1,
+                1,                      $ BYTE
+                "Ch0_1Status",
+                "",
+                "Set if any error condition exists - High, Low, Over, Under",
+                0,0xFF,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum10601 =
+                0,"Ch0OverRange",
+                1,"Ch0UnderRange",
+                2,"Ch0HoldLastState",
+                4,"Ch1OverRange",
+                5,"Ch1UnderRange",
+                6,"Ch1HoldLastState";
+
+    $ Input Word 6
+        Param10602 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0012,                 $ Descriptor (Read Only, Enum)
+                0xD1,
+                1,                      $ BYTE
+                "Ch2_3Status",
+                "",
+                "Set if any error condition exists - High, Low, Over, Under",
+                0,0xFF,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum10602 =
+                0,"Ch2OverRange",
+                1,"Ch2UnderRange",
+                2,"Ch2HoldLastState",
+                4,"Ch3OverRange",
+                5,"Ch3UnderRange",
+                6,"Ch3HoldLastState";
+        Param10701 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0010,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "HartPacketData",       $ name
+                "",                     $ units
+                "HART data returned by module",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param10702 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0010,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MessageSlaveControl",  $ name
+                "",                     $ units
+                "Used by HART messaging",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param10703 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0010,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MessageResponseSize",  $ name
+                "",                     $ units
+                "Used for HART messaging",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param10704 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0010,                 $ Descriptor
+                0xC7,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MessageResponseBuffer",$ name
+                "",                     $ units
+                "Used for HART messaging",    $ help string
+                0,0xFFFF,0,             $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+    $ Configuration
+
+    $ *************************
+    $    General Configuration
+    $ *************************
+
+        Param20002 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "HandleTimeout",        $ name
+                "",                     $ units
+                "Enter handle time in seconds",    $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20003 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0HartEn",            $ name
+                "",                     $ units
+                "Enable HART on channel 0",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20003 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20004 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1HartEn",            $ name
+                "",                     $ units
+                "Enable HART on channel 1",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20004 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20005 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2HartEn",            $ name
+                "",                     $ units
+                "Enable HART on channel 2",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20005 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20006 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3HartEn",            $ name
+                "",                     $ units
+                "Enable HART on channel 3",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20006 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20010 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Passthrough",          $ name
+                "",                     $ units
+                "Set how often Pass-through commands are serviced",    $ help string
+                0,2,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20010 =
+                0,"Every Two Channel Scans",
+                1,"Once Per Module Scan",
+                2,"Every Channel Scan";
+        Param20011 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0SlotVariable0",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20012 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0SlotVariable1",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20013 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0SlotVariable2",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20014 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0SlotVariable3",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+        Param20015 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1SlotVariable0",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20016 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1SlotVariable1",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20017 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1SlotVariable2",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20018 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1SlotVariable3",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20019 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2SlotVariable0",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20020 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2SlotVariable1",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20021 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2SlotVariable2",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20022 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2SlotVariable3",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20023 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3SlotVariable0",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20024 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3SlotVariable1",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20025 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3SlotVariable2",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20026 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC6,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3SlotVariable3",     $ name
+                "",                     $ units
+                "Enter slot variable",  $ help string
+                0,255,0,                $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ **************
+    $  Channel 0
+    $ **************
+
+        Param20101 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0002,                 $ Descriptor (Enum)
+                0xC1,
+                1,                      $ BOOL
+                "Ch0 PFE",
+                "",
+                "See User Manual",
+                0,1,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum20101 =
+                0,"Apply Fault Value",
+                1,"Apply Program Value";
+    $ Configuration Word 2 Bits 8 - Channel 0 Word 0 Bit 8: Enable Interrupts
+        Param20102 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0HoldForInitialization",    $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20102 =
+                0,"Disabled",
+                1,"Hold for Initialization";
+        Param20103 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0ProgramMode",       $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20103 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20104 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0FaultMode",         $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20104 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20105 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0EnableRamping",     $ name
+                "",                     $ units
+                "Enable output ramping",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20105 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20106 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0LatchAlarms",       $ name
+                "",                     $ units
+                "Latch Alarms",         $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20106 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20107 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0_SIO",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20107 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20108 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0_SIU",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20108 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20110 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0Slot0En",           $ name
+                "",                     $ units
+                "Enable slot0 on channel 0",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20110 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20111 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0Slot1En",           $ name
+                "",                     $ units
+                "Enable slot1 on channel 0",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20111 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20112 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0Slot2En",           $ name
+                "",                     $ units
+                "Enable slot 2 on channel 0",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20112 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20113 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0Slot3En",           $ name
+                "",                     $ units
+                "Enable slot3 on channel 0",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20113 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20114 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0Enable",            $ name
+                "",                     $ units
+                "Enable output channel",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20114 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20115 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0OutputType",        $ name
+                "",                     $ units
+                "Enter output type",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20115 =
+                0,"0 to 20 mA",
+                1,"4 to 20 mA";
+        Param20116 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch0DataFormat",        $ name
+                "",                     $ units
+                "Enter data format",    $ help string
+                0,3,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20116 =
+                0,"Raw/Proportional",
+                1,"Engineering units",
+                2,"Scaled for PID",
+                3,"Percent range";
+        Param20117 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0FaultValue",        $ name
+                "",                     $ units
+                "Enter user defined fault value",    $ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20118 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0ProgramValue",      $ name
+                "",                     $ units
+                "Enter user defined program value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20119 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0LowClamp",          $ name
+                "",                     $ units
+                "Enter low clamp value",$ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20120 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0HighClamp",         $ name
+                "",                     $ units
+                "Enter high clamp value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20121 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch0Ramp",              $ name
+                "",                     $ units
+                "Enter ramp value",     $ help string
+                0,32767,0,              $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ **************
+    $  Channel 1
+    $ **************
+
+        Param20201 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0002,                 $ Descriptor (Enum)
+                0xC1,
+                1,                      $ BOOL
+                "Ch1 PFE",
+                "",
+                "See User Manual",
+                0,1,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum20201 =
+                0,"Apply Fault Value",
+                1,"Apply Program Value";
+    $ Configuration Word 2 Bits 8 - Channel 0 Word 0 Bit 8: Enable Interrupts
+        Param20202 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1HoldForInitialization",    $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20202 =
+                0,"Disabled",
+                1,"Hold for Initialization";
+        Param20203 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1ProgramMode",       $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20203 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20204 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1FaultMode",         $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20204 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20205 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1EnableRamping",     $ name
+                "",                     $ units
+                "Enable output ramping",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20205 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20206 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1LatchAlarms",       $ name
+                "",                     $ units
+                "Latch Alarms",         $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20206 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20207 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1_SIO",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20207 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20208 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1_SIU",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20208 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20210 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1Slot0En",           $ name
+                "",                     $ units
+                "Enable slot0 on channel 1",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20210 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20211 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1Slot1En",           $ name
+                "",                     $ units
+                "Enable slot1 on channel 1",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20211 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20212 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1Slot2En",           $ name
+                "",                     $ units
+                "Enable slot 2 on channel 1",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20212 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20213 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1Slot3En",           $ name
+                "",                     $ units
+                "Enable slot3 on channel 1",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20213 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20214 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1Enable",            $ name
+                "",                     $ units
+                "Enable output channel",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20214 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20215 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1OutputType",        $ name
+                "",                     $ units
+                "Enter output type",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20215 =
+                0,"0 to 20 mA",
+                1,"4 to 20 mA";
+        Param20216 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch1DataFormat",        $ name
+                "",                     $ units
+                "Enter data format",    $ help string
+                0,3,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20216 =
+                0,"Raw/Proportional",
+                1,"Engineering units",
+                2,"Scaled for PID",
+                3,"Percent range";
+        Param20217 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1FaultValue",        $ name
+                "",                     $ units
+                "Enter user defined fault value",    $ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20218 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1ProgramValue",      $ name
+                "",                     $ units
+                "Enter user defined program value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20219 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1LowClamp",          $ name
+                "",                     $ units
+                "Enter low clamp value",$ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20220 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1HighClamp",         $ name
+                "",                     $ units
+                "Enter high clamp value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20221 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch1Ramp",              $ name
+                "",                     $ units
+                "Enter ramp value",     $ help string
+                0,32767,0,              $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+    $ **************
+    $  Channel 2
+    $ **************
+
+        Param20301 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0002,                 $ Descriptor (Enum)
+                0xC1,
+                1,                      $ BOOL
+                "Ch2 PFE",
+                "",
+                "See User Manual",
+                0,1,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum20301 =
+                0,"Apply Fault Value",
+                1,"Apply Program Value";
+
+        Param20302 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2HoldForInitialization",    $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20302 =
+                0,"Disabled",
+                1,"Hold for Initialization";
+        Param20303 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2ProgramMode",       $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20303 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20304 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2FaultMode",         $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20304 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20305 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2EnableRamping",     $ name
+                "",                     $ units
+                "Enable output ramping",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20305 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20306 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2LatchAlarms",       $ name
+                "",                     $ units
+                "Latch Alarms",         $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20306 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20307 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2_SIO",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20307 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20308 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2_SIU",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20308 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20310 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2Slot0En",           $ name
+                "",                     $ units
+                "Enable slot0 on channel 2",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20310 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20311 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2Slot1En",           $ name
+                "",                     $ units
+                "Enable slot1 on channel 2",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20311 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20312 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2Slot2En",           $ name
+                "",                     $ units
+                "Enable slot 2 on channel 2",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20312 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20313 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2Slot3En",           $ name
+                "",                     $ units
+                "Enable slot3 on channel 2",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20313 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20314 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2Enable",            $ name
+                "",                     $ units
+                "Enable output channel",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20314 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20315 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2OutputType",        $ name
+                "",                     $ units
+                "Enter output type",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20315 =
+                0,"0 to 20 mA",
+                1,"4 to 20 mA";
+        Param20316 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch2DataFormat",        $ name
+                "",                     $ units
+                "Enter data format",    $ help string
+                0,3,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20316 =
+                0,"Raw/Proportional",
+                1,"Engineering units",
+                2,"Scaled for PID",
+                3,"Percent range";
+        Param20317 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch2FaultValue",        $ name
+                "",                     $ units
+                "Enter user defined fault value",    $ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20318 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch2ProgramValue",      $ name
+                "",                     $ units
+                "Enter user defined program value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20319 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch2LowClamp",          $ name
+                "",                     $ units
+                "Enter low clamp value",$ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20320 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch2HighClamp",         $ name
+                "",                     $ units
+                "Enter high clamp value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20321 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch2Ramp",              $ name
+                "",                     $ units
+                "Enter ramp value",     $ help string
+                0,32767,0,              $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+    $ **************
+    $  Channel 3
+    $ **************
+
+        Param20401 =
+                0,
+                ,,                      $ Reserved, link size, link path
+                0x0002,                 $ Descriptor (Enum)
+                0xC1,
+                1,                      $ BOOL
+                "Ch3 PFE",
+                "",
+                "See User Manual",
+                0,1,0,
+                ,,,,
+                ,,,,
+                ;
+        Enum20401 =
+                0,"Apply Fault Value",
+                1,"Apply Program Value";
+
+        Param20402 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3HoldForInitialization",    $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20402 =
+                0,"Disabled",
+                1,"Hold for Initialization";
+        Param20403 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3ProgramMode",       $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20403 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20404 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3FaultMode",         $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20404 =
+                0,"Hold last state",
+                1,"Go to user defined value";
+        Param20405 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3EnableRamping",     $ name
+                "",                     $ units
+                "Enable output ramping",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20405 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20406 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3LatchAlarms",       $ name
+                "",                     $ units
+                "Latch Alarms",         $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20406 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20407 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3_SIO",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20407 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20408 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3_SIU",              $ name
+                "",                     $ units
+                "See user manual",      $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20408 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20410 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3Slot0En",           $ name
+                "",                     $ units
+                "Enable slot0 on channel 3",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20410 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20411 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3Slot1En",           $ name
+                "",                     $ units
+                "Enable slot1 on channel 3",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20411 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20412 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3Slot2En",           $ name
+                "",                     $ units
+                "Enable slot 2 on channel 3",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20412 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20413 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3Slot3En",           $ name
+                "",                     $ units
+                "Enable slot3 on channel 3",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20413 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20414 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC1,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3Enable",            $ name
+                "",                     $ units
+                "Enable output channel",$ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20414 =
+                0,"Disabled",
+                1,"Enabled";
+        Param20415 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3OutputType",        $ name
+                "",                     $ units
+                "Enter output type",    $ help string
+                0,1,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20415 =
+                0,"0 to 20 mA",
+                1,"4 to 20 mA";
+        Param20416 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0002,                 $ Descriptor
+                0xC2,                   $ Data Type
+                1,                      $ Data Size in bytes
+                "Ch3DataFormat",        $ name
+                "",                     $ units
+                "Enter data format",    $ help string
+                0,3,0,                  $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Enum20416 =
+                0,"Raw/Proportional",
+                1,"Engineering units",
+                2,"Scaled for PID",
+                3,"Percent range";
+        Param20417 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch3FaultValue",        $ name
+                "",                     $ units
+                "Enter user defined fault value",    $ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20418 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch3ProgramValue",      $ name
+                "",                     $ units
+                "Enter user defined program value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20419 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch3LowClamp",          $ name
+                "",                     $ units
+                "Enter low clamp value",$ help string
+                -32767,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20420 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch3HighClamp",         $ name
+                "",                     $ units
+                "Enter high clamp value",    $ help string
+                -32768,32767,0,         $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20421 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "Ch3Ramp",              $ name
+                "",                     $ units
+                "Enter ramp value",     $ help string
+                0,32767,0,              $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+
+        ProxiedParam4 =
+                0,
+                ,,
+                0x0000,
+                0xC3,
+                2,
+                "",
+                "",
+                "",
+                1,70,70,
+                ,,,,
+                ,,,,
+                ;                       $ Input data size
+        ProxiedEnum4 =
+                1,"General Status",
+                2,"General & Analog Status",
+                6,"Status + HART PKT Data",
+                26,"Analog + TimeStamp + Status",
+                70,"Everything";
+
+        ProxiedParam5 =
+                0,
+                ,,
+                0x0000,
+                0xC3,
+                2,
+                "",
+                "",
+                "",
+                0,50,50,
+                ,,,,
+                ,,,,
+                ;                       $ Output data size
+        ProxiedEnum5 =
+                4,"Analog Only",
+                5,"Analog + Unlatch + HART Suspend",
+                50,"Everything";
+
+        ProxiedParam6 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                0,2,2,
+                ,,,,
+                ,,,,
+                ;                       $ Electronic Keying
+        ProxiedEnum6 =
+                0,"Disable Keying",
+                1,"Exact Match",
+                2,"Compatible Module";
+
+        ProxiedParam7 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                1,255,1,
+                ,,,,
+                ,,,,
+                ;                       $ Configured Minor Revision
+
+        ProxiedParam8 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                1,255,1,
+                ,,,,
+                ,,,,
+                ;                       $ Actual Minor Revision
+
+        ProxiedParam9 =
+                0,
+                ,,
+                0x0000,
+                ,
+                ,
+                "",
+                "",
+                "",
+                0,1,1,
+                ,,,,
+                ,,,,
+                ;                       $ Using external power source
+        ProxiedEnum9 =
+                0,"Yes",
+                1,"No";
+
+
+[Groups]
+        Group1 =
+                "General",
+                6,
+                20002,20003,20004,20005,20006,20010;
+        Group2 =
+                "Channel 0",
+                24,
+                20101,20102,20103,20104,20105,20106,20107,20108,20110,20111,
+                20112,20113,20114,20115,20116,20117,20118,20119,20120,20121,
+                20011,20012,20013,20014;
+        Group3 =
+                "Channel 1",
+                24,
+                20201,20202,20203,20204,20205,20206,20207,20208,20210,20211,
+                20212,20213,20214,20215,20216,20217,20218,20219,20220,20221,
+                20015,20016,20017,20018;
+        Group4 =
+                "Channel 2",
+                24,
+                20301,20302,20303,20304,20305,20306,20307,20308,20310,20311,
+                20312,20313,20314,20315,20316,20317,20318,20319,20320,20321,
+                20019,20020,20021,20022;
+        Group5 =
+                "Channel 3",
+                24,
+                20401,20402,20403,20404,20405,20406,20407,20408,20410,20411,
+                20412,20413,20414,20415,20416,20417,20418,20419,20420,20421,
+                20023,20024,20025,20026;
+
+
+[Assembly]
+
+
+        ProxiedAssem4 =
+                "Configuration",
+                ,
+                ,
+                0x0000,
+                ,,
+                1,Param20101,
+                1,Param20102,
+                1,Param20103,
+                1,Param20104,
+                1,Param20105,
+                1,Param20106,
+                1,Param20107,
+                1,Param20108,
+                1,Param20110,
+                1,Param20111,
+                1,Param20112,
+                1,Param20113,
+                3,0,
+                1,Param20114,
+                3,Param20115,
+                5,0,
+                3,Param20116,
+                5,0,
+                16,Param20117,
+                16,Param20118,
+                16,Param20119,
+                16,Param20120,
+                16,Param20121,
+                16,0,
+                1,Param20201,
+                1,Param20202,
+                1,Param20203,
+                1,Param20204,
+                1,Param20205,
+                1,Param20206,
+                1,Param20207,
+                1,Param20208,
+                1,Param20210,
+                1,Param20211,
+                1,Param20212,
+                1,Param20213,
+                3,0,
+                1,Param20214,
+                3,Param20215,
+                5,0,
+                3,Param20216,
+                5,0,
+                16,Param20217,
+                16,Param20218,
+                16,Param20219,
+                16,Param20220,
+                16,Param20221,
+                16,0,
+                1,Param20301,
+                1,Param20302,
+                1,Param20303,
+                1,Param20304,
+                1,Param20305,
+                1,Param20306,
+                1,Param20307,
+                1,Param20308,
+                1,Param20310,
+                1,Param20311,
+                1,Param20312,
+                1,Param20313,
+                3,0,
+                1,Param20314,
+                3,Param20315,
+                5,0,
+                3,Param20316,
+                5,0,
+                16,Param20317,
+                16,Param20318,
+                16,Param20319,
+                16,Param20320,
+                16,Param20321,
+                16,0,
+                1,Param20401,
+                1,Param20402,
+                1,Param20403,
+                1,Param20404,
+                1,Param20405,
+                1,Param20406,
+                1,Param20407,
+                1,Param20408,
+                1,Param20410,
+                1,Param20411,
+                1,Param20412,
+                1,Param20413,
+                3,0,
+                1,Param20414,
+                3,Param20415,
+                5,0,
+                3,Param20416,
+                5,0,
+                16,Param20417,
+                16,Param20418,
+                16,Param20419,
+                16,Param20420,
+                16,Param20421,
+                16,0,
+                16,0,
+                8,Param20002,
+                1,Param20003,
+                1,Param20004,
+                1,Param20005,
+                1,Param20006,
+                2,Param20010,
+                2,0,
+                8,Param20011,
+                8,Param20012,
+                8,Param20013,
+                8,Param20014,
+                8,Param20015,
+                8,Param20016,
+                8,Param20017,
+                8,Param20018,
+                8,Param20019,
+                8,Param20020,
+                8,Param20021,
+                8,Param20022,
+                8,Param20023,
+                8,Param20024,
+                8,Param20025,
+                8,Param20026;
+
+        ProxiedAssem100 =
+                "Output Array",
+                ,
+                ,
+                0x0000,
+                ,,
+                16,Param11,
+                16,Param12,
+                16,Param13,
+                16,Param14,
+                8,Param17,
+                4,0,
+                4,Param18,
+                16,Param19,
+                16,Param20,
+                16,Param21,
+                320,Param22,
+                352,0;
+
+
+        ProxiedAssem101 =
+                "Input Array",
+                ,
+                ,
+                0x0000,
+                ,,
+
+                4,Param10501,           $ Channel Status
+                8,0,                    $ Reserved
+                4,Param10502,
+                8,Param10601,
+                8,Param10602,
+
+                16,Param10001,          $ Channel 0 data
+                16,Param10101,          $ Channel 1 data
+                16,Param10201,          $ Channel 2 data
+                16,Param10301,          $ Channel 3 data
+                320,Param10701,
+                16,Param10702,
+                16,Param10703,
+                320,Param10704,
+                352,0;
+
+[Modular]
+        Width = 1;
+        Rack1 =
+                1,108,91,1,1,,,,
+                1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37;    $ Legal slots
+
+        ExternalID = "3A 00 0A 00 05 00 02";
+
+
+[1_1769Audit]
+        1_5vdcPwrLoad = 160;
+        1_24vdcPwrLoad = 125;
+        1_DistRating = 8;
+

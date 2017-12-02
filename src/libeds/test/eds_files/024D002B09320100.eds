@@ -1,0 +1,721 @@
+$ EZ-EDS Version 3.9 Generated Electronic Data Sheet
+
+[File]
+        DescText = "EthernetIP EDS file for LinMot Linear Servo Drive E1450-IP-QN1S";
+        CreateDate = 09-06-2012;
+        CreateTime = 13:04:10;
+        ModDate = 09-13-2012;
+        ModTime = 12:49:57;
+        Revision = 1.0;
+        HomeURL = "http://www.linmot.com/";
+        1_IOC_Details_License = 0xE1507D60;
+
+[Device]
+        VendCode = 589;
+        VendName = "LinMot";
+        ProdType = 43;
+        ProdTypeStr = "Generic Device";
+        ProdCode = 2354;
+        MajRev = 1;
+        MinRev = 1;
+        ProdName = "E1450IPQN1S";
+        Catalog = "LMDrive";
+        Icon = "E1250_SC_xx.ico";
+        IconContents =
+                "AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAKrwqALKysgD///8AAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMzMzIiIi"
+                "IjMzMzMzMzMzMzMzMyACIAIzMzMzMzMzMzMzMzMgAiACMzMzMzMzMzMzMzMz"
+                "IiIiIjMzMzMzMzMzMzMzMyACIAIzMzMzMzMzMzMzMzMgAiACMzMzMzMzMzMz"
+                "MzMzIiIiIjMzMzMzMzMzMzMzMyIiIgIzMzMzMzMzMzMzMzMiIiIiMzMzMzMz"
+                "MzMzMzMzIiIiAjMzMzMzMzMzMzMzMyIiIiIzMzMzMzMzMzMzMzMiIiESMzMz"
+                "MzMzMzMzMzMzIiIhEjMzMzMzMzMzMzMzMyIiIRIzMzMzMzMzMzMzMzMiIiES"
+                "MzMzMzMzMzMzMzMzIiIhEjMzMzMzMzMzMzMzMyIiIRIzMzMzMzMzMzMzMzMi"
+                "IiIiMzMzMzMzMzMzMzMzIiIgAjMzMzMzMzMzMzMzMyIAIAIzMzMzMzMzMzMz"
+                "MzMiACACMzMzMzMzMzMzMzMzIgAgAjMzMzMzMzMzMzMzMyIiIAIzMzMzMzMz"
+                "MzMzMzMiIiIiMzMzMzMzMzMzMzMzIREREjMzMzMzMzMzMzMzMyEBABIzMzMz"
+                "MzMzMzMzMzMhERESMzMzMzMzMzMzMzMzIQEAEjMzMzMzMzMzMzMzMyERERIz"
+                "MzMzMzMzMzMzMzMhAQASMzMzMzMzMzMzMzMzIREREjMzMzMzMzMzMzMzMyIi"
+                "IiIzMzMzMzMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                "AA==";
+
+[Device Classification]
+        Class1 = EtherNetIP;
+
+[Params]
+        Param1 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_ControlWord",     $ name
+                "",                     $ units
+                "Motioncontrol Software Control Word",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param2 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandHeader",    $ name
+                "",                     $ units
+                "Motioncontrol Software Motion Command Header",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param3 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_00_01",    $ name
+                "",                     $ units
+                "MotionCommand Parameter1 LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param4 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_02_03",    $ name
+                "",                     $ units
+                "Motion Command Parameter 1 HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param5 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_04_05",    $ name
+                "",                     $ units
+                "Motion Command Parameter 2 LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param6 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_06_07",    $ name
+                "",                     $ units
+                "Motion Command Parameter 2 HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param7 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_08_09",    $ name
+                "",                     $ units
+                "Motion Command Parameter 3 LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param8 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_StateVar",        $ name
+                "",                     $ units
+                "Bit Coded State Variable",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param9 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_StatusWord",      $ name
+                "",                     $ units
+                "Bit coded Status Word",$ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param10 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_WarnWord",        $ name
+                "",                     $ units
+                "Bit Coded Warn Word",  $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param11 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_DemandPosition_LowWord",    $ name
+                "",                     $ units
+                "Motioncommand Sofware Demandposition LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param12 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_ActualPosition_LowWord",    $ name
+                "",                     $ units
+                "Motioncommand Software Actualposition LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param13 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW DemandCurrent_LowWord",    $ name
+                "",                     $ units
+                "Motioncommand Software Demand Current LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param14 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "TX_Cfg_Module_Control",$ name
+                "",                     $ units
+                "Transfered Config Module Control",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param15 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "TX_Cfg_Module_Index",  $ name
+                "",                     $ units
+                "Transfered Config Module UPID",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param16 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "TX_Cfg_Module_Value_LowWord",    $ name
+                "",                     $ units
+                "Transfered Config Module Value LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param17 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "RX_Cfg_Module_Status", $ name
+                "",                     $ units
+                "Received Config Module Status",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param18 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "RX_Cfg_Module_Index",  $ name
+                "",                     $ units
+                "Received Config Module UPID",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param19 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "RX_Cfg_Module_Value LowWord",    $ name
+                "",                     $ units
+                "Received Config Module Value LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param20 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_10_11",    $ name
+                "",                     $ units
+                "Motioncommand Parameter 3 HightWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param21 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_12_13",    $ name
+                "",                     $ units
+                "Motion Command Parameter 4 LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param22 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_14_15",    $ name
+                "",                     $ units
+                "Motion Command Parameter 4 HightWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param23 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_16_17",    $ name
+                "",                     $ units
+                "Motion Command Parameter 5 LowWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param24 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_MotionCommandByte_18_19",    $ name
+                "",                     $ units
+                "Motion Command Parameter 5 HightWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param25 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_DemandPosition_HighWord",    $ name
+                "",                     $ units
+                "Motioncommand Sofware Demandposition HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param26 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW_ActualPosition_HighWord",    $ name
+                "",                     $ units
+                "Motioncommand Software Actualposition HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param27 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "TX_Cfg_Module_Value_HighWord",    $ name
+                "",                     $ units
+                "Transfered Config Module Value HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param28 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "RX_Cfg_Module_Value HighWord",    $ name
+                "",                     $ units
+                "Received Config Module Value HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+        Param29 =
+                0,                      $ reserved, shall equal 0
+                ,,                      $ Link Path Size, Link Path
+                0x0000,                 $ Descriptor
+                0xC3,                   $ Data Type
+                2,                      $ Data Size in bytes
+                "MCSW DemandCurrent_HighWord",    $ name
+                "",                     $ units
+                "Motioncommand Software Demand Current HighWord",    $ help string
+                ,,0,                    $ min, max, default data values
+                ,,,,                    $ mult, div, base, offset scaling
+                ,,,,                    $ mult, div, base, offset links
+                ;                       $ decimal places
+
+[Assembly]
+        Assem8 =
+                "Output Assembly",
+                ,
+                8,
+                0x0000,
+                ,,
+                16,Param14,
+                16,Param15,
+                16,Param16,
+                16,Param27;
+        Assem16 =
+                "Input Assembly",
+                ,
+                18,
+                0x0000,
+                ,,
+                16,Param8,
+                16,Param9,
+                16,Param10,
+                16,Param11,
+                16,Param25,
+                16,Param12,
+                16,Param26,
+                16,Param13,
+                16,Param29;
+        Assem24 =
+                "Input Assembly",
+                ,
+                26,
+                0x0000,
+                ,,
+                16,Param8,
+                16,Param9,
+                16,Param10,
+                16,Param11,
+                16,Param25,
+                16,Param12,
+                16,Param26,
+                16,Param13,
+                16,Param29,
+                16,Param17,
+                16,Param18,
+                16,Param19,
+                16,Param28;
+        Assem32 =
+                "Output Assembly",
+                ,
+                24,
+                0x0000,
+                ,,
+                16,Param1,
+                16,Param2,
+                16,Param3,
+                16,Param4,
+                16,Param5,
+                16,Param6,
+                16,Param7,
+                16,Param20,
+                16,Param21,
+                16,Param22,
+                16,Param23,
+                16,Param24;
+        Assem39 =
+                "Output Assembly",
+                ,
+                ,
+                0x0000,
+                ,,
+                16,Param2,
+                16,Param3,
+                16,Param4,
+                16,Param5,
+                16,Param6,
+                16,Param7,
+                16,Param20,
+                16,Param21,
+                16,Param22,
+                16,Param23,
+                16,Param24,
+                16,Param14,
+                16,Param15,
+                16,Param16,
+                16,Param27;
+        Assem40 =
+                "Output Assembly",
+                ,
+                32,
+                0x0000,
+                ,,
+                16,Param1,
+                16,Param2,
+                16,Param3,
+                16,Param4,
+                16,Param5,
+                16,Param6,
+                16,Param7,
+                16,Param20,
+                16,Param21,
+                16,Param22,
+                16,Param23,
+                16,Param24,
+                16,Param14,
+                16,Param15,
+                16,Param16,
+                16,Param27;
+
+[Connection Manager]
+        Connection1 =
+                0x04010002,             $ 0-15    = supported transport classes
+                                        $ 16      = trigger: cyclic
+                                        $ 17      = trigger: change of state
+                                        $ 18      = trigger: application
+                                        $ 19-23   = trigger: reserved
+                                        $ 24      = application type: listen-only
+                                        $ 25      = application type: input-only
+                                        $ 26      = application type: exclusive-owner
+                                        $ 27      = application type: redundant-owner
+                                        $ 28-30   = reserved
+                                        $ 31      = Direction: Client = 0 / Server = 1
+                0x22640405,             $ 0       = O->T fixed size supported
+                                        $ 1       = O->T variable size supported
+                                        $ 2       = T->O fixed size supported
+                                        $ 3       = T->O variable size supported
+                                        $ 4-5     = O->T number of bytes per slot (obsolete)
+                                        $ 6-7     = T->O number of bytes per slot (obsolete)
+                                        $ 8-10    = O->T Real time transfer format
+                                        $ 11      = reserved
+                                        $ 12-14   = T->O Real time transfer format
+                                        $ 15      = reserved
+                                        $ 16      = O->T connection type: NULL
+                                        $ 17      = O->T connection type: MULTICAST
+                                        $ 18      = O->T connection type: POINT2POINT
+                                        $ 19      = O->T connection type: reserved
+                                        $ 20      = T->O connection type: NULL
+                                        $ 21      = T->O connection type: MULTICAST
+                                        $ 22      = T->O connection type: POINT2POINT
+                                        $ 23      = T->O connection type: reserved
+                                        $ 24      = O->T priority: LOW
+                                        $ 25      = O->T priority: HIGH
+                                        $ 26      = O->T priority: SCHEDULED
+                                        $ 27      = O->T priority: reserved
+                                        $ 28      = T->O priority: LOW
+                                        $ 29      = T->O priority: HIGH
+                                        $ 30      = T->O priority: SCHEDULED
+                                        $ 31      = T->O priority: reserved
+                ,,Assem40,              $ O->T RPI, size, format
+                ,,Assem24,              $ T->O RPI, size, format
+                ,,                      $ proxy config size, format
+                ,,                      $ target config size, format
+                "As_0x28_0x18",         $ Connection Name
+                "Connection with Assemblies 0x28 and 0x18",    $ help string
+                "20 04 24 01 2C 28 2C 18";    $ Path
+        Connection2 =
+                0x04010002,             $ 0-15    = supported transport classes
+                                        $ 16      = trigger: cyclic
+                                        $ 17      = trigger: change of state
+                                        $ 18      = trigger: application
+                                        $ 19-23   = trigger: reserved
+                                        $ 24      = application type: listen-only
+                                        $ 25      = application type: input-only
+                                        $ 26      = application type: exclusive-owner
+                                        $ 27      = application type: redundant-owner
+                                        $ 28-30   = reserved
+                                        $ 31      = Direction: Client = 0 / Server = 1
+                0x22640405,             $ 0       = O->T fixed size supported
+                                        $ 1       = O->T variable size supported
+                                        $ 2       = T->O fixed size supported
+                                        $ 3       = T->O variable size supported
+                                        $ 4-5     = O->T number of bytes per slot (obsolete)
+                                        $ 6-7     = T->O number of bytes per slot (obsolete)
+                                        $ 8-10    = O->T Real time transfer format
+                                        $ 11      = reserved
+                                        $ 12-14   = T->O Real time transfer format
+                                        $ 15      = reserved
+                                        $ 16      = O->T connection type: NULL
+                                        $ 17      = O->T connection type: MULTICAST
+                                        $ 18      = O->T connection type: POINT2POINT
+                                        $ 19      = O->T connection type: reserved
+                                        $ 20      = T->O connection type: NULL
+                                        $ 21      = T->O connection type: MULTICAST
+                                        $ 22      = T->O connection type: POINT2POINT
+                                        $ 23      = T->O connection type: reserved
+                                        $ 24      = O->T priority: LOW
+                                        $ 25      = O->T priority: HIGH
+                                        $ 26      = O->T priority: SCHEDULED
+                                        $ 27      = O->T priority: reserved
+                                        $ 28      = T->O priority: LOW
+                                        $ 29      = T->O priority: HIGH
+                                        $ 30      = T->O priority: SCHEDULED
+                                        $ 31      = T->O priority: reserved
+                ,,Assem32,              $ O->T RPI, size, format
+                ,,Assem16,              $ T->O RPI, size, format
+                ,,                      $ proxy config size, format
+                ,,                      $ target config size, format
+                "As_0x20_0x10",         $ Connection Name
+                "Connection with Assemblies 0x20 and 0x10",    $ help string
+                "20 04 24 01 2C 20 2C 10";    $ Path
+        Connection3 =
+                0x04010002,             $ 0-15    = supported transport classes
+                                        $ 16      = trigger: cyclic
+                                        $ 17      = trigger: change of state
+                                        $ 18      = trigger: application
+                                        $ 19-23   = trigger: reserved
+                                        $ 24      = application type: listen-only
+                                        $ 25      = application type: input-only
+                                        $ 26      = application type: exclusive-owner
+                                        $ 27      = application type: redundant-owner
+                                        $ 28-30   = reserved
+                                        $ 31      = Direction: Client = 0 / Server = 1
+                0x22660405,             $ 0       = O->T fixed size supported
+                                        $ 1       = O->T variable size supported
+                                        $ 2       = T->O fixed size supported
+                                        $ 3       = T->O variable size supported
+                                        $ 4-5     = O->T number of bytes per slot (obsolete)
+                                        $ 6-7     = T->O number of bytes per slot (obsolete)
+                                        $ 8-10    = O->T Real time transfer format
+                                        $ 11      = reserved
+                                        $ 12-14   = T->O Real time transfer format
+                                        $ 15      = reserved
+                                        $ 16      = O->T connection type: NULL
+                                        $ 17      = O->T connection type: MULTICAST
+                                        $ 18      = O->T connection type: POINT2POINT
+                                        $ 19      = O->T connection type: reserved
+                                        $ 20      = T->O connection type: NULL
+                                        $ 21      = T->O connection type: MULTICAST
+                                        $ 22      = T->O connection type: POINT2POINT
+                                        $ 23      = T->O connection type: reserved
+                                        $ 24      = O->T priority: LOW
+                                        $ 25      = O->T priority: HIGH
+                                        $ 26      = O->T priority: SCHEDULED
+                                        $ 27      = O->T priority: reserved
+                                        $ 28      = T->O priority: LOW
+                                        $ 29      = T->O priority: HIGH
+                                        $ 30      = T->O priority: SCHEDULED
+                                        $ 31      = T->O priority: reserved
+                ,,Assem8,               $ O->T RPI, size, format
+                ,,Assem24,              $ T->O RPI, size, format
+                ,,                      $ proxy config size, format
+                ,,                      $ target config size, format
+                "As_0x08_0x18",         $ Connection Name
+                "",                     $ help string
+                "20 04 24 01 2C 08 2C 18";    $ Path
+        Connection4 =
+                0x04010002,             $ 0-15    = supported transport classes
+                                        $ 16      = trigger: cyclic
+                                        $ 17      = trigger: change of state
+                                        $ 18      = trigger: application
+                                        $ 19-23   = trigger: reserved
+                                        $ 24      = application type: listen-only
+                                        $ 25      = application type: input-only
+                                        $ 26      = application type: exclusive-owner
+                                        $ 27      = application type: redundant-owner
+                                        $ 28-30   = reserved
+                                        $ 31      = Direction: Client = 0 / Server = 1
+                0x22660405,             $ 0       = O->T fixed size supported
+                                        $ 1       = O->T variable size supported
+                                        $ 2       = T->O fixed size supported
+                                        $ 3       = T->O variable size supported
+                                        $ 4-5     = O->T number of bytes per slot (obsolete)
+                                        $ 6-7     = T->O number of bytes per slot (obsolete)
+                                        $ 8-10    = O->T Real time transfer format
+                                        $ 11      = reserved
+                                        $ 12-14   = T->O Real time transfer format
+                                        $ 15      = reserved
+                                        $ 16      = O->T connection type: NULL
+                                        $ 17      = O->T connection type: MULTICAST
+                                        $ 18      = O->T connection type: POINT2POINT
+                                        $ 19      = O->T connection type: reserved
+                                        $ 20      = T->O connection type: NULL
+                                        $ 21      = T->O connection type: MULTICAST
+                                        $ 22      = T->O connection type: POINT2POINT
+                                        $ 23      = T->O connection type: reserved
+                                        $ 24      = O->T priority: LOW
+                                        $ 25      = O->T priority: HIGH
+                                        $ 26      = O->T priority: SCHEDULED
+                                        $ 27      = O->T priority: reserved
+                                        $ 28      = T->O priority: LOW
+                                        $ 29      = T->O priority: HIGH
+                                        $ 30      = T->O priority: SCHEDULED
+                                        $ 31      = T->O priority: reserved
+                ,,Assem39,              $ O->T RPI, size, format
+                ,,Assem24,              $ T->O RPI, size, format
+                ,,                      $ proxy config size, format
+                ,,                      $ target config size, format
+                "As_0x27_0x18",         $ Connection Name
+                "Connection with Assemblies 0x27 and 0x18",    $ help string
+                "20 04 24 01 2C 27 2C 18";    $ Path
+
+[Port]
+        Port1 =
+                TCP,
+                "EtherNet/IP",
+                "20 F5 24 01",
+                1;
+
