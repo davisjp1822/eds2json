@@ -1,0 +1,17 @@
+{
+	"folders":
+    [
+        {
+            "path": "src",
+            "follow_symlinks": true
+        },
+        {
+            "path": "include",
+            "follow_symlinks": true
+        }
+    ],
+    "settings":
+    {
+    	"ecc_verbose": true
+    }
+}
