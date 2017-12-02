@@ -1,5 +1,5 @@
 # Define library. Only source files here!
-project(libeds VERSION 1.0 LANGUAGES C)
+project(libeds VERSION 1.0 LANGUAGES C CXX)
 
 add_library(eds
     SHARED
@@ -41,11 +41,56 @@ install(EXPORT libedsConfig DESTINATION share/libeds/cmake)
 # This makes the project importable from the build directory
 export(TARGETS eds FILE libedsConfig.cmake)
 
-# Every library has unit tests, of course
-#add_executable(testlib
-#    test/testlib.cpp)
+# install GoogleTest so that we can unit test our code
+# We need thread support
+find_package(Threads REQUIRED)
 
-#target_link_libraries(testlib
-#    lib)
+# Enable ExternalProject CMake module
+include(ExternalProject)
 
-#add_test(testlib testlib)
+# Download and install GoogleTest
+ExternalProject_Add(
+    gtest
+    URL https://github.com/google/googletest/archive/master.zip
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
+    # Disable install step
+    INSTALL_COMMAND ""
+)
+
+# Get GTest source and binary directories from CMake project
+ExternalProject_Get_Property(gtest source_dir binary_dir)
+
+# Create a libgtest target to be used as a dependency by test programs
+add_library(libgtest IMPORTED STATIC GLOBAL)
+add_dependencies(libgtest gtest)
+
+# Set libgtest properties
+set_target_properties(libgtest PROPERTIES
+    "IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/libgtest.a"
+    "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+)
+
+# Create a libgmock target to be used as a dependency by test programs
+add_library(libgmock IMPORTED STATIC GLOBAL)
+add_dependencies(libgmock gtest)
+
+# Set libgmock properties
+set_target_properties(libgmock PROPERTIES
+    "IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
+    "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
+)
+
+# I couldn't make it work with INTERFACE_INCLUDE_DIRECTORIES
+include_directories("${source_dir}/googletest/include"
+                    "${source_dir}/googlemock/include")
+
+# finally, execute the tests
+add_executable(libeds_tests
+    test/libeds_tests.cpp)
+
+target_link_libraries(libeds_tests
+    eds
+    libgtest
+    libgmock)
+
+add_test(libeds_tests libeds_tests)

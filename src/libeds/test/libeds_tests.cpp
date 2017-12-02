@@ -1,9 +1,9 @@
 /**
 
-	@file libeds.c
+	@file libeds_tests.c
 	@author John Davis <jd@three-ml.com>
 	@date 30 Nov 2017
-	@brief libeds - an open source ODVA EDS file parser.
+	@brief libeds unit tests
 
 	Copyright 2017 3ML LLC (www.three-ml.com)
 
@@ -21,11 +21,35 @@
 
 **/
 
+#include <gtest/gtest.h>
 #include "libeds.h"
+#define TESTING
 
-char *convert_eds2json(char *eds_file_path)
+namespace 
 {
-	char *jsonString = "foo";
+	class libedsTests : public testing::Test
+	{
+		void SetUp()
+		{
 
-	return jsonString;
+		}
+
+		void TearDown()
+		{
+
+		}
+	};
+
+
+	TEST(libedsTests, returnTest)
+	{
+		ASSERT_EQ(1,1);
+	}
+}
+
+int main(int argc, char **argv)
+{
+	testing::InitGoogleTest(&argc, argv);
+
+	return RUN_ALL_TESTS();
 }

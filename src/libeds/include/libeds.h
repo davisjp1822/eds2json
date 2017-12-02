@@ -24,4 +24,18 @@
 #ifndef _LIBEDS_H
 #define _LIBEDS_H
 
+/**
+ * @brief Converts an EDS file created by EZEDS to a JSON object.
+ *
+ * This function works best with EDS files created by EZEDS. The returned JSON object will be an exact replica
+ * of the EDS file, just in a more usable format.
+ *
+ * @param eds_file_path Absolute path to the EDS file to be converted.
+ * @return A pointer to a character array representing a JSON string representing the contents of the EDS file.
+ * @see https://www.rockwellautomation.com/resources/downloads/rockwellautomation/pdf/sales-partners/technology-licensing/Logix_EDS_AOP_Guidelines.pdf
+ *
+ */
+
+char *convert_eds2json(char *eds_file_path);
+
 #endif /* _LIBEDS_H */
