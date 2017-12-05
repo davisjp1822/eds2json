@@ -23,7 +23,12 @@
 
 #include <gtest/gtest.h>
 #include "libeds.h"
+
+#include <stdint.h>
+
 #define TESTING
+
+uint32_t _parse_file(const PARSABLE_EDS_SECTIONS_t s_type, const char * const input_buf, char * const output_buf, const size_t output_buf_size);
 
 namespace 
 {
@@ -40,8 +45,12 @@ namespace
 		}
 	};
 
+	TEST(libedsTests, err_obuff)
+	{
+		ASSERT_EQ(1,1);
+	}
 
-	TEST(libedsTests, returnTest)
+	TEST(libedsTests, err_parsefail)
 	{
 		ASSERT_EQ(1,1);
 	}
