@@ -27,8 +27,7 @@
 #include <stdint.h>
 
 #define TESTING
-
-uint32_t _parse_file(const PARSABLE_EDS_SECTIONS_t s_type, const char * const input_buf, char * const output_buf, const size_t output_buf_size);
+#define TEST_EDS_PATH1 /mnt/c/Users/davisjp/OneDrive/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds
 
 namespace 
 {
@@ -45,15 +44,45 @@ namespace
 		}
 	};
 
-	TEST(libedsTests, err_obuff)
+	TEST(libedsTests, err_string_unknown_error)
 	{
-		ASSERT_EQ(1,1);
+		char rs[1300] = {0};
+
+		int32_t r = err_string((ERR_LIBEDS_t)423423432, rs, 128);
+
+		ASSERT_EQ(r, -2);
 	}
 
-	TEST(libedsTests, err_parsefail)
+	TEST(libedsTests, err_string_buffer_too_small)
 	{
-		ASSERT_EQ(1,1);
+		char rs[1300] = {0};
+
+		int32_t r = err_string(ERR_OBUFF, rs, 127);
+
+		ASSERT_EQ(r, -1);
 	}
+
+	TEST(libedsTests, convert_eds2json_bad_path)
+	{
+		char fp[128] = "/tmp/foo.foo";
+		char json_array[256] = {0};
+
+		ERR_LIBEDS_t r = convert_eds2json(fp, json_array, 256);
+
+		ASSERT_EQ(r, ERR_EDSFILEFAIL);
+	}
+
+
+	/*TEST(libedsTests, convert_section2json)
+	{
+
+		char input_buf[256] = {0};
+		char output_buf[256] = {0};
+
+		uint32_t retVal = convert_section2json(EDS_FILE, input_buf, output_buf, strlen(output_buf));
+
+		ASSERT_EQ(retVal, 0);
+	}*/
 }
 
 int main(int argc, char **argv)

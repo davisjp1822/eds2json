@@ -22,6 +22,8 @@ target_compile_features(eds
     c_static_assert
     c_variadic_macros)
 
+set_target_properties(eds PROPERTIES COMPILE_FLAGS "-Wextra -Wall -Wpedantic")
+
 # Depend on a library that we defined in the top-level file
 #target_link_libraries(lib
 #    boost

@@ -25,6 +25,11 @@
 #define _LIBEDS_H
 
 #include <stddef.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief Error codes returned by libeds.
@@ -37,8 +42,9 @@
  */ 
 typedef enum
 {
-	ERR_OBUFF,
-	ERR_PARSEFAIL
+	ERR_OBUFF = 1,
+	ERR_PARSEFAIL,
+	ERR_EDSFILEFAIL
 } ERR_LIBEDS_t;
 
 /**
@@ -54,7 +60,10 @@ typedef enum
 	EDS_PARAMS,
 	EDS_ASSEMBLY,
 	EDS_CONNECTION_MANAGER,
-	EDS_PORT
+	EDS_PORT,
+	EDS_CAPACITY,
+	EDS_DLR_CLASS,
+	EDS_ETHERNET_LINK_CLASS
 } PARSABLE_EDS_SECTIONS_t;
 
 
@@ -71,7 +80,33 @@ typedef enum
  *
  */
 
-void convert_eds2json(const char * const eds_file_path, char * const json_array, const size_t json_array_size);
+ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const json_array, const size_t json_array_size);
+
+/**
+* 
+* @brief The following function parses EDS file sections as defined by PARSABLE_EDS_SECTIONS_t.
+* 
+* The function is passed the char buffer (input_buf) that is in between the closing ] of the header and the starting [
+* of the next header.
+*
+* Once parsed, they write the JSON string to output_buf and return the size of output_buf.
+* 
+* @param s_type EDS section as defined by PARSABLE_EDS_SECTIONS_t
+* @param input_buf Pointer to array of char that is the data between  the closing ']'of the header and the starting '[' of the next header.
+* @param output_buf Pointer to array of char that will hold the output JSON.
+* @param output_buf_size Size of the output buffer. Should *always* be considerably larger than sizeof(input_buf)!
+* @note output_buf_size should ALWAYS be larger than sizeof(input_buf) by a considerable margin!!
+*
+* @return Success: number of characters in output_buf.
+* @return Fail: ERR_OBUFF if output_buf not large enough
+* @return Fail: ERR_PARSEFAIL if input_buf is not a valid input string
+*
+*/
+uint32_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type, 
+						const char * const input_buf, 
+						char * const output_buf, 
+						const size_t output_buf_size);
+
 
 /**
  * @brief Returns an array of strings detailing the sections of the EDS file that were not parsed. This is useful
@@ -82,7 +117,7 @@ void convert_eds2json(const char * const eds_file_path, char * const json_array,
  *
  * @ return an array of strings that are names of the unparsed sections in the EDS file.
 */
-char ** get_unparsed_sections();
+uint32_t get_unparsed_sections();
 
 /** 
  * @ brief Returns a human readable string for error code err_code.
@@ -90,10 +125,17 @@ char ** get_unparsed_sections();
  * Retruns an explanation for the error codes as specified in ERR_LIBEDS_t.
  *
  * @param err_code The error code to be described.
- * @param err_string A string of the appropriate size to receieve the description.
+ * @param err_string A string of the appropriate size (128 characters) to receieve the description.
  * @note err_string should be 128 characters!
+ * @return -2 if err_code is unknown
+ * @return -1 if err_string is less than 128 characters.
+ * @return 0 if err_string was set succesfully
  *
  */
-void err_string(const ERR_LIBEDS_t err_code, char * const err_string);
+int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const size_t err_string_size);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _LIBEDS_H */

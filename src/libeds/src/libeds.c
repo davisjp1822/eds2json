@@ -26,28 +26,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-
-/**
-* 
-* @brief The following function parses EDS file sections as defined by PARSABLE_EDS_SECTIONS_t.
-* 
-* The function is passed the char buffer (input_buf) that is in between the closing ] of the header and the starting [
-* of the next header.
-*
-* Once parsed, they write the JSON string to output_buf and return the size of output_buf.
-* 
-* @param s_type EDS section as defined by PARSABLE_EDS_SECTIONS_t
-* @param input_buf Pointer to array of char that is the data between  the closing ']'of the header and the starting '[' of the next header.
-* @param output_buf Pointer to array of char that will hold the output JSON.
-* @param output_buf_size Size of the output buffer. Should *always* be considerably larger than sizeof(input_buf)!
-* @note output_buf_size should ALWAYS be larger than sizeof(input_buf) by a considerable margin!!
-*
-* @return Success: number of characters in output_buf.
-* @return Fail: ERR_OBUFF if output_buf not large enough
-* @return Fail: ERR_PARSEFAIL if input_buf is not a valid input string
-*
-*/
-uint32_t _parse_file(const PARSABLE_EDS_SECTIONS_t s_type, const char * const input_buf, char * const output_buf, const size_t output_buf_size); 
+#include <sys/file.h>
+#include <stdbool.h>
 
 /** 
 *
@@ -55,47 +35,128 @@ uint32_t _parse_file(const PARSABLE_EDS_SECTIONS_t s_type, const char * const in
 *
 */
 
-void convert_eds2json(const char * const eds_file_path, char * const json_array, const size_t json_array_size)
+ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const json_array, const size_t json_array_size)
 {
+	/**
+	* This is the main caller for the EDS conversion. It takes the file from eds_file_path, opens the file,
+	* locks it with flock() and starts reading character by character through the file. When we see a section header,
+	* such as [Device], we parse out what type of section is about to be scanned, and then call convert_section2json
+	* with the section data.
+	*
+	* convert_section2json returns a uint32_t which tells us the number of characters being returned. If json_array
+	* can't fit the returned data, we return ERR_OBUFF.
+	*/
 
+	FILE *eds_file = fopen(eds_file_path, "r");
+
+	if(eds_file == NULL)
+	{
+		fclose(eds_file);
+		return ERR_EDSFILEFAIL;
+	}
+
+	// once the file is open, get a lock so that it doesn't change while we are reading it
+	if(flock(fileno(eds_file), LOCK_EX | LOCK_UN) != 0)
+	{
+		fclose(eds_file);
+		return ERR_EDSFILEFAIL;
+	}
+
+	// okay, the file is open, now start scanning and looking for a section header ...
+
+	//while(!feof(eds_file))
+	//{
+		/** 
+		* Rules of scanning:
+		* 1. This function does not parse text, it just grabs sections and sends the resulting string to convert_section2json
+		* 2. This function *does* remove comments. When it sees a $ that is not inside ""'s, it discards that data until seeing a \n
+		* 3. The section name is what is inside of the []. The data is between ] and [.
+		* 4. This function removes all newlines and other non-printable characters.
+		*/
+
+		char c = fgetc(eds_file);
+	//}
+
+	// clean-up after ourselves
+	fclose(eds_file);
+	return 0;
 }
 
-char ** get_unparsed_sections()
-{
-	char *foo = "foobar";
 
-	return &foo;
+uint32_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type, 
+						const char * const input_buf, 
+						char * const output_buf, 
+						const size_t output_buf_size)
+{
+	return 0;
 }
 
-void err_string(const ERR_LIBEDS_t err_code, char * const err_string)
+uint32_t get_unparsed_sections()
 {
-	char retString[128] = {0};
+	return 0;
+}
 
-	switch(err_code) {
+int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const size_t err_string_size)
+{
+	// if our string is smaller than 128 characters, return -1
+	if(err_string_size < 128)
+	{
+		return -1;
+	}
+
+	else
+	{
+		char retString[128] = {0};
+
+		switch(err_code) {
 		
-		case ERR_OBUFF:
-		{
-			char *em = "Error (libeds): insufficient capacity in receiving buffer";
-			strncpy(em, retString, sizeof(em));
-			retString[(sizeof(retString-1))] = '\0';
-			break;
-		}
+			case ERR_OBUFF:
+			{
+				char em[] = "Error (libeds): insufficient capacity in receiving buffer";
+				strncpy(em, retString, strlen(em));
+				retString[(sizeof(retString-1))] = '\0';
 
-		case ERR_PARSEFAIL:
-		{
-			char *em = "Error (libeds): error parsing EDS section data";
-			strncpy(em, retString, sizeof(em));
-			retString[(sizeof(retString-1))] = '\0';
-			break;
-		}
+				strncpy(err_string, retString, strlen(retString+1));
 
+				return 0;
+				break;
+			}
 
-		default:
-		{
-			char *em = "Error (libeds): unknown error";
-			strncpy(em, retString, sizeof(em));
-			retString[(sizeof(retString-1))] = '\0';
-			break;
+			case ERR_PARSEFAIL:
+			{
+				char em[] = "Error (libeds): error parsing EDS section data";
+				strncpy(em, retString, strlen(em));
+				retString[(sizeof(retString-1))] = '\0';
+
+				strncpy(err_string, retString, strlen(retString+1));
+
+				return 0;
+				break;
+			}
+
+			case ERR_EDSFILEFAIL:
+			{
+				char em[] = "Error (libeds): error opening EDS file";
+				strncpy(em, retString, strlen(em));
+				retString[(sizeof(retString-1))] = '\0';
+
+				strncpy(err_string, retString, strlen(retString+1));
+
+				return 0;
+				break;
+			}
+
+			default:
+			{
+				char em[] = "Error (libeds): unknown error";
+				strncpy(em, retString, strlen(em));
+				retString[(sizeof(retString-1))] = '\0';
+
+				strncpy(err_string, retString, strlen(retString+1));
+
+				return -2;
+				break;
+			}
 		}
 	}
 }
