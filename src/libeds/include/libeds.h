@@ -75,7 +75,8 @@ typedef enum
  *
  * @param eds_file_path Absolute path to the EDS file to be converted.
  * @param json_array Pointer to char array that will hold the converted EDS file
- * @param json_array_size Size of json_array char array.
+ * @param json_array_size Size of json_array char array
+ * @return Returns 0 if success
  * @see https://www.rockwellautomation.com/resources/downloads/rockwellautomation/pdf/sales-partners/technology-licensing/Logix_EDS_AOP_Guidelines.pdf
  *
  */
@@ -96,17 +97,19 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const jso
 * @param output_buf Pointer to array of char that will hold the output JSON.
 * @param output_buf_size Size of the output buffer. Should *always* be considerably larger than sizeof(input_buf)!
 * @note output_buf_size should ALWAYS be larger than sizeof(input_buf) by a considerable margin!!
+* @param num_json_chars How many JSON characters are present in the output. If output_buffer is too small, the function
+* still runs and gives an accurate number of characters. The function will still return an error, but num_json_chars will remain set.
 *
-* @return Success: number of characters in output_buf.
+* @return Success: Returns 0 if success
 * @return Fail: ERR_OBUFF if output_buf not large enough
 * @return Fail: ERR_PARSEFAIL if input_buf is not a valid input string
 *
 */
-uint32_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type, 
+ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type, 
 						const char * const input_buf, 
 						char * const output_buf, 
-						const size_t output_buf_size);
-
+						const size_t output_buf_size,
+						size_t * const num_json_chars);
 
 /**
  * @brief Returns an array of strings detailing the sections of the EDS file that were not parsed. This is useful

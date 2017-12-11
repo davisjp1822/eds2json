@@ -27,7 +27,7 @@
 #include <stdint.h>
 
 #define TESTING
-#define TEST_EDS_PATH1 /mnt/c/Users/davisjp/OneDrive/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds
+#define TEST_EDS_PATH1 "/mnt/c/Users/davisjp/OneDrive/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds"
 
 namespace 
 {
@@ -72,17 +72,82 @@ namespace
 		ASSERT_EQ(r, ERR_EDSFILEFAIL);
 	}
 
-
-	/*TEST(libedsTests, convert_section2json)
+	TEST(libedsTests, convert_section2json_output_buf_too_small)
 	{
+		char eds_path[] = TEST_EDS_PATH1;
+		const char *input = "DescText=\"SMD23E2\";CreateDate=03-29-2012;CreateTime=14:01:47;"
+							"ModDate=05-24-2016;ModTime=13:57:27;Revision=1.6;"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";"
+        					"1_IOC_Details_License=0xDFE8039A;";
 
-		char input_buf[256] = {0};
-		char output_buf[256] = {0};
+       	size_t good_json_chars = 247;
+        char output_buf[7] = {0};
+        size_t output_json_chars = 0;
 
-		uint32_t retVal = convert_section2json(EDS_FILE, input_buf, output_buf, strlen(output_buf));
+         ERR_LIBEDS_t err = convert_section2json(EDS_FILE, input, output_buf, 7, &output_json_chars);
 
-		ASSERT_EQ(retVal, 0);
-	}*/
+         ASSERT_EQ(1, err);
+         ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+
+	TEST(libedsTests, convert_section2json_unknown_section)
+	{
+		char eds_path[] = TEST_EDS_PATH1;
+
+		const char *input = "DescText=\"SMD23E2\";CreateDate=03-29-2012;CreateTime=14:01:47;"
+							"ModDate=05-24-2016;ModTime=13:57:27;Revision=1.6;"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";"
+        					"1_IOC_Details_License=0xDFE8039A;";
+
+        const char *good_json = "\"File\":{\"DescText\":\"\\\"SMD23E2\\\"\",\"CreateDate\":\"03-29-2012\","
+        							"\"CreateTime\":\"14:01:47\",\"ModDate\":\"05-24-2016\","
+        							"\"ModTime\":\"13:57:27\",\"Revision\":\"1.6\","
+        							"\"HomeURL\":\"\\\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\\\"\","
+        							"\"1_IOC_Details_License\":\"0xDFE8039A\"}";
+
+        //std::cout << good_json << std::endl;
+
+        size_t good_json_chars = 247;
+        char output_buf[1024] = {0};
+        size_t output_json_chars = 0;
+
+        ERR_LIBEDS_t err = convert_section2json((PARSABLE_EDS_SECTIONS_t)42424242, input, output_buf, 1024, &output_json_chars);
+
+        //std::cout << output_buf << std::endl;
+
+        ASSERT_EQ(2, err);
+	}
+
+	TEST(libedsTests, convert_section2json_file_section)
+	{
+		char eds_path[] = TEST_EDS_PATH1;
+
+		const char *input = "DescText=\"SMD23E2\";CreateDate=03-29-2012;CreateTime=14:01:47;"
+							"ModDate=05-24-2016;ModTime=13:57:27;Revision=1.6;"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";"
+        					"1_IOC_Details_License=0xDFE8039A;";
+
+        const char *good_json = "\"File\":{\"DescText\":\"\\\"SMD23E2\\\"\",\"CreateDate\":\"03-29-2012\","
+        							"\"CreateTime\":\"14:01:47\",\"ModDate\":\"05-24-2016\","
+        							"\"ModTime\":\"13:57:27\",\"Revision\":\"1.6\","
+        							"\"HomeURL\":\"\\\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\\\"\","
+        							"\"1_IOC_Details_License\":\"0xDFE8039A\"}";
+
+        //std::cout << good_json << std::endl;
+
+        size_t good_json_chars = 247;
+        char output_buf[1024] = {0};
+        size_t output_json_chars = 0;
+
+        ERR_LIBEDS_t err = convert_section2json(EDS_FILE, input, output_buf, 1024, &output_json_chars);
+
+        //std::cout << output_buf << std::endl;
+
+        ASSERT_EQ(0, err);
+        ASSERT_STREQ(good_json, output_buf);
+        ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+
 }
 
 int main(int argc, char **argv)
