@@ -260,12 +260,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 			{	
 				if(val_i < VAL_BUF_LEN)
 				{	
-					// make sure to escape quotes
-					/*if(input_buf[i] == '"')
-					{
-						val_buf[val_i] = '\\';
-						++val_i;
-					}*/
+					// avoid double quoting key values that are quoted in the EDS file
 					if(input_buf[i] != '"')
 					{
 						val_buf[val_i] = input_buf[i];
