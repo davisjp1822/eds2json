@@ -29,15 +29,26 @@
 #include <sys/file.h>
 #include <stdbool.h>
 
-#define KEY_BUF_LEN 1024
-#define VAL_BUF_LEN 4096
+#define KEY_BUF_LEN 65535
+#define VAL_BUF_LEN 65535
 
-/** 
+/**
+ * @brief Handles special parsing rules for EDS file sections.
+ *
+ * Some EDS sections have special handling rules. This is the function that takes care of them.
+ *
+ * @param type EDS file section type
+ * @param key_buf buffer holding key (of key:value) buffer data. Is always of size KEY_BUF_LEN
+ * @param val_buf buffer holding value (of key:value) buffer data. Is always of size VAL_BUF_LEN
+ *
+ */
+void _parsing_specrules_handler(PARSABLE_EDS_SECTIONS_t type, char * const key_buf, char * const val_buf);
+
+/********************** 
 *
 * "Public" functions
 *
-*/
-
+***********************/
 ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const json_array, const size_t json_array_size)
 {
 	/**
@@ -46,8 +57,9 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const jso
 	* such as [Device], we parse out what type of section is about to be scanned, and then call convert_section2json
 	* with the section data.
 	*
-	* convert_section2json returns a uint32_t which tells us the number of characters being returned. If json_array
-	* can't fit the returned data, we return ERR_OBUFF.
+	* To prep the data for parsing, this function *will* remove all spaces, tabs, and comments
+	* Comments start with a $
+	*
 	*/
 
 	FILE *eds_file = fopen(eds_file_path, "r");
@@ -73,7 +85,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const jso
 		* 1. This function does not parse text, it just grabs sections and sends the resulting string to convert_section2json
 		* 2. This function *does* remove comments. When it sees a $ that is not inside ""'s, it discards that data until seeing a \n
 		* 3. The section name is what is inside of the []. The data is between ] and [.
-		* 4. This function removes all newlines and other non-printable characters.
+		* 4. This function removes /r characters but leaves new lines!
 		*/
 
 		char c = fgetc(eds_file);
@@ -132,6 +144,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 
 		case(EDS_PARAMS):
 		{	
+			////TODO!!! What happens if there is no =?
 			char n[] = "Params";
 			strncpy(section_name, n, strlen(n));
 			section_name[strlen(section_name)] = '\0';
@@ -201,11 +214,10 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	int16_t key_i = 0;
 	int16_t val_i = 0;
 
-	bool storing_val = false;
+	bool storing_val = false;	/* if storing_val is false, we are parsing a key. false? parsing a value */
 	bool write_pair = false;
 	bool output_buf_overflowed = false;
 
-	//char sectionId[] = "\"File\":{";
 	char key_buf[KEY_BUF_LEN];
 	char val_buf[VAL_BUF_LEN];
 
@@ -232,6 +244,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 		output_buf_overflowed = true;
 	}
 
+	// now, actually do the parsing
 	for(i=0; i < strlen(input_buf); i++)
 	{
 		// if storing_val is false, that means that we have not found an = yet, so store to key_buf
@@ -255,26 +268,31 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 		// include logic for skipping = and handling ;
 		else if(storing_val)
 		{
-			// we shouldn't be seeing an = here, but check anyway.
-			if(input_buf[i] != '=' && input_buf[i] != ';')
+			// if we reach the ; - set storing_val to false so that we start at the top and write out the pair to
+			// output_buf
+			if(input_buf[i] == ';' && input_buf[i+1] == '\n')
 			{	
+				storing_val = false;
+				write_pair = true;
+
+				// skip the newline char
+				i++;
+			}
+
+			// if not at the end of the line, keep reading
+			else
+			{
 				if(val_i < VAL_BUF_LEN)
 				{	
 					// avoid double quoting key values that are quoted in the EDS file
+					// we don't want to carry over the quotation marks from the EDS file, we provide
+					// them ourselves below
 					if(input_buf[i] != '"')
 					{
 						val_buf[val_i] = input_buf[i];
 						++val_i;
 					}
-				}	
-			}
-
-			// if we reach the ; - set storing_val to false so that we start at the top and write out the pair to
-			// output_buf
-			else
-			{
-				storing_val = false;
-				write_pair = true;
+				}
 			}
 		}
 
@@ -288,6 +306,9 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 			size_t len = strlen(key_buf) + strlen(val_buf) + 11;
 			char temp[len];
 			memset(temp, 0, len*sizeof(char));
+
+			// if there are special rules for this section, execute them here
+			_parsing_specrules_handler(s_type, key_buf, val_buf);
 
 			// create the full key value pair, and add to output_buf
 			// after, of course, checking to see if output_buf is large enough to hold the data
@@ -406,8 +427,21 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 	}
 }
 
-/** 
+/********************** 
 *
 * "Private" functions
 *
-*/
+***********************/
+void _parsing_specrules_handler(PARSABLE_EDS_SECTIONS_t type, char * const key_buf, char * const val_buf)
+{
+	/**
+	*
+	* The Params section switches to using comma delimiters for the individual params. We also have to be able to 
+	* handle Enum sub-sections. 
+	*
+	*/
+	if(type == EDS_PARAMS)
+	{
+
+	}
+}

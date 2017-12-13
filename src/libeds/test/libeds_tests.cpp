@@ -27,7 +27,9 @@
 #include <stdint.h>
 
 #define TESTING
-#define TEST_EDS_PATH1 "/mnt/c/Users/davisjp/OneDrive/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds"
+#define TEST_EDS_PATH1 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds"
+#define TEST_EDS_PATH2 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/024D002B09320100.eds"
+#define TEST_EDS_PATH3 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/HI 1769-2WS.eds"
 
 namespace 
 {
@@ -75,10 +77,10 @@ namespace
 	TEST(libedsTests, convert_section2json_output_buf_too_small)
 	{
 		char eds_path[] = TEST_EDS_PATH1;
-		const char *input = "DescText=\"SMD23E2\";CreateDate=03-29-2012;CreateTime=14:01:47;"
-							"ModDate=05-24-2016;ModTime=13:57:27;Revision=1.6;"
-        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";"
-        					"1_IOC_Details_License=0xDFE8039A;";
+		const char *input = "DescText=\"SMD23E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
+							"ModDate=05-24-2016;\nModTime=13:57:27;\nRevision=1.6;\n"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";\n"
+        					"1_IOC_Details_License=0xDFE8039A;\n";
 
        	size_t good_json_chars = 239;
         char output_buf[7] = {0};
@@ -118,14 +120,44 @@ namespace
         ASSERT_EQ(2, err);
 	}
 
+	TEST(libedsTests, convert_section2json_value_embedded_semicolon)
+	{
+		char eds_path[] = TEST_EDS_PATH1;
+
+		const char *input = "DescText=\"SMD23;E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
+							"ModDate=05-24-2016;\nModTime=13:57:27;\nRevision=1.6;\n"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";\n"
+        					"1_IOC_Details_License=0x;DFE8039A;\n";
+
+        const char *good_json = "\"File\":{\"DescText\":\"SMD23;E2\",\"CreateDate\":\"03-29-2012\","
+        							"\"CreateTime\":\"14:01:47\",\"ModDate\":\"05-24-2016\","
+        							"\"ModTime\":\"13:57:27\",\"Revision\":\"1.6\","
+        							"\"HomeURL\":\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\","
+        							"\"1_IOC_Details_License\":\"0x;DFE8039A\"}";
+
+        //std::cout << good_json << std::endl;
+
+        size_t good_json_chars = 241;
+        char output_buf[1024] = {0};
+        size_t output_json_chars = 0;
+
+        ERR_LIBEDS_t err = convert_section2json(EDS_FILE, input, output_buf, 1024, &output_json_chars);
+
+        //std::cout << output_buf << std::endl;
+
+        ASSERT_EQ(0, err);
+        ASSERT_STREQ(good_json, output_buf);
+        ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+
 	TEST(libedsTests, convert_section2json_file_section)
 	{
 		char eds_path[] = TEST_EDS_PATH1;
 
-		const char *input = "DescText=\"SMD23E2\";CreateDate=03-29-2012;CreateTime=14:01:47;"
-							"ModDate=05-24-2016;ModTime=13:57:27;Revision=1.6;"
-        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";"
-        					"1_IOC_Details_License=0xDFE8039A;";
+		const char *input = "DescText=\"SMD23E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
+							"ModDate=05-24-2016;\nModTime=13:57:27;\nRevision=1.6;\n"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";\n"
+        					"1_IOC_Details_License=0xDFE8039A;\n";
 
         const char *good_json = "\"File\":{\"DescText\":\"SMD23E2\",\"CreateDate\":\"03-29-2012\","
         							"\"CreateTime\":\"14:01:47\",\"ModDate\":\"05-24-2016\","
@@ -146,6 +178,56 @@ namespace
         ASSERT_EQ(0, err);
         ASSERT_STREQ(good_json, output_buf);
         ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+
+	TEST(libedsTests, convert_section2json_device_section)
+	{
+		char eds_path[] = TEST_EDS_PATH2;
+
+		const char *input = "VendCode=589;\nVendName=\"LinMot\";\nProdType=43;\nProdTypeStr=\"GenericDevice\";\nProdCode=2354;\nMajRev=1;\nMinRev=1;\n"
+							"ProdName=\"E1450IPQN1S\";\nCatalog=\"LMDrive\";\nIcon=\"E1250_SC_xx.ico\";\n"
+							"IconContents=\"AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAA\"\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAKrwqALKysgD"
+							"///8AAAAAAAAAAAAAAAAA\"\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMzMzIiIi\"\"IjMzMzMzMzMzMzMzMyACIAIzMzMzMz"
+							"MzMzMzMzMgAiACMzMzMzMzMzMzMzMz\"\"IiIiIjMzMzMzMzMzMzMzMyACIAIzMzMzMzMzMzMzMzMgAiACMzMzMzMzMzMz\"\"MzMzIiIiIjMzMzMzMzMzMz"
+							"MzMyIiIgIzMzMzMzMzMzMzMzMiIiIiMzMzMzMz\"\"MzMzMzMzIiIiAjMzMzMzMzMzMzMzMyIiIiIzMzMzMzMzMzMzMzMiIiESMzMz\"\"MzMzMzMzMzMzIiI"
+							"hEjMzMzMzMzMzMzMzMyIiIRIzMzMzMzMzMzMzMzMiIiES\"\"MzMzMzMzMzMzMzMzIiIhEjMzMzMzMzMzMzMzMyIiIRIzMzMzMzMzMzMzMzMi\"\"IiIiMzMz"
+							"MzMzMzMzMzMzIiIgAjMzMzMzMzMzMzMzMyIAIAIzMzMzMzMzMzMz\"\"MzMiACACMzMzMzMzMzMzMzMzIgAgAjMzMzMzMzMzMzMzMyIiIAIzMzMzMzMz\"\"Mz"
+							"MzMzMiIiIiMzMzMzMzMzMzMzMzIREREjMzMzMzMzMzMzMzMyEBABIzMzMz\"\"MzMzMzMzMzMhERESMzMzMzMzMzMzMzMzIQEAEjMzMzMzMzMzMzMzMyERERIz"
+							"\"\"MzMzMzMzMzMzMzMhAQASMzMzMzMzMzMzMzMzIREREjMzMzMzMzMzMzMzMyIi\"\"IiIzMzMzMzMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+							"AAAAA\"\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+							"AAAAAAAAAA\"\"AA==\";\n";
+
+        const char *good_json = "\"Device\":{\"VendCode\":\"589\",\"VendName\":\"LinMot\",\"ProdType\":\"43\",\"ProdTypeStr\":\"GenericDevice\","
+        						"\"ProdCode\":\"2354\",\"MajRev\":\"1\",\"MinRev\":\"1\",\"ProdName\":\"E1450IPQN1S\",\"Catalog\":\"LMDrive\","
+        						"\"Icon\":\"E1250_SC_xx.ico\",\"IconContents\":\"AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAAAAA"
+        						"AAAAAAAAAAAAAAAAAAAAAAAAAKrwqALKysgD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzMz"
+        						"MzIiIiIjMzMzMzMzMzMzMzMyACIAIzMzMzMzMzMzMzMzMgAiACMzMzMzMzMzMzMzMzIiIiIjMzMzMzMzMzMzMzMyACIAIzMzMzMzMzMzMzMzMgA"
+        						"iACMzMzMzMzMzMzMzMzIiIiIjMzMzMzMzMzMzMzMyIiIgIzMzMzMzMzMzMzMzMiIiIiMzMzMzMzMzMzMzMzIiIiAjMzMzMzMzMzMzMzMyIiIiIz"
+        						"MzMzMzMzMzMzMzMiIiESMzMzMzMzMzMzMzMzIiIhEjMzMzMzMzMzMzMzMyIiIRIzMzMzMzMzMzMzMzMiIiESMzMzMzMzMzMzMzMzIiIhEjMzMzM"
+        						"zMzMzMzMzMyIiIRIzMzMzMzMzMzMzMzMiIiIiMzMzMzMzMzMzMzMzIiIgAjMzMzMzMzMzMzMzMyIAIAIzMzMzMzMzMzMzMzMiACACMzMzMzMzMz"
+        						"MzMzMzIgAgAjMzMzMzMzMzMzMzMyIiIAIzMzMzMzMzMzMzMzMiIiIiMzMzMzMzMzMzMzMzIREREjMzMzMzMzMzMzMzMyEBABIzMzMzMzMzMzMzM"
+        						"zMhERESMzMzMzMzMzMzMzMzIQEAEjMzMzMzMzMzMzMzMyERERIzMzMzMzMzMzMzMzMhAQASMzMzMzMzMzMzMzMzIREREjMzMzMzMzMzMzMzMyIi"
+        						"IiIzMzMzMzMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        						"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\"}";
+
+        //std::cout << good_json << std::endl;
+
+        size_t good_json_chars = 1249;
+        char output_buf[2048] = {0};
+        size_t output_json_chars = 0;
+
+        ERR_LIBEDS_t err = convert_section2json(EDS_DEVICE, input, output_buf, 2048, &output_json_chars);
+
+        //std::cout << output_buf << std::endl;
+
+        ASSERT_EQ(0, err);
+        ASSERT_STREQ(good_json, output_buf);
+        ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+
+	TEST(libedsTests, convert_section2json_params_section)
+	{
+		
 	}
 
 }
