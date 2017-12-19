@@ -31,6 +31,14 @@
 #define TEST_EDS_PATH2 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/024D002B09320100.eds"
 #define TEST_EDS_PATH3 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/HI 1769-2WS.eds"
 
+extern "C" 
+{
+	size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type, 
+										const char * const val_buf, 
+										char * const output_buf,
+										const size_t output_buf_size);
+}
+
 namespace 
 {
 	class libedsTests : public testing::Test
@@ -227,9 +235,48 @@ namespace
 
 	TEST(libedsTests, convert_section2json_params_section)
 	{
-		
-	}
 
+		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
+							"Enum1=0,\"IN1functionbit0\",1,\"IN1functionbit1\",2,\"IN1functionbit2\",3,\"IN2functionbit0\",4,\"IN2functionbit1\",5,\"IN2functionbit2\""
+							",10,\"UseEncoder\",11,\"UseBackplaneProximity\",13,\"EnableStallDetection\",14,\"DisableAntiresonance\";\nParam2=0,,,0x0000,0xD2,2,"
+							"\"CONFIGURATIONWORD1\",\"individualbit-fields\",\"ConfigurationWord1\",,,771,,,,,,,,,;\nEnum2=0,\"IN1Activelevel\",1,\"IN2Activelevel\""
+							",8,\"Binary_Output_Format\",9,\"Binary_Input_Format\";\nParam3=0,,,0x0000,0xC8,4,\"STARTINGSPEEDst/s\",\"stepspersecond\",\"StartingSpeed\""
+							",1,1999999,50,,,,,,,,,;\n";
+
+		const char *good_json = "\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\",\"DataType\":\"0xD2\",\"DataSize\":\"2\","
+								"\"Name\":\"CONFIGURATION WORD 0\",\"Units\":\"individual bit-fields\",\"HelpString\":\"Configuration Word 0\",\"DataValues\":{\"min\":\"null\","
+								"\"max\":\"null\",\"default_data_values\":1024},\"Scaling\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset_scaling\":\"null\"},"
+								"\"Links\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset_links\":\"null\"},\"DecimalPlaces\":\"0\",\"Enums\":{\"Enum1\":{\"0\":"
+								"\"IN1 function bit 0\",\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\",\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":"
+								"\"IN2 function bit 2\",\"6\":\"IN3 function bit 0\",\"7\":\"IN3 function bit 1\",\"8\":\"IindmscalnN3 function bit 2\",\"10\":\"Use Encoder\","
+								"\"11\":\"Use Backplane Proximity\",\"13\":\"Enable Stall Detection\",\"14\":\"Disable Antiresonance\"}}";
+
+		size_t good_json_chars = 811;
+        size_t output_json_chars = 0;
+		size_t output_buf_size = 4096;
+		char output_buf[output_buf_size] = {0};
+
+       	output_json_chars = _parsing_specrules_handler(EDS_PARAMS, input, output_buf, output_buf_size);
+
+       	ASSERT_STREQ(good_json, output_buf);
+       	ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+}
+
+TEST(libedsTests, convert_section2json_specrules_zerojson)
+{
+	const char *input = "foobar";
+	size_t output_json_chars = 0;
+	size_t output_buf_size = 4096;
+	char output_buf[output_buf_size] = {0};
+
+	// this should catch an invalid string going in
+	output_json_chars = _parsing_specrules_handler(EDS_PARAMS, input, output_buf, output_buf_size);
+	ASSERT_EQ(output_json_chars, 0);
+
+	//this should test a weird type
+	output_json_chars = _parsing_specrules_handler((PARSABLE_EDS_SECTIONS_t)56546151, input, output_buf, output_buf_size);
+	ASSERT_EQ(output_json_chars, 0);
 }
 
 int main(int argc, char **argv)

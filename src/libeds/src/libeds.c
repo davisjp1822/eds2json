@@ -33,17 +33,43 @@
 #define VAL_BUF_LEN 65535
 
 /**
+ * @brief Types of values embedded in a Params section
+ */ 
+typedef enum
+{
+
+	PARAM_VAL_RESERVED,
+	PARAM_VAL_PATHSIZE,
+	PARAM_VAL_PATH,
+	PARAM_VAL_DESCRIPTOR,
+	PARAM_VAL_DATATYPE,
+	PARAM_VAL_DATASIZE,
+	PARAM_VAL_NAME,
+	PARAM_VAL_UNITS,
+	PARAM_VAL_HELPSTRING,
+	PARAM_VAL_DATAVALUES,
+	PARAM_VAL_SCALING,
+	PARAM_VAL_LINKS,
+	PARAM_VAL_DECIMALPLACES,
+
+} PARAM_VALS_t;
+
+/**
  * @brief Handles special parsing rules for EDS file sections.
  *
  * Some EDS sections have special handling rules. This is the function that takes care of them.
  *
  * @param type EDS file section type
- * @param key_buf buffer holding key (of key:value) buffer data. Is always of size KEY_BUF_LEN
  * @param val_buf buffer holding value (of key:value) buffer data. Is always of size VAL_BUF_LEN
+ * @param output_buf buffer holding the output of the JSON formatted value
+ * @param output_buf_size size of output_buf
+ * @return Success: Returns number of json chars in output_buf. If 0, then there is no special handling for this type.
  *
  */
-void _parsing_specrules_handler(PARSABLE_EDS_SECTIONS_t type, char * const key_buf, char * const val_buf);
-
+size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type, 
+									const char * const val_buf, 
+									char * const output_buf,
+									const size_t output_buf_size);
 /********************** 
 *
 * "Public" functions
@@ -69,12 +95,13 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const jso
 		return ERR_EDSFILEFAIL;
 	}
 
+	/*
 	// once the file is open, get a lock so that it doesn't change while we are reading it
 	if(flock(fileno(eds_file), LOCK_EX | LOCK_UN) != 0)
 	{
 		fclose(eds_file);
 		return ERR_EDSFILEFAIL;
-	}
+	}*/
 
 	// okay, the file is open, now start scanning and looking for a section header ...
 
@@ -88,11 +115,11 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const jso
 		* 4. This function removes /r characters but leaves new lines!
 		*/
 
-		char c = fgetc(eds_file);
+		//char c = fgetc(eds_file);
 	//}
 
 	// clean-up after ourselves
-	fclose(eds_file);
+	//fclose(eds_file);
 	return 0;
 }
 
@@ -104,7 +131,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 						size_t * const num_json_chars)
 {
 	size_t json_chars = 0;
-	char section_name[128] = {0};
+	char *section_name = 0;
 
 	/**
 	*
@@ -120,84 +147,74 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	{
 		case(EDS_FILE):
 		{
-			char n[] = "File";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "File";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_DEVICE):
 		{
-			char n[] = "Device";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "Device";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_DEVICE_CLASSIFICATION):
 		{
-			char n[] = "DeviceClassification";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "DeviceClassification";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_PARAMS):
 		{	
 			////TODO!!! What happens if there is no =?
-			char n[] = "Params";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "Params";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_ASSEMBLY):
 		{
-			char n[] = "Assembly";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "Assembly";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_CONNECTION_MANAGER):
 		{
 
-			char n[] = "ConnectionManager";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "ConnectionManager";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_PORT):
 		{
 
-			char n[] = "Port";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "Port";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_CAPACITY):
 		{
-			char n[] = "Capacity";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "Capacity";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_DLR_CLASS):
 		{
-			char n[] = "DLRClass";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "DLRClass";
+			section_name = n;
 			break;
 		}
 
 		case(EDS_ETHERNET_LINK_CLASS):
 		{
-			char n[] = "EthernetLinkClass";
-			strncpy(section_name, n, strlen(n));
-			section_name[strlen(section_name)] = '\0';
+			const char *n = "EthernetLinkClass";
+			section_name = n;
 			break;
 		}
 
@@ -211,8 +228,8 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 
 	// now do the heavy lifting
 	size_t i = 0;
-	int16_t key_i = 0;
-	int16_t val_i = 0;
+	int32_t key_i = 0;
+	int32_t val_i = 0;
 
 	bool storing_val = false;	/* if storing_val is false, we are parsing a key. false? parsing a value */
 	bool write_pair = false;
@@ -307,13 +324,37 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 			char temp[len];
 			memset(temp, 0, len*sizeof(char));
 
+			// just create a pointer to a char array for now for parsing_specrules until we know
+			// that there is something to put into this memory space due to special rules
+			// set this pointer to null to be safe
+			char *alternate_val_buf = 0;
+
 			// if there are special rules for this section, execute them here
-			_parsing_specrules_handler(s_type, key_buf, val_buf);
+			// this function gets executed twice - once to get the number of resulting
+			// json chars so that we can make a buffer, the second to actually write the json
+			// out to the buffer
+			size_t jc = 0;
+
+			if((jc=_parsing_specrules_handler(s_type, val_buf, NULL, 0)) > 0)
+			{
+				char buf[jc+1];
+				memset(buf, 0, (jc+1)*sizeof(char));
+
+				_parsing_specrules_handler(s_type, val_buf, buf, jc);
+				alternate_val_buf = buf;
+			}
 
 			// create the full key value pair, and add to output_buf
-			// after, of course, checking to see if output_buf is large enough to hold the data
-			snprintf(temp, strlen(temp)-1, "\"%s\":\"%s\",", key_buf, val_buf);
+			if(alternate_val_buf != NULL)
+			{
+				snprintf(temp, strlen(temp)-1, "\"%s\":\"%s\",", key_buf, alternate_val_buf);
+			}
+			else
+			{
+				snprintf(temp, strlen(temp)-1, "\"%s\":\"%s\",", key_buf, val_buf);
+			}
 
+			// check to see if output_buf is large enough to hold the data 
 			if(output_buf_size > (json_chars + strlen(temp)))
 			{
 				strncat(output_buf, temp, output_buf_size-1);
@@ -432,16 +473,237 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 * "Private" functions
 *
 ***********************/
-void _parsing_specrules_handler(PARSABLE_EDS_SECTIONS_t type, char * const key_buf, char * const val_buf)
+size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type, 
+									const char * const val_buf, 
+									char * const output_buf,
+									const size_t output_buf_size)
 {
+
+	// all modes of operation will report back the number of json chars in the section
+	
+
 	/**
 	*
-	* The Params section switches to using comma delimiters for the individual params. We also have to be able to 
-	* handle Enum sub-sections. 
+	* The Params section switches to using comma delimiters for the individual params.
 	*
 	*/
 	if(type == EDS_PARAMS)
 	{
+		size_t json_chars = 0;
+		size_t i = 0;
+		bool done = false;
+		char *key_name = 0;
 
+		PARAM_VALS_t current_value = PARAM_VAL_RESERVED;
+
+		for(i=0; i < strlen(val_buf); i++)
+		{
+			/**
+			 *
+			 * Start at the beginning. Read forward. If the next char is not a comma, add to temp buff.
+			 * If the next char is a comma, end temp buff and write key:value
+			 * If the next char after the comma is a comma, write key:"null"
+			 *
+			 */
+
+			// get the name of the current key
+			switch(current_value)
+			{
+
+				case(PARAM_VAL_RESERVED):
+				{
+					char *s = "Reserved";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_PATHSIZE):
+				{
+					char *s = "PathSize";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_PATH):
+				{
+					char *s = "Path";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_DESCRIPTOR):
+				{
+					char *s = "Descriptor";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_DATATYPE):
+				{
+					char *s = "DataType";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_DATASIZE):
+				{
+					char *s = "DataSize";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_NAME):
+				{
+					char *s = "Name";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_UNITS):
+				{
+					char *s = "Units";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_HELPSTRING):
+				{
+					char *s = "HelpString";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_DATAVALUES):
+				{
+					char *s = "DefaultDataValues";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_SCALING):
+				{
+					char *s = "Scaling";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_LINKS):
+				{
+					char *s = "Links";
+					key_name = s;
+					break;
+				}
+
+				case(PARAM_VAL_DECIMALPLACES):
+				{
+					char *s = "DecimalPlaces";
+					key_name = s;
+					break;
+				}
+
+				default:
+				{
+					char *s = "Unknown";
+					key_name = s;
+					break;
+				}
+			}
+
+			// end of param - exit entirely
+			if(val_buf[i] == ';')
+			{
+				done = true;
+				break;
+			}
+
+			// first pass - for EDS Params, the first value is always going to be Reserved
+			if(i == 0)
+			{
+				char s[12] = "\"Reserved\":\"";
+				strncat(output_buf, s, strlen(s));
+				
+				json_chars += 12;
+				++current_value;
+				continue;
+			}
+
+			// writing a value for a key
+			// how do we know? keep moving until we get to a comma. when at a comma, we know that we just ended
+			// a section.
+			if(i > 0 && val_buf[i-1] != ',')
+			{
+				// add the opening quotation mark
+				if(output_buf[json_chars-1] == ':')
+				{
+					output_buf[json_chars] = '\"';
+					++json_chars;
+				}
+
+				// strip out unwanted quotation marks
+				if(val_buf[i-1] != '"')
+				{
+					output_buf[json_chars] = val_buf[i-1];
+			 		++json_chars;
+				}
+
+				continue;
+			}
+
+			// writing a new section
+			if(i > 0 && val_buf[i-1] == ',')
+			{
+
+				++current_value;
+
+				// previous section wasn't null, so the terminating comma needs to be added here				
+				if(output_buf[json_chars-1] != ',')
+				{
+					size_t s_size = strlen(key_name) + 6;
+					char s[s_size];
+					memset(s, sizeof(char)*s_size, 0);
+
+					snprintf(s, s_size, "\",\"%s\":", key_name);
+					strncat(output_buf, s, strlen(s));
+					json_chars += (strlen(s));
+				}
+
+				// if the previous section was null, the null section handler added the trailing comma
+				else
+				{
+					size_t s_size = strlen(key_name) + 4;
+					char s[s_size];
+					memset(s, sizeof(char)*s_size, 0);
+
+					snprintf(s, s_size, "\"%s\":", key_name);
+					strncat(output_buf, s, strlen(s));
+					json_chars += (strlen(s));
+				}
+				
+				//continue;
+			}
+
+			// section is empty, so write the value as null
+			if(i > 0 && val_buf[i-1] == ',' && val_buf[i] == ',')
+			{
+				char *s = "\"null\",";
+				strncat(output_buf, s, strlen(s));
+
+				json_chars += (strlen(s));
+				continue;
+			}
+		}
+
+		// for loop is done - null terminate and return
+		if(done)
+		{
+			output_buf[json_chars-1] = '\0';
+			return json_chars-1;
+		}
+	}
+
+	// default - there are no special rules for handling this section, so return 0
+	else
+	{
+		return 0;
 	}
 }
