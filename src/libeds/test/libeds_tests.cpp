@@ -72,6 +72,15 @@ namespace
 		ASSERT_EQ(r, -1);
 	}
 
+	TEST(libedsTests, err_string_test_ret_string)
+	{
+		char rs[1300] = {0};
+		int32_t r = err_string(ERR_OBUFF, rs, 128);
+
+		ASSERT_EQ(r, 0);
+		ASSERT_STREQ("Error (libeds): insufficient capacity in receiving buffer", rs);
+	}
+
 	TEST(libedsTests, convert_eds2json_bad_path)
 	{
 		char fp[128] = "/tmp/foo.foo";

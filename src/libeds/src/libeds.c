@@ -392,17 +392,12 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 
 	else
 	{
-		char retString[128] = {0};
-
 		switch(err_code) {
 		
 			case ERR_OBUFF:
 			{
-				char em[] = "Error (libeds): insufficient capacity in receiving buffer";
-				strncpy(em, retString, strlen(em));
-				retString[(sizeof(retString-1))] = '\0';
-
-				strncpy(err_string, retString, strlen(retString+1));
+				const char em[128] = "Error (libeds): insufficient capacity in receiving buffer";
+				snprintf(err_string, err_string_size, "%s", em);
 
 				return 0;
 				break;
@@ -410,11 +405,8 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 
 			case ERR_PARSEFAIL:
 			{
-				char em[] = "Error (libeds): error parsing EDS section data";
-				strncpy(em, retString, strlen(em));
-				retString[(sizeof(retString-1))] = '\0';
-
-				strncpy(err_string, retString, strlen(retString+1));
+				const char em[128] = "Error (libeds): error parsing EDS section data";
+				snprintf(err_string, err_string_size, "%s", em);
 
 				return 0;
 				break;
@@ -422,11 +414,8 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 
 			case ERR_EDSFILEFAIL:
 			{
-				char em[] = "Error (libeds): error opening EDS file";
-				strncpy(em, retString, strlen(em));
-				retString[(sizeof(retString-1))] = '\0';
-
-				strncpy(err_string, retString, strlen(retString+1));
+				const char em[128] = "Error (libeds): error opening EDS file";
+				snprintf(err_string, err_string_size, "%s", em);
 
 				return 0;
 				break;
@@ -434,11 +423,8 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 
 			default:
 			{
-				char em[] = "Error (libeds): unknown error";
-				strncpy(em, retString, strlen(em));
-				retString[(sizeof(retString-1))] = '\0';
-
-				strncpy(err_string, retString, strlen(retString+1));
+				const char em[128] = "Error (libeds): unknown error";
+				snprintf(err_string, err_string_size, "%s", em);
 
 				return -2;
 				break;
@@ -574,7 +560,7 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 		// glue them together and make some lovely JSON!
 		params_val_idx = 0;
 
-		for(i=0; i < num_key_vals; i++)
+		for(i=0; i < (size_t)num_key_vals; i++)
 		{
 			char s[VAL_BUF_LEN] = {0};
 			size_t s_len = 0;
