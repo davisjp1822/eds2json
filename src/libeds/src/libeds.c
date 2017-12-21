@@ -474,6 +474,7 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 	if(type == EDS_PARAMS)
 	{
 		const int8_t num_params_vals = 21;
+		const int8_t num_key_vals = 24;
 		
 		int8_t params_val_idx = 0;
 		int32_t val_string_idx = 0;
@@ -573,7 +574,7 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 		// glue them together and make some lovely JSON!
 		params_val_idx = 0;
 
-		for(i=0; i < 24; i++)
+		for(i=0; i < num_key_vals; i++)
 		{
 			char s[VAL_BUF_LEN] = {0};
 			size_t s_len = 0;
