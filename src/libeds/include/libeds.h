@@ -111,17 +111,6 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 						const size_t output_buf_size,
 						size_t * const num_json_chars);
 
-/**
- * @brief Returns an array of strings detailing the sections of the EDS file that were not parsed. This is useful
- * primarily for debugging EDS files that were not fully parsed.
- * 
- * Mainly used for debuggging and general info, this function returns the names of the sections in the EDS file
- * that were not parsed.
- *
- * @ return an array of strings that are names of the unparsed sections in the EDS file.
-*/
-uint32_t get_unparsed_sections();
-
 /** 
  * @ brief Returns a human readable string for error code err_code.
  * 

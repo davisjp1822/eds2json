@@ -377,11 +377,6 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	}
 }
 
-uint32_t get_unparsed_sections()
-{
-	return 0;
-}
-
 int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const size_t err_string_size)
 {
 	// if our string is smaller than 128 characters, return -1
