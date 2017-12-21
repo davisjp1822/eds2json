@@ -33,10 +33,11 @@
 
 extern "C" 
 {
-	size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type, 
-										const char * const val_buf, 
-										char * const output_buf,
-										const size_t output_buf_size);
+	ERR_LIBEDS_t _parsing_factory_comma_delimited_toJSON(const PARSABLE_EDS_SECTIONS_t type, 
+														const char * const val_buf, 
+														char * const output_buf,
+														const size_t output_buf_size,
+														size_t *json_chars);
 }
 
 namespace 
@@ -242,7 +243,7 @@ namespace
         ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
-	TEST(libedsTests, convert_section2json_params_section)
+	TEST(libedsTests, convert_section2json_specrules_edsparams)
 	{
 
 		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n";
@@ -257,10 +258,11 @@ namespace
 		size_t output_buf_size = 4096;
 		char output_buf[output_buf_size] = {0};
 
-       	output_json_chars = _parsing_specrules_handler(EDS_PARAMS, input, output_buf, output_buf_size);
+       	ERR_LIBEDS_t err = _parsing_factory_comma_delimited_toJSON(EDS_PARAMS, input, output_buf, output_buf_size, &output_json_chars);
 
        	ASSERT_STREQ(good_json, output_buf);
        	ASSERT_EQ(good_json_chars, output_json_chars);
+       	ASSERT_EQ(0, err);
 	}
 }
 
@@ -272,11 +274,11 @@ TEST(libedsTests, convert_section2json_specrules_bad_input)
 	char output_buf[output_buf_size] = {0};
 
 	// this should catch an invalid string going in
-	output_json_chars = _parsing_specrules_handler(EDS_PARAMS, input, output_buf, output_buf_size);
+	ERR_LIBEDS_t err = _parsing_factory_comma_delimited_toJSON(EDS_PARAMS, input, output_buf, output_buf_size, &output_json_chars);
 	ASSERT_EQ(output_json_chars, 300);
 
 	//this should test a weird type
-	output_json_chars = _parsing_specrules_handler((PARSABLE_EDS_SECTIONS_t)56546151, input, output_buf, output_buf_size);
+	err = _parsing_factory_comma_delimited_toJSON((PARSABLE_EDS_SECTIONS_t)56546151, input, output_buf, output_buf_size, &output_json_chars);
 	ASSERT_EQ(output_json_chars, 0);
 }
 

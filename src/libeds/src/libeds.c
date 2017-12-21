@@ -29,10 +29,6 @@
 #include <sys/file.h>
 #include <stdbool.h>
 
-// got these values from EZ-EDS. The actual length is 30,000 chars - the +1 is for the null terminator
-#define KEY_BUF_LEN 30001
-#define VAL_BUF_LEN 30001
-
 /**
  * @brief Handles special parsing rules for EDS file sections.
  *
@@ -42,13 +38,36 @@
  * @param val_buf buffer holding value (of key:value) buffer data. Is always of size VAL_BUF_LEN
  * @param output_buf buffer holding the output of the JSON formatted value
  * @param output_buf_size size of output_buf
- * @return Success: Returns number of json chars in output_buf. If 0, then there is no special handling for this type.
+ * @param json_chars number of json chars returned
+ * @return Success: 0
+ * @return Fail: error code of type ERR_LIBEDS_t
+ * @note If there are no special rules for handling this section, json_chars is set to 0 and the function returns 0
  *
  */
-size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type, 
-									const char * const val_buf, 
-									char * const output_buf,
-									const size_t output_buf_size);
+ERR_LIBEDS_t _parsing_factory_comma_delimited_toJSON(const PARSABLE_EDS_SECTIONS_t type, 
+							const char * const val_buf, 
+							char * const output_buf,
+							const size_t output_buf_size,
+							size_t *json_chars);
+
+/**
+ * @brief Creates a JSON object from the EDS Key=value; string.
+ *
+ * This function is the first stage of processing for EDS data sections. For many sections,
+ * such as File and Device, the output from this function is good enough to be used standalone.
+ * For special sections, such as Params, the output from this function needs to be fed into 
+ * _parsing_special_key_value_to_JSON so that further processing may be done.
+ *
+ * @note key_buf and value_buf are constants defined by KEY_BUF_LEN and LARGE_BUF, respectively
+ * @param input_buf formatted input string with the section data. Processing is done in eds2json()
+ * @param key_buf buffer of size KEY_BUF_LEN to hold the output key name
+ * @param value_buf buffer of size LARGE_BUF to hold the output value data
+ *
+ */
+ERR_LIBEDS_t _parsing_factory_standard_toJSON(const char * const input_buf,
+											char * const key_buf,
+											char * const value_buf);
+
 /********************** 
 *
 * "Public" functions
@@ -114,7 +133,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 
 	/**
 	*
-	* Parsing of each section assumes that we are being parsed in a fresh string with no spaces or newlines.
+	* Parsing of each section assumes that we are being parsed in a fresh string with no no trailing spaces.
 	* We start with the first character of the string and move to the equal sign. Once we are on the equal sign, 
 	* we store one side as key the other side as value. We continue to store to value of it until we get to a ;.
 	* then we clear the arrays and start over.  
@@ -314,12 +333,16 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 			// out to the buffer
 			size_t jc = 0;
 
-			if((jc=_parsing_specrules_handler(s_type, val_buf, NULL, 0)) > 0)
-			{
-				char buf[jc+1];
-				memset(buf, 0, (jc+1)*sizeof(char));
+			jc = _parsing_factory_comma_delimited_toJSON(s_type, val_buf, NULL, 0, &jc);
 
-				_parsing_specrules_handler(s_type, val_buf, buf, jc);
+			// there is a section that is special!
+			if(jc > 0)
+			{
+				size_t size = jc+1;
+				char buf[size];
+				memset(buf, 0, (size)*sizeof(char));
+
+				_parsing_factory_comma_delimited_toJSON(s_type, val_buf, buf, size, &jc);
 				alternate_val_buf = buf;
 			}
 
@@ -433,16 +456,16 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 * "Private" functions
 *
 ***********************/
-size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type, 
+ERR_LIBEDS_t _parsing_factory_comma_delimited_toJSON(const PARSABLE_EDS_SECTIONS_t type, 
 									const char * const val_buf, 
 									char * const output_buf,
-									const size_t output_buf_size)
+									const size_t output_buf_size,
+									size_t *json_chars)
 {
 
 	// all modes of operation will report back the number of json chars in the section
-	size_t json_chars = 0;
+	size_t jchars = 0;
 	
-
 	/**
 	*
 	* The Params section switches to using comma delimiters for the individual params.
@@ -506,8 +529,17 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 			{
 				if(val_buf[i] != '"' && val_buf[i] != '\n' && val_buf[i] != ';')
 				{
-					params_vals[params_val_idx][val_string_idx] = val_buf[i];
-					++val_string_idx;
+					if(strlen(params_vals[params_val_idx])+1 < VAL_BUF_LEN)
+					{
+						params_vals[params_val_idx][val_string_idx] = val_buf[i];
+						++val_string_idx;
+					}
+
+					else
+					{
+						return ERR_OBUFF;
+					}
+					
 				}
 			}
 
@@ -523,21 +555,34 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 				// also, look for a semicolon as this would indicate that we are at the end of the value
 				// and need to handle a null value in this case as well.
 				// ... then, record this value as "null"
-				if((i+1 < output_buf_size) && (val_buf[i+1] == ',' || val_buf[i+1] == ';'))
+				if(val_buf[i+1] == ',' || val_buf[i+1] == ';')
 				{
+					char *s = 0;
+
 					if(val_buf[i+1] == ';')
 					{
-						const char *s = "0";
-						snprintf(params_vals[params_val_idx], strlen(s)+1, "%s", s);
+						char ss[] = "0";
+						s = ss;
 					}
 
 					else
 					{
-						const char *s = "null";
-						snprintf(params_vals[params_val_idx], strlen(s)+1, "%s", s);
+						char ss[] = "null";
+						s = ss;
+					}
+
+					if(strlen(params_vals[params_val_idx]) + strlen(s) + 1 < VAL_BUF_LEN)
+					{
+						snprintf(params_vals[params_val_idx], VAL_BUF_LEN, "%s", s);
+					}
+
+					else
+					{
+						return ERR_OBUFF;
 					}
 				}
 
+				// since we were just adding characters make sure that the string for the value is terminated
 				else
 				{
 					params_vals[params_val_idx][val_string_idx] = '\0';
@@ -604,15 +649,24 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 				strncat(output_buf, s, s_len);
 			}
 
-			json_chars += s_len-1;
+			else
+			{	
+				jchars = 0;
+				return ERR_OBUFF;
+			}
+
+			jchars += s_len-1;
 		}
 
-		return json_chars;
+		// no error, return 0
+		*json_chars = jchars;
+		return 0;
 	}
 
-	// default - there are no special rules for handling this section, so return 0
+	// default - there are no special rules for handling this section, so set json_chars to 0 and return
 	else
 	{
+		*json_chars = 0;
 		return 0;
 	}
 }

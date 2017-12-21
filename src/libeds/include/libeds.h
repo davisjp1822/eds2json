@@ -27,6 +27,16 @@
 #include <stddef.h>
 #include <stdint.h>
 
+// got these values from EZ-EDS. The actual length is 30,000 chars - the +1 is for the null terminator
+#define KEY_BUF_LEN 30001
+#define VAL_BUF_LEN 30001
+
+// how many chars we want to read into memory - should be enough to read in the entire EDS File
+#define LARGE_BUF 1000000
+
+// used to store larger strings (such as the Params section)
+#define MED_BUF 100000
+
 #ifdef __cplusplus
 extern "C" {
 #endif
