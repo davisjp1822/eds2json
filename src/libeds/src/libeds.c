@@ -29,30 +29,9 @@
 #include <sys/file.h>
 #include <stdbool.h>
 
-#define KEY_BUF_LEN 65535
-#define VAL_BUF_LEN 65535
-
-/**
- * @brief Types of values embedded in a Params section
- */ 
-typedef enum
-{
-
-	PARAM_VAL_RESERVED,
-	PARAM_VAL_PATHSIZE,
-	PARAM_VAL_PATH,
-	PARAM_VAL_DESCRIPTOR,
-	PARAM_VAL_DATATYPE,
-	PARAM_VAL_DATASIZE,
-	PARAM_VAL_NAME,
-	PARAM_VAL_UNITS,
-	PARAM_VAL_HELPSTRING,
-	PARAM_VAL_DATAVALUES,
-	PARAM_VAL_SCALING,
-	PARAM_VAL_LINKS,
-	PARAM_VAL_DECIMALPLACES,
-
-} PARAM_VALS_t;
+// got these values from EZ-EDS. The actual length is 30,000 chars - the +1 is for the null terminator
+#define KEY_BUF_LEN 30001
+#define VAL_BUF_LEN 30001
 
 /**
  * @brief Handles special parsing rules for EDS file sections.
@@ -147,21 +126,21 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	{
 		case(EDS_FILE):
 		{
-			const char *n = "File";
+			char *n = "File";
 			section_name = n;
 			break;
 		}
 
 		case(EDS_DEVICE):
 		{
-			const char *n = "Device";
+			char *n = "Device";
 			section_name = n;
 			break;
 		}
 
 		case(EDS_DEVICE_CLASSIFICATION):
 		{
-			const char *n = "DeviceClassification";
+			char *n = "DeviceClassification";
 			section_name = n;
 			break;
 		}
@@ -169,14 +148,14 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 		case(EDS_PARAMS):
 		{	
 			////TODO!!! What happens if there is no =?
-			const char *n = "Params";
+			char *n = "Params";
 			section_name = n;
 			break;
 		}
 
 		case(EDS_ASSEMBLY):
 		{
-			const char *n = "Assembly";
+			char *n = "Assembly";
 			section_name = n;
 			break;
 		}
@@ -184,7 +163,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 		case(EDS_CONNECTION_MANAGER):
 		{
 
-			const char *n = "ConnectionManager";
+			char *n = "ConnectionManager";
 			section_name = n;
 			break;
 		}
@@ -192,28 +171,28 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 		case(EDS_PORT):
 		{
 
-			const char *n = "Port";
+			char *n = "Port";
 			section_name = n;
 			break;
 		}
 
 		case(EDS_CAPACITY):
 		{
-			const char *n = "Capacity";
+			char *n = "Capacity";
 			section_name = n;
 			break;
 		}
 
 		case(EDS_DLR_CLASS):
 		{
-			const char *n = "DLRClass";
+			char *n = "DLRClass";
 			section_name = n;
 			break;
 		}
 
 		case(EDS_ETHERNET_LINK_CLASS):
 		{
-			const char *n = "EthernetLinkClass";
+			char *n = "EthernetLinkClass";
 			section_name = n;
 			break;
 		}
@@ -480,225 +459,173 @@ size_t _parsing_specrules_handler(const PARSABLE_EDS_SECTIONS_t type,
 {
 
 	// all modes of operation will report back the number of json chars in the section
+	size_t json_chars = 0;
 	
 
 	/**
 	*
 	* The Params section switches to using comma delimiters for the individual params.
+	* The general structure of this section is to parse the comma delimited string into a JSON object.
+	* The param field is a fixed delineation of parameters, always in the same order.
+	* So, we should be able to (a) parse out the comma-separted substrings into a holding array, and then
+	* (b) build JSON with the key value array and the data in the holding array.
 	*
 	*/
 	if(type == EDS_PARAMS)
 	{
-		size_t json_chars = 0;
+		const int8_t num_params_vals = 21;
+		
+		int8_t params_val_idx = 0;
+		int32_t val_string_idx = 0;
+
 		size_t i = 0;
-		bool done = false;
-		char *key_name = 0;
 
-		PARAM_VALS_t current_value = PARAM_VAL_RESERVED;
+		const char *key_names[] = {
+									"Reserved", 
+									"PathSize", 
+									"Path", 
+									"Descriptor", 
+									"DataType",
+									"DataSizeInBytes",
+									"Name",
+									"Units",
+									"HelpString",
+									"DataValues",
+									"min",
+									"max",
+									"default",
+									"Scaling",
+									"mult",
+									"div",
+									"base",
+									"offset",
+									"Links",
+									"mult",
+									"div",
+									"base",
+									"offset",
+									"DecimalPlaces"
+								};
 
+		// this array is an array of pointers to the actual data in the params
+		char params_vals[num_params_vals][VAL_BUF_LEN];
+
+		//initialize sub-strings in params_vals
+		for(i=0; i < (size_t)num_params_vals; i++)
+		{
+			memset(params_vals[i], 0, VAL_BUF_LEN);
+		}
+
+		// now, loop through the val_buf separating out the data values into the correct spot in params_vals
 		for(i=0; i < strlen(val_buf); i++)
 		{
-			/**
-			 *
-			 * Start at the beginning. Read forward. If the next char is not a comma, add to temp buff.
-			 * If the next char is a comma, end temp buff and write key:value
-			 * If the next char after the comma is a comma, write key:"null"
-			 *
-			 */
-
-			// get the name of the current key
-			switch(current_value)
+			// if not a comma (and not a quote mark), add character to correct spot in the value array
+			if(val_buf[i] != ',')
 			{
-
-				case(PARAM_VAL_RESERVED):
+				if(val_buf[i] != '"' && val_buf[i] != '\n' && val_buf[i] != ';')
 				{
-					char *s = "Reserved";
-					key_name = s;
+					params_vals[params_val_idx][val_string_idx] = val_buf[i];
+					++val_string_idx;
+				}
+			}
+
+			// if the character is a comma, terminate the current data string and start a new section
+			// also check for a null section (indicated by two commas in a row)
+			else if(val_buf[i] == ',')
+			{
+				// reset val_string_idx and increment section
+				val_string_idx = 0;
+				++params_val_idx;
+
+				// double comma, up in the sky!
+				// also, look for a semicolon as this would indicate that we are at the end of the value
+				// and need to handle a null value in this case as well.
+				// ... then, record this value as "null"
+				if((i+1 < output_buf_size) && (val_buf[i+1] == ',' || val_buf[i+1] == ';'))
+				{
+					if(val_buf[i+1] == ';')
+					{
+						const char *s = "0";
+						snprintf(params_vals[params_val_idx], strlen(s)+1, "%s", s);
+					}
+
+					else
+					{
+						const char *s = "null";
+						snprintf(params_vals[params_val_idx], strlen(s)+1, "%s", s);
+					}
+				}
+
+				else
+				{
+					params_vals[params_val_idx][val_string_idx] = '\0';
+				}
+			}
+
+			// stop parsing when we see a semicolon
+			else if(val_buf[i] == ';')
+			{
+				break;
+			}
+		}
+
+		// lastly, we now have two arrays - one with JSON key names (key_names), and the other with values (params_vals)
+		// glue them together and make some lovely JSON!
+		params_val_idx = 0;
+
+		for(i=0; i < 24; i++)
+		{
+			char s[VAL_BUF_LEN] = {0};
+			size_t s_len = 0;
+
+			switch(i)
+			{
+				case(9):
+				case(13):
+				case(18):
+				{
+					s_len = strlen(key_names[i]) + 5;
+					snprintf(s, s_len, "\"%s\":{", key_names[i]);
 					break;
 				}
 
-				case(PARAM_VAL_PATHSIZE):
+				case(12):
+				case(17):
+				case(22):
 				{
-					char *s = "PathSize";
-					key_name = s;
+					s_len = strlen(key_names[i]) + strlen(params_vals[params_val_idx]) + 8;
+					snprintf(s, s_len, "\"%s\":\"%s\"},", key_names[i], params_vals[params_val_idx]);
+					++params_val_idx;
 					break;
 				}
 
-				case(PARAM_VAL_PATH):
+				case(23):
 				{
-					char *s = "Path";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_DESCRIPTOR):
-				{
-					char *s = "Descriptor";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_DATATYPE):
-				{
-					char *s = "DataType";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_DATASIZE):
-				{
-					char *s = "DataSize";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_NAME):
-				{
-					char *s = "Name";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_UNITS):
-				{
-					char *s = "Units";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_HELPSTRING):
-				{
-					char *s = "HelpString";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_DATAVALUES):
-				{
-					char *s = "DefaultDataValues";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_SCALING):
-				{
-					char *s = "Scaling";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_LINKS):
-				{
-					char *s = "Links";
-					key_name = s;
-					break;
-				}
-
-				case(PARAM_VAL_DECIMALPLACES):
-				{
-					char *s = "DecimalPlaces";
-					key_name = s;
+					s_len = strlen(key_names[i]) + strlen(params_vals[params_val_idx]) + 6;
+					snprintf(s, s_len, "\"%s\":\"%s\"", key_names[i], params_vals[params_val_idx]);
+					++params_val_idx;
 					break;
 				}
 
 				default:
 				{
-					char *s = "Unknown";
-					key_name = s;
+					s_len = strlen(key_names[i]) + strlen(params_vals[params_val_idx]) + 7;
+					snprintf(s, s_len, "\"%s\":\"%s\",", key_names[i], params_vals[params_val_idx]);
+					++params_val_idx;
 					break;
 				}
+
 			}
 
-			// end of param - exit entirely
-			if(val_buf[i] == ';')
+			if(strlen(output_buf) + strlen(s) < output_buf_size)
 			{
-				done = true;
-				break;
+				strncat(output_buf, s, s_len);
 			}
 
-			// first pass - for EDS Params, the first value is always going to be Reserved
-			if(i == 0)
-			{
-				char s[12] = "\"Reserved\":\"";
-				strncat(output_buf, s, strlen(s));
-				
-				json_chars += 12;
-				++current_value;
-				continue;
-			}
-
-			// writing a value for a key
-			// how do we know? keep moving until we get to a comma. when at a comma, we know that we just ended
-			// a section.
-			if(i > 0 && val_buf[i-1] != ',')
-			{
-				// add the opening quotation mark
-				if(output_buf[json_chars-1] == ':')
-				{
-					output_buf[json_chars] = '\"';
-					++json_chars;
-				}
-
-				// strip out unwanted quotation marks
-				if(val_buf[i-1] != '"')
-				{
-					output_buf[json_chars] = val_buf[i-1];
-			 		++json_chars;
-				}
-
-				continue;
-			}
-
-			// writing a new section
-			if(i > 0 && val_buf[i-1] == ',')
-			{
-
-				++current_value;
-
-				// previous section wasn't null, so the terminating comma needs to be added here				
-				if(output_buf[json_chars-1] != ',')
-				{
-					size_t s_size = strlen(key_name) + 6;
-					char s[s_size];
-					memset(s, sizeof(char)*s_size, 0);
-
-					snprintf(s, s_size, "\",\"%s\":", key_name);
-					strncat(output_buf, s, strlen(s));
-					json_chars += (strlen(s));
-				}
-
-				// if the previous section was null, the null section handler added the trailing comma
-				else
-				{
-					size_t s_size = strlen(key_name) + 4;
-					char s[s_size];
-					memset(s, sizeof(char)*s_size, 0);
-
-					snprintf(s, s_size, "\"%s\":", key_name);
-					strncat(output_buf, s, strlen(s));
-					json_chars += (strlen(s));
-				}
-				
-				//continue;
-			}
-
-			// section is empty, so write the value as null
-			if(i > 0 && val_buf[i-1] == ',' && val_buf[i] == ',')
-			{
-				char *s = "\"null\",";
-				strncat(output_buf, s, strlen(s));
-
-				json_chars += (strlen(s));
-				continue;
-			}
+			json_chars += s_len-1;
 		}
 
-		// for loop is done - null terminate and return
-		if(done)
-		{
-			output_buf[json_chars-1] = '\0';
-			return json_chars-1;
-		}
+		return json_chars;
 	}
 
 	// default - there are no special rules for handling this section, so return 0
