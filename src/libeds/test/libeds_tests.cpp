@@ -33,11 +33,11 @@
 
 extern "C" 
 {
-	ERR_LIBEDS_t _parsing_factory_comma_delimited_toJSON(const PARSABLE_EDS_SECTIONS_t type, 
-														const char * const val_buf, 
-														char * const output_buf,
-														const size_t output_buf_size,
-														size_t *json_chars);
+	ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type, 
+											const char * const val_buf, 
+											char * const output_buf,
+											const size_t output_buf_size,
+											size_t *json_chars);
 }
 
 namespace 
@@ -168,7 +168,7 @@ namespace
         ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
-	TEST(libedsTests, convert_section2json_file_section)
+	TEST(libedsTests, convert_section2json_file_section_toJSON)
 	{
 		char eds_path[] = TEST_EDS_PATH1;
 
@@ -198,7 +198,7 @@ namespace
         ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
-	TEST(libedsTests, convert_section2json_device_section)
+	TEST(libedsTests, convert_section2json_device_section_toJSON)
 	{
 		char eds_path[] = TEST_EDS_PATH2;
 
@@ -243,7 +243,7 @@ namespace
         ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
-	TEST(libedsTests, convert_section2json_specrules_edsparams)
+	TEST(libedsTests, convert_section2json_comma_value_parsing_param)
 	{
 
 		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n";
@@ -258,28 +258,34 @@ namespace
 		size_t output_buf_size = 4096;
 		char output_buf[output_buf_size] = {0};
 
-       	ERR_LIBEDS_t err = _parsing_factory_comma_delimited_toJSON(EDS_PARAMS, input, output_buf, output_buf_size, &output_json_chars);
+       	ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_PARAM, input, output_buf, output_buf_size, &output_json_chars);
 
        	ASSERT_STREQ(good_json, output_buf);
        	ASSERT_EQ(good_json_chars, output_json_chars);
        	ASSERT_EQ(0, err);
 	}
-}
 
-TEST(libedsTests, convert_section2json_specrules_bad_input)
-{
-	const char *input = "foobar";
-	size_t output_json_chars = 0;
-	size_t output_buf_size = 4096;
-	char output_buf[output_buf_size] = {0};
+	TEST(libedsTests, convert_section2json_comma_value_parsing_bad_input)
+	{
+		const char *input = "foobar";
+		size_t output_json_chars = 0;
+		size_t output_buf_size = 4096;
+		char output_buf[output_buf_size] = {0};
 
-	// this should catch an invalid string going in
-	ERR_LIBEDS_t err = _parsing_factory_comma_delimited_toJSON(EDS_PARAMS, input, output_buf, output_buf_size, &output_json_chars);
-	ASSERT_EQ(output_json_chars, 300);
+		// this should catch an invalid string going in
+		// this is fine as we just return a properly formatted JSON object for the param with no values
+		ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_PARAM, input, output_buf, output_buf_size, &output_json_chars);
+		ASSERT_EQ(output_json_chars, 300);
 
-	//this should test a weird type
-	err = _parsing_factory_comma_delimited_toJSON((PARSABLE_EDS_SECTIONS_t)56546151, input, output_buf, output_buf_size, &output_json_chars);
-	ASSERT_EQ(output_json_chars, 0);
+		//this should test a weird type
+		err = _parse_comma_delimited_val((SPECIAL_DATA_TYPES_t)56546151, input, output_buf, output_buf_size, &output_json_chars);
+		ASSERT_EQ(output_json_chars, 0);
+	}
+
+	TEST(libedsTests, convert_section2json_params_section_toJSON)
+	{
+		ASSERT_EQ(0,0);
+	}
 }
 
 int main(int argc, char **argv)

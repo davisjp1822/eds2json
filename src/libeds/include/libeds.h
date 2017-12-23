@@ -37,6 +37,9 @@
 // used to store larger strings (such as the Params section)
 #define MED_BUF 100000
 
+// the length of the longest EDS Section name string
+#define EDS_SECTION_NAME_LEN 32
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -76,6 +79,22 @@ typedef enum
 	EDS_ETHERNET_LINK_CLASS
 } PARSABLE_EDS_SECTIONS_t;
 
+/**
+ * 
+ * @brief Certain data types require special processing for their value strings.
+ *
+ * The types below - as returned by _parsing_factory_colon_delimited_toJSON() - tell
+ * the following _parsing_factory functions whether or not additional parsing needs to be done before
+ * returning a complete JSON string to the caller.
+ *
+ */ 
+typedef enum
+{
+	DATATYPE_SPEC_NONE,
+	DATATYPE_SPEC_PARAM,
+	DATATYPE_SPEC_ENUM
+} SPECIAL_DATA_TYPES_t;
+
 
 /**
  * @brief Converts an EDS file created by EZ-EDS to a JSON object.
@@ -91,7 +110,10 @@ typedef enum
  *
  */
 
-ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const json_array, const size_t json_array_size);
+ERR_LIBEDS_t convert_eds2json(const char * 
+								const eds_file_path, 
+								char * const json_array, 
+								const size_t json_array_size);
 
 /**
 * 
@@ -116,10 +138,10 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, char * const jso
 *
 */
 ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type, 
-						const char * const input_buf, 
-						char * const output_buf, 
-						const size_t output_buf_size,
-						size_t * const num_json_chars);
+									const char * const input_buf, 
+									char * const output_buf, 
+									const size_t output_buf_size,
+									size_t * const num_json_chars);
 
 /** 
  * @ brief Returns a human readable string for error code err_code.
