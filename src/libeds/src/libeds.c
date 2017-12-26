@@ -355,11 +355,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 											char * const output_buf,
 											const size_t output_buf_size,
 											size_t *json_chars)
-{
-
-	// all modes of operation will report back the number of json chars in the section
-	size_t jchars = 0;
-	
+{	
 	/**
 	*
 	* The Params section switches to using comma delimiters for the individual params.
@@ -378,6 +374,8 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 		int32_t val_string_idx = 0;
 
 		size_t i = 0;
+
+		bool output_buf_overflowed = false;
 
 		const char *key_names[] = {
 									"Reserved", 
@@ -431,7 +429,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 
 					else
 					{
-						return ERR_OBUFF;
+						output_buf_overflowed = true;
 					}
 					
 				}
@@ -472,7 +470,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 
 					else
 					{
-						return ERR_OBUFF;
+						output_buf_overflowed = true;
 					}
 				}
 
@@ -535,7 +533,6 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 					++params_val_idx;
 					break;
 				}
-
 			}
 
 			if(strlen(output_buf) + strlen(s) < output_buf_size)
@@ -545,23 +542,166 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 
 			else
 			{	
-				jchars = 0;
-				return ERR_OBUFF;
+				output_buf_overflowed = true;
 			}
 
-			jchars += s_len-1;
+			//*json_chars += 10;
+			*json_chars += strlen(s);
 		}
 
 		// no error, return 0
-		*json_chars = jchars;
-		return 0;
+		if(output_buf_overflowed)
+		{
+			return ERR_OBUFF;
+		}
+	}
+
+	else if(type == DATATYPE_SPEC_ENUM)
+	{
+		size_t i = 0;
+		size_t output_buf_idx = 0;
+		bool reading_bit_desc = false;
+		bool output_buf_overflowed = false;
+
+		for(i=0; i < strlen(val_buf); i++)
+		{
+			// data - append to output_buf (assuming it is large enough), and ignore certain characters
+			if(val_buf[i] != ',')
+			{
+				// first pass, start with an opening quotation mark
+				if(i == 0)
+				{
+					if(output_buf_idx+1 < output_buf_size)
+					{
+						output_buf[output_buf_idx] = '"';
+						++output_buf_idx;
+						++*json_chars;
+					}
+
+					else
+					{	
+						++*json_chars;
+						output_buf_overflowed = true;
+					}
+				}
+
+				if(val_buf[i] != '"' && val_buf[i] != '\n')
+				{
+					if(output_buf_idx+1 < output_buf_size)
+					{
+						output_buf[output_buf_idx] = val_buf[i];
+						++output_buf_idx;
+						++*json_chars;
+					}
+
+					else
+					{	
+						++*json_chars;
+						output_buf_overflowed = true;
+					}
+
+				}
+			}
+
+			// first comma, this splits the difference between the bit value and the bit desc
+			else if(val_buf[i] == ',' && reading_bit_desc == false)
+			{
+				reading_bit_desc = true;
+
+				if(output_buf_idx+3 < output_buf_size)
+				{
+					output_buf[output_buf_idx] = '"';
+					++output_buf_idx;
+
+					output_buf[output_buf_idx] = ':';
+					++output_buf_idx;
+
+					output_buf[output_buf_idx] = '"';
+					++output_buf_idx;
+
+					*json_chars += 3;
+				}
+
+				else
+				{	
+					*json_chars += 3;
+					output_buf_idx += 3;
+					output_buf_overflowed = true;
+				}
+			}
+
+			// second comma is the delimeter between values
+			else if(val_buf[i] == ',' && reading_bit_desc == true)
+			{
+				reading_bit_desc = false;
+
+				if(output_buf_idx+3 < output_buf_size)
+				{
+					output_buf[output_buf_idx] = '"';
+					++output_buf_idx;
+
+					output_buf[output_buf_idx] = ',';
+					++output_buf_idx;
+
+					output_buf[output_buf_idx] = '"';
+					++output_buf_idx;
+
+					*json_chars += 3;
+				}
+				
+				else
+				{	
+					*json_chars += 3;
+					output_buf_overflowed = true;
+				}
+			}
+
+			// unexpected character, this would be an error
+			else
+			{	
+				*json_chars = 0;
+				return ERR_PARSEFAIL;
+			}
+
+			// end of data - close the quotation mark for the last entry
+			// don't have to increment json_chars here as we are replacing the semicolon that was already
+			// in place (since we aren't ignoring semi-colons up top)
+			if(i == strlen(val_buf)-1 && !output_buf_overflowed)
+			{
+				if(strlen(output_buf)+1 < output_buf_size)
+				{
+					output_buf[output_buf_idx-1] = '"';
+					++output_buf_idx;
+				}
+
+				else
+				{	
+					++output_buf_idx;
+					output_buf_overflowed = true;
+				}
+			}
+		}
+
+		// if the output buffer was overflowed, report as such
+		// otherwise, return success
+		if(!output_buf_overflowed)
+		{
+			output_buf[strlen(output_buf)] = '\0';
+			return 0;
+		}
+
+		else
+		{
+			output_buf[strlen(output_buf)] = '\0';
+			return ERR_OBUFF;
+		}
 	}
 
 	// default - there are no special rules for handling this section, so set json_chars to 0 and return
 	else
 	{
 		*json_chars = 0;
-		return 0;
+		return ERR_PARSEFAIL;
 	}
 
 	// should never reach here
@@ -579,6 +719,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 	int32_t key_i = 0;
 	int32_t val_i = 0;
 	bool output_buf_overflowed = false;
+	SPECIAL_DATA_TYPES_t spec_type = DATATYPE_SPEC_NONE;
 
 	//if storing_val is false, we are parsing a key. false? parsing a value
 	bool storing_val = false;
@@ -641,12 +782,16 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 		// also, update json_chars
 		if(write_pair)
 		{
-			// check the key to see if it is one of the types that requires special processing
-			if(strncmp(key_buf, "Param", 5) == 0)
+
+			// check the key to see if it is one of the types that requires special processing	
+			strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
+			strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
+
+			if(spec_type != DATATYPE_SPEC_NONE)
 			{
 				char alternate_val_buf[VAL_BUF_LEN] = {0};
 
-				ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_PARAM, 
+				ERR_LIBEDS_t err = _parse_comma_delimited_val(spec_type, 
 													val_buf, 
 													alternate_val_buf, 
 													VAL_BUF_LEN, 

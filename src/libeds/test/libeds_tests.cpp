@@ -265,6 +265,72 @@ namespace
        	ASSERT_EQ(0, err);
 	}
 
+	TEST(libedsTests, convert_section2json_comma_value_parsing_param_buf_overrun)
+	{
+
+		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n";
+
+		const char *good_json = "\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\",\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\","
+								"\"Name\":\"CONFIGURATION WORD 0\",\"Units\":\"individual bit-fields\",\"HelpString\":\"Configuration Word 0\",\"DataValues\":{\"min\":\"null\","
+								"\"max\":\"null\",\"default\":\"1024\"},\"Scaling\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},"
+								"\"Links\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"DecimalPlaces\":\"0\"";
+
+		size_t good_json_chars = 420;
+        size_t output_json_chars = 0;
+		size_t output_buf_size = 5;
+		char output_buf[output_buf_size] = {0};
+
+       	ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_PARAM, input, output_buf, output_buf_size, &output_json_chars);
+
+       	ASSERT_EQ(good_json_chars, output_json_chars);
+       	ASSERT_EQ(1, err);
+	}
+
+	TEST(libedsTests, convert_section2json_comma_value_parsing_enum)
+	{
+		const char *input = "0,\"IN1 function bit 0\",1,\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\","
+							"4,\"IN2 function bit 1\",5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\","
+							"13,\"Enable Stall Detection\",14,\"Disable Antiresonance\";";
+
+		const char *good_json = "\"0\":\"IN1 function bit 0\",\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\","
+								"\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":\"IN2 function bit 2\","
+								"\"10\":\"Use Encoder\",\"11\":\"Use Backplane Proximity\",\"13\":\"Enable Stall Detection\","
+								"\"14\":\"Disable Antiresonance\"";
+
+		size_t good_json_chars = 258;
+		size_t output_json_chars = 0;
+		size_t output_buf_size = 4096;
+		char output_buf[output_buf_size] = {0};
+
+		ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_ENUM, input, output_buf, output_buf_size, &output_json_chars);
+
+       	ASSERT_STREQ(good_json, output_buf);
+       	ASSERT_EQ(good_json_chars, output_json_chars);
+       	ASSERT_EQ(0, err);
+	}
+
+	TEST(libedsTests, convert_section2json_comma_value_parsing_enum_buf_overrun)
+	{
+		const char *input = "0,\"IN1 function bit 0\",1,\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\","
+							"4,\"IN2 function bit 1\",5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\","
+							"13,\"Enable Stall Detection\",14,\"Disable Antiresonance\";";
+
+		const char *good_json = "\"0\":\"IN1 function bit 0\",\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\","
+								"\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":\"IN2 function bit 2\","
+								"\"10\":\"Use Encoder\",\"11\":\"Use Backplane Proximity\",\"13\":\"Enable Stall Detection\","
+								"\"14\":\"Disable Antiresonance\"";
+
+		size_t good_json_chars = 258;
+		size_t output_json_chars = 0;
+		size_t output_buf_size = 7;
+		char output_buf[output_buf_size] = {0};
+
+		ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_ENUM, input, output_buf, output_buf_size, &output_json_chars);
+
+       	ASSERT_EQ(good_json_chars, output_json_chars);
+       	ASSERT_EQ(1, err);
+	}
+
 	TEST(libedsTests, convert_section2json_comma_value_parsing_bad_input)
 	{
 		const char *input = "foobar";
@@ -275,11 +341,13 @@ namespace
 		// this should catch an invalid string going in
 		// this is fine as we just return a properly formatted JSON object for the param with no values
 		ERR_LIBEDS_t err = _parse_comma_delimited_val(DATATYPE_SPEC_PARAM, input, output_buf, output_buf_size, &output_json_chars);
+
 		ASSERT_EQ(output_json_chars, 300);
 
 		//this should test a weird type
 		err = _parse_comma_delimited_val((SPECIAL_DATA_TYPES_t)56546151, input, output_buf, output_buf_size, &output_json_chars);
 		ASSERT_EQ(output_json_chars, 0);
+		ASSERT_EQ(err, 2);
 	}
 
 	TEST(libedsTests, convert_section2json_params_section_toJSON)
