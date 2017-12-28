@@ -92,6 +92,12 @@ namespace
 		ASSERT_EQ(r, ERR_EDSFILEFAIL);
 	}
 
+	/*
+	 * 
+	 * Various section2json function checks - checking each section, essentially.
+	 *
+	 */
+
 	TEST(libedsTests, convert_section2json_output_buf_too_small)
 	{
 		char eds_path[] = TEST_EDS_PATH1;
@@ -243,10 +249,18 @@ namespace
         ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
+	/*
+	 * 
+	 * These tests are used with the Params section.
+	 * Various items are tested, including parsing the Param comma string as well
+	 * as the Enum comma string.
+	 *
+	 */
+
 	TEST(libedsTests, convert_section2json_comma_value_parsing_param)
 	{
 
-		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n";
+		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,";
 
 		const char *good_json = "\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\",\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\","
 								"\"Name\":\"CONFIGURATION WORD 0\",\"Units\":\"individual bit-fields\",\"HelpString\":\"Configuration Word 0\",\"DataValues\":{\"min\":\"null\","
@@ -268,7 +282,7 @@ namespace
 	TEST(libedsTests, convert_section2json_comma_value_parsing_param_buf_overrun)
 	{
 
-		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n";
+		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,";
 
 		const char *good_json = "\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\",\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\","
 								"\"Name\":\"CONFIGURATION WORD 0\",\"Units\":\"individual bit-fields\",\"HelpString\":\"Configuration Word 0\",\"DataValues\":{\"min\":\"null\","
@@ -288,9 +302,9 @@ namespace
 
 	TEST(libedsTests, convert_section2json_comma_value_parsing_enum)
 	{
-		const char *input = "0,\"IN1 function bit 0\",1,\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\","
-							"4,\"IN2 function bit 1\",5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\","
-							"13,\"Enable Stall Detection\",14,\"Disable Antiresonance\";";
+
+		const char *input = "0,IN1 function bit 0,1,IN1 function bit 1,2,IN1 function bit 2,3,IN2 function bit 0,4,IN2 function bit 1,5,IN2 function bit 2,10,"
+							"Use Encoder,11,Use Backplane Proximity,13,Enable Stall Detection,14,Disable Antiresonance";
 
 		const char *good_json = "\"0\":\"IN1 function bit 0\",\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\","
 								"\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":\"IN2 function bit 2\","
@@ -311,16 +325,16 @@ namespace
 
 	TEST(libedsTests, convert_section2json_comma_value_parsing_enum_buf_overrun)
 	{
-		const char *input = "0,\"IN1 function bit 0\",1,\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\","
-							"4,\"IN2 function bit 1\",5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\","
-							"13,\"Enable Stall Detection\",14,\"Disable Antiresonance\";";
+
+		const char *input = "0,IN1 function bit 0,1,IN1 function bit 1,2,IN1 function bit 2,3,IN2 function bit 0,4,IN2 function bit 1,5,IN2 function bit 2,10,"
+							"Use Encoder,11,Use Backplane Proximity,13,Enable Stall Detection,14,Disable Antiresonance";
 
 		const char *good_json = "\"0\":\"IN1 function bit 0\",\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\","
 								"\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":\"IN2 function bit 2\","
 								"\"10\":\"Use Encoder\",\"11\":\"Use Backplane Proximity\",\"13\":\"Enable Stall Detection\","
 								"\"14\":\"Disable Antiresonance\"";
 
-		size_t good_json_chars = 258;
+		size_t good_json_chars = 257;
 		size_t output_json_chars = 0;
 		size_t output_buf_size = 7;
 		char output_buf[output_buf_size] = {0};
@@ -352,7 +366,37 @@ namespace
 
 	TEST(libedsTests, convert_section2json_params_section_toJSON)
 	{
-		ASSERT_EQ(0,0);
+		const char *input = "Param1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
+							"Enum1=0,\"IN1 function bit 0\",1,"
+							"\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\",4,\"IN2 function bit 1\","
+							"5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\",13,"
+							"\"Enable Stall Detection\",14,\"Disable Antiresonance\";\nParam2=0,,,0x0000,0xD2,"
+							"2,\"CONFIGURATION WORD 1\",\"individual bit-fields\",\"Configuration Word 1\",,,771,"
+							",,,,,,,,;\n";
+
+		const char *good_json = "\"Params\":{\"Param1\":{\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\","
+									"\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\",\"Name\":\"CONFIGURATION WORD 0\",\"Units\":\"individual bit-fields\","
+									"\"HelpString\":\"Configuration Word 0\",\"DataValues\":{\"min\":\"null\",\"max\":\"null\",\"default\":\"1024\"},"
+									"\"Scaling\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"Links\":{\"mult\":\"null\","
+									"\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"DecimalPlaces\":\"0\",\"Enum1\":{\"0\":\"IN1 function bit 0\","
+									"\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\",\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":"
+									"\"IN2 function bit 2\",\"10\":\"Use Encoder\",\"11\":\"Use Backplane Proximity\",\"13\":\"Enable Stall Detection\",\"14\":"
+									"\"Disable Antiresonance\"}},\"Param2\":{\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\","
+									"\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\",\"Name\":\"CONFIGURATION WORD 1\",\"Units\":\"individual bit-fields\","
+									"\"HelpString\":\"Configuration Word 1\",\"DataValues\":{\"min\":\"null\",\"max\":\"null\",\"default\":\"771\"},"
+									"\"Scaling\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"Links\":{\"mult\":\"null\","
+									"\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"DecimalPlaces\":\"0\"}}";
+
+		size_t good_json_chars = 1142;
+		size_t output_json_chars = 0;
+		size_t output_buf_size = 2048;
+		char output_buf[output_buf_size] = {0};
+
+		ERR_LIBEDS_t err = convert_section2json(EDS_PARAMS, input, output_buf, output_buf_size, &output_json_chars);
+
+		ASSERT_STREQ(output_buf, good_json);
+		ASSERT_EQ(good_json_chars, output_json_chars);
+       	ASSERT_EQ(0, err);
 	}
 }
 

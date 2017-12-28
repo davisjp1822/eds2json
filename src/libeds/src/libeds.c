@@ -142,7 +142,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	// generic error var
 	ERR_LIBEDS_t err = 0;
 
-	// according to EZ-EDS the max value for keys and values is 30,000 characters , so we init some
+	// according to EZ-EDS the max value for keys and values is 30,000 characters, so we init some
 	// large buffers here...
 	char key_buf[KEY_BUF_LEN];
 	char val_buf[VAL_BUF_LEN];
@@ -350,6 +350,160 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 * Local Scope functions
 *
 ***********************/
+ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
+								char * const key_buf,
+								char * const val_buf,
+								char * const output_buf, 
+								const size_t output_buf_size,
+								size_t *json_chars)
+{
+	size_t i = 0;
+	int32_t key_i = 0;
+	int32_t val_i = 0;
+	bool output_buf_overflowed = false;
+	SPECIAL_DATA_TYPES_t spec_type = DATATYPE_SPEC_NONE;
+
+	//if storing_val is false, we are parsing a key. false? parsing a value
+	bool storing_val = false;
+	bool write_pair = false;
+
+	// now, actually do the parsing
+	for(i=0; i < strlen(input_buf); i++)
+	{
+		// if storing_val is false, that means that we have not found an = yet, so store to key_buf
+		if(!storing_val)
+		{
+			if(input_buf[i] != '=')
+			{
+				if(key_i < KEY_BUF_LEN)
+				{
+					key_buf[key_i] = input_buf[i];
+					++key_i;
+				}
+			}
+			else
+			{
+				storing_val = true;
+			}
+		}
+
+		// if storing_val is true, we are now storing a value
+		// include logic for skipping = and handling ;
+		else if(storing_val)
+		{
+			// if we reach the ; - set storing_val to false so that we start at the top and write out the pair to
+			// output_buf
+			if(input_buf[i] == ';' && input_buf[i+1] == '\n')
+			{	
+				storing_val = false;
+				write_pair = true;
+
+				// skip the newline char
+				++i;
+			}
+
+			// if not at the end of the line, keep reading
+			else
+			{
+				if(val_i < VAL_BUF_LEN)
+				{	
+					// avoid double quoting key values that are quoted in the EDS file
+					// we don't want to carry over the quotation marks from the EDS file, we provide
+					// them ourselves below
+					if(input_buf[i] != '"')
+					{
+						val_buf[val_i] = input_buf[i];
+						++val_i;
+					}
+				}
+			}
+		}
+
+		// once we get to the end, if write_pair was stored in "else if(storing_val)", format the key/value pair
+		// as format "key_buf:val_buf," and append to output_buf.
+		// also, update json_chars
+		if(write_pair)
+		{
+
+			// check the key to see if it is one of the types that requires special processing	
+			strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
+			strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
+
+			if(spec_type != DATATYPE_SPEC_NONE)
+			{
+				char alternate_val_buf[VAL_BUF_LEN] = {0};
+
+				ERR_LIBEDS_t err = _parse_comma_delimited_val(spec_type, 
+													val_buf, 
+													alternate_val_buf, 
+													VAL_BUF_LEN, 
+													json_chars);
+
+				printf(stdout, "Foo");
+
+				// if there is no error, set the actual val_buf to the alternate val_buf
+				if(err != 0)
+				{
+					*json_chars += *json_chars;
+					return err;
+				}
+
+				else
+				{
+					memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
+					snprintf(val_buf, strlen(alternate_val_buf), "%s", alternate_val_buf);
+					printf(stdout, "Foo");
+				}
+
+				printf(stdout, "Foo");
+			}
+
+			// the 7 is for the escape chars for the quotes around the key and value, ':', and ending ',', plus \0
+			size_t len = strlen(key_buf) + strlen(val_buf) + 7;
+			char temp[len];
+			memset(temp, 0, len*sizeof(char));
+
+			// create and copy the JSON to temp
+			snprintf(temp, len, "\"%s\":\"%s\",", key_buf, val_buf);
+
+			// check to see if output_buf is large enough to hold the data 
+			if(strlen(temp) < output_buf_size)
+			{
+				strncat(output_buf, temp, strlen(temp));
+				*json_chars += strlen(temp);
+			}
+
+			// if output_buf won't hold the string, update json_chars but don't copy
+			// also set a flag saying that we are overflowed, so that we return properly
+			else
+			{
+				*json_chars += strlen(temp);
+				output_buf_overflowed = true;
+			}
+
+			// reset all variables for key:value
+			memset(key_buf, 0, KEY_BUF_LEN*sizeof(char));
+			memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
+			key_i = 0;
+			val_i = 0;
+
+			write_pair = false;
+			storing_val = false;
+		}
+	}
+
+	// if the loop did overflow, notify the caller
+	if(output_buf_overflowed)
+	{
+		return ERR_OBUFF;
+	}
+
+	else
+	{
+		return 0;
+	}
+}
+
 ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type, 
 											const char * const val_buf, 
 											char * const output_buf,
@@ -447,11 +601,11 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 				// also, look for a semicolon as this would indicate that we are at the end of the value
 				// and need to handle a null value in this case as well.
 				// ... then, record this value as "null"
-				if(val_buf[i+1] == ',' || val_buf[i+1] == ';')
+				if(val_buf[i+1] == ',' || val_buf[i+1] == '\0')
 				{
 					char *s = 0;
 
-					if(val_buf[i+1] == ';')
+					if(val_buf[i+1] == '\0')
 					{
 						char ss[] = "0";
 						s = ss;
@@ -482,7 +636,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 			}
 
 			// stop parsing when we see a semicolon
-			else if(val_buf[i] == ';')
+			else if(val_buf[i] == '\0')
 			{
 				break;
 			}
@@ -545,7 +699,6 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 				output_buf_overflowed = true;
 			}
 
-			//*json_chars += 10;
 			*json_chars += strlen(s);
 		}
 
@@ -553,6 +706,11 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 		if(output_buf_overflowed)
 		{
 			return ERR_OBUFF;
+		}
+		else
+		{
+			printf(stdout, "foo!");
+			return 0;
 		}
 	}
 
@@ -670,7 +828,8 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 			{
 				if(strlen(output_buf)+1 < output_buf_size)
 				{
-					output_buf[output_buf_idx-1] = '"';
+					output_buf[output_buf_idx] = '"';
+					++*json_chars;
 					++output_buf_idx;
 				}
 
@@ -706,152 +865,4 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 
 	// should never reach here
 	return 0;
-}
-
-ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
-								char * const key_buf,
-								char *val_buf,
-								char * const output_buf, 
-								const size_t output_buf_size,
-								size_t *json_chars)
-{
-	size_t i = 0;
-	int32_t key_i = 0;
-	int32_t val_i = 0;
-	bool output_buf_overflowed = false;
-	SPECIAL_DATA_TYPES_t spec_type = DATATYPE_SPEC_NONE;
-
-	//if storing_val is false, we are parsing a key. false? parsing a value
-	bool storing_val = false;
-	bool write_pair = false;
-
-	// now, actually do the parsing
-	for(i=0; i < strlen(input_buf); i++)
-	{
-		// if storing_val is false, that means that we have not found an = yet, so store to key_buf
-		if(!storing_val)
-		{
-			if(input_buf[i] != '=')
-			{
-				if(key_i < KEY_BUF_LEN)
-				{
-					key_buf[key_i] = input_buf[i];
-					++key_i;
-				}
-			}
-			else
-			{
-				storing_val = true;
-			}
-		}
-
-		// if storing_val is true, we are now storing a value
-		// include logic for skipping = and handling ;
-		else if(storing_val)
-		{
-			// if we reach the ; - set storing_val to false so that we start at the top and write out the pair to
-			// output_buf
-			if(input_buf[i] == ';' && input_buf[i+1] == '\n')
-			{	
-				storing_val = false;
-				write_pair = true;
-
-				// skip the newline char
-				i++;
-			}
-
-			// if not at the end of the line, keep reading
-			else
-			{
-				if(val_i < VAL_BUF_LEN)
-				{	
-					// avoid double quoting key values that are quoted in the EDS file
-					// we don't want to carry over the quotation marks from the EDS file, we provide
-					// them ourselves below
-					if(input_buf[i] != '"')
-					{
-						val_buf[val_i] = input_buf[i];
-						++val_i;
-					}
-				}
-			}
-		}
-
-		// once we get to the end, if write_pair was stored in "else if(storing_val)", format the key/value pair
-		// as format "key_buf:val_buf," and append to output_buf.
-		// also, update json_chars
-		if(write_pair)
-		{
-
-			// check the key to see if it is one of the types that requires special processing	
-			strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
-			strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
-
-			if(spec_type != DATATYPE_SPEC_NONE)
-			{
-				char alternate_val_buf[VAL_BUF_LEN] = {0};
-
-				ERR_LIBEDS_t err = _parse_comma_delimited_val(spec_type, 
-													val_buf, 
-													alternate_val_buf, 
-													VAL_BUF_LEN, 
-													json_chars);
-
-				// if there is no error, set the actual val_buf to the alternate val_buf
-				if(err != 0)
-				{
-					*json_chars += *json_chars;
-					return err;
-				}
-
-				else
-				{
-					val_buf = alternate_val_buf;
-				}
-			}
-
-			// the 7 is for the escape chars for the quotes around the key and value, ':', and ending ',', plus \0
-			size_t len = strlen(key_buf) + strlen(val_buf) + 7;
-			char temp[len];
-			memset(temp, 0, len*sizeof(char));
-
-			// create and copy the JSON to temp
-			snprintf(temp, len, "\"%s\":\"%s\",", key_buf, val_buf);
-
-			// check to see if output_buf is large enough to hold the data 
-			if(strlen(temp) < output_buf_size)
-			{
-				strncat(output_buf, temp, strlen(temp));
-				*json_chars += strlen(temp);
-			}
-
-			// if output_buf won't hold the string, update json_chars but don't copy
-			// also set a flag saying that we are overflowed, so that we return properly
-			else
-			{
-				*json_chars += strlen(temp);
-				output_buf_overflowed = true;
-			}
-
-			// reset all variables for key:value
-			memset(key_buf, 0, KEY_BUF_LEN*sizeof(char));
-			memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
-			key_i = 0;
-			val_i = 0;
-
-			write_pair = false;
-			storing_val = false;
-		}
-	}
-
-	// if the loop did overflow, notify the caller
-	if(output_buf_overflowed)
-	{
-		return ERR_OBUFF;
-	}
-
-	else
-	{
-		return 0;
-	}
 }
