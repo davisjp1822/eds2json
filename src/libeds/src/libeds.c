@@ -439,8 +439,6 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 													VAL_BUF_LEN, 
 													json_chars);
 
-				printf(stdout, "Foo");
-
 				// if there is no error, set the actual val_buf to the alternate val_buf
 				if(err != 0)
 				{
@@ -452,10 +450,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 				{
 					memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
 					snprintf(val_buf, VAL_BUF_LEN, "%s", alternate_val_buf);
-					printf(stdout, "Foo");
 				}
-
-				printf(stdout, "Foo");
 			}
 
 			// the 7 is for the escape chars for the quotes around the key and value, ':', and ending ',', plus \0
@@ -710,7 +705,6 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 		}
 		else
 		{
-			printf(stdout, "foo!");
 			return 0;
 		}
 	}
