@@ -453,14 +453,14 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 				}
 			}
 
-			// the 7 is for the escape chars for the quotes around the key and value, ':', and ending ',', plus \0
+			// the 9 is for the escape chars for the quotes around the key and value, ':', and ending ',', {}'s, plus \0
 			size_t len = strlen(key_buf) + strlen(val_buf) + 7;
 			char temp[len];
 			memset(temp, 0, len*sizeof(char));
 
 			// create and copy the JSON to temp
 			// +2 is for the braces around the value
-			snprintf(temp, len+2, "\"%s\":{%s},", key_buf, val_buf);
+			snprintf(temp, len, "\"%s\":{%s},", key_buf, val_buf);
 
 			// check to see if output_buf is large enough to hold the data 
 			if(strlen(temp) < output_buf_size)
