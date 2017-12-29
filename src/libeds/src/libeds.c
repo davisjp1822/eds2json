@@ -451,7 +451,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 				else
 				{
 					memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
-					snprintf(val_buf, strlen(alternate_val_buf), "%s", alternate_val_buf);
+					snprintf(val_buf, VAL_BUF_LEN, "%s", alternate_val_buf);
 					printf(stdout, "Foo");
 				}
 
@@ -464,7 +464,8 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 			memset(temp, 0, len*sizeof(char));
 
 			// create and copy the JSON to temp
-			snprintf(temp, len, "\"%s\":\"%s\",", key_buf, val_buf);
+			// +2 is for the braces around the value
+			snprintf(temp, len+2, "\"%s\":{%s},", key_buf, val_buf);
 
 			// check to see if output_buf is large enough to hold the data 
 			if(strlen(temp) < output_buf_size)
