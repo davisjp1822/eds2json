@@ -414,7 +414,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 					// avoid double quoting key values that are quoted in the EDS file
 					// we don't want to carry over the quotation marks from the EDS file, we provide
 					// them ourselves below
-					if(input_buf[i] != '"')
+					if(input_buf[i] != '"' && input_buf[i] != '\n')
 					{
 						val_buf[val_i] = input_buf[i];
 						++val_i;
