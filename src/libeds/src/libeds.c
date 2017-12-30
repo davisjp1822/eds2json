@@ -250,6 +250,7 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	 */
 	snprintf(section_name, EDS_SECTION_NAME_LEN, "\"%s\":{", section_key);
 
+	// test buffer size here. if this fails, continue, b/c we still want to return the proper number of json chars
 	if(output_buf_size > strlen(section_name))
 	{
 		strncat(output_buf, section_name, EDS_SECTION_NAME_LEN);
@@ -363,6 +364,9 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 	bool output_buf_overflowed = false;
 	SPECIAL_DATA_TYPES_t spec_type = DATATYPE_SPEC_NONE;
 
+	// this needs to be large enough to hold a full length key:val + 10 JSON chars that are added in write_pair
+	char temp_out_buf[VAL_BUF_LEN+KEY_BUF_LEN+10] = {0};
+
 	//if storing_val is false, we are parsing a key. false? parsing a value
 	bool storing_val = false;
 	bool write_pair = false;
@@ -429,64 +433,101 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 			strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
 			strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
 
-			if(spec_type != DATATYPE_SPEC_NONE)
+			switch(spec_type)
 			{
-				char alternate_val_buf[VAL_BUF_LEN] = {0};
-
-				ERR_LIBEDS_t err = _parse_comma_delimited_val(spec_type, 
-													val_buf, 
-													alternate_val_buf, 
-													VAL_BUF_LEN, 
-													json_chars);
-
-				// if there is no error, set the actual val_buf to the alternate val_buf
-				if(err != 0)
+				case(DATATYPE_SPEC_NONE):
 				{
-					*json_chars += *json_chars;
-					return err;
+					snprintf(temp_out_buf, sizeof(temp_out_buf)-1, "\"%s\":\"%s\",", key_buf, val_buf);
+					break;
+				}
+
+				case(DATATYPE_SPEC_ENUM):
+				{	
+					// do some parsing first to get the correctly parsed value
+					char alt_val_buf[VAL_BUF_LEN] = {0};
+					size_t j = 0;
+
+					ERR_LIBEDS_t err = _parse_comma_delimited_val(spec_type, 
+													val_buf, 
+													alt_val_buf, 
+													VAL_BUF_LEN, 
+													&j);
+
+					if(err == 0)
+					{
+						snprintf(temp_out_buf, sizeof(temp_out_buf)-1, ",\"%s\":{%s}},", key_buf, alt_val_buf);
+					}
+					else
+					{
+						return err;
+					}
+				
+					break;
+				}
+
+				case(DATATYPE_SPEC_PARAM):
+				{	
+					// do some parsing first to get the correctly parsed value
+					char alt_val_buf[VAL_BUF_LEN] = {0};
+					size_t j = 0;
+
+					ERR_LIBEDS_t err = _parse_comma_delimited_val(spec_type, 
+													val_buf, 
+													alt_val_buf, 
+													VAL_BUF_LEN, 
+													&j);
+
+					if(err == 0)
+					{
+						snprintf(temp_out_buf, sizeof(temp_out_buf)-1, "\"%s\":{%s},", key_buf, alt_val_buf);
+					}
+					else
+					{
+						return err;
+					}
+
+					break;
+				}
+
+				default:
+				{
+					return ERR_EDSFILEFAIL;
+				}
+			}
+
+			// check to see if output_buf is large enough to hold the data 
+			if((strlen(temp_out_buf) + strlen(output_buf)) < output_buf_size)
+			{
+				// to make the enum data part of the param object, offset it back two chars to remove the closing } of the 
+				// preceeding Param. The extra formatting above takes care of making this valid JSON.
+				if(spec_type == DATATYPE_SPEC_ENUM)
+				{
+					memcpy(output_buf+(strlen(output_buf)-2), temp_out_buf, strlen(temp_out_buf));
+					
+					// since we are moving back the enum string, remove 2 chars from the JSON count
+					*json_chars -= 2;
 				}
 
 				else
 				{
-					memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
-					snprintf(val_buf, VAL_BUF_LEN, "%s", alternate_val_buf);
+					strncat(output_buf, temp_out_buf, strlen(temp_out_buf));
 				}
-			}
-
-			// the 9 is for the escape chars for the quotes around the key and value, ':', and ending ',', {}'s, plus \0
-			size_t len = strlen(key_buf) + strlen(val_buf) + 9;
-			char temp[len];
-			memset(temp, 0, len*sizeof(char));
-
-			// create and copy the JSON to temp
-			if(spec_type == DATATYPE_SPEC_NONE)
-			{
-				snprintf(temp, len, "\"%s\":\"%s\",", key_buf, val_buf);
-			}
-
-			else
-			{
-				snprintf(temp, len, "\"%s\":{%s},", key_buf, val_buf);
-			}
-
-			// check to see if output_buf is large enough to hold the data 
-			if(strlen(temp) < output_buf_size)
-			{
-				strncat(output_buf, temp, strlen(temp));
-				*json_chars += strlen(temp);
+				
+				*json_chars += strlen(temp_out_buf);
 			}
 
 			// if output_buf won't hold the string, update json_chars but don't copy
 			// also set a flag saying that we are overflowed, so that we return properly
 			else
 			{
-				*json_chars += strlen(temp);
+				*json_chars += strlen(temp_out_buf);
 				output_buf_overflowed = true;
 			}
 
-			// reset all variables for key:value
+			// reset all variables
 			memset(key_buf, 0, KEY_BUF_LEN*sizeof(char));
 			memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
+			memset(temp_out_buf, 0, VAL_BUF_LEN*sizeof(char));
 			key_i = 0;
 			val_i = 0;
 
@@ -499,7 +540,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 	if(output_buf_overflowed)
 	{
 		return ERR_OBUFF;
-	}
+	}	
 
 	else
 	{

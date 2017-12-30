@@ -110,10 +110,10 @@ namespace
         char output_buf[7] = {0};
         size_t output_json_chars = 0;
 
-         ERR_LIBEDS_t err = convert_section2json(EDS_FILE, input, output_buf, 7, &output_json_chars);
+        ERR_LIBEDS_t err = convert_section2json(EDS_FILE, input, output_buf, 7, &output_json_chars);
 
-         ASSERT_EQ(1, err);
-         ASSERT_EQ(good_json_chars, output_json_chars);
+        ASSERT_EQ(1, err);
+        ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
 	TEST(libedsTests, convert_section2json_unknown_section)
