@@ -364,6 +364,40 @@ namespace
 		ASSERT_EQ(err, 2);
 	}
 
+	TEST(libedsTests, convert_section2json_params_section_toJSON_buf_overflow)
+	{
+		const char *input = "Param1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
+							"Enum1=0,\"IN1 function bit 0\",1,"
+							"\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\",4,\"IN2 function bit 1\","
+							"5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\",13,"
+							"\"Enable Stall Detection\",14,\"Disable Antiresonance\";\nParam2=0,,,0x0000,0xD2,"
+							"2,\"CONFIGURATION WORD 1\",\"individual bit-fields\",\"Configuration Word 1\",,,771,"
+							",,,,,,,,;\n";
+
+		const char *good_json = "\"Params\":{\"Param1\":{\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\","
+									"\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\",\"Name\":\"CONFIGURATION WORD 0\",\"Units\":\"individual bit-fields\","
+									"\"HelpString\":\"Configuration Word 0\",\"DataValues\":{\"min\":\"null\",\"max\":\"null\",\"default\":\"1024\"},"
+									"\"Scaling\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"Links\":{\"mult\":\"null\","
+									"\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"DecimalPlaces\":\"0\",\"Enum1\":{\"0\":\"IN1 function bit 0\","
+									"\"1\":\"IN1 function bit 1\",\"2\":\"IN1 function bit 2\",\"3\":\"IN2 function bit 0\",\"4\":\"IN2 function bit 1\",\"5\":"
+									"\"IN2 function bit 2\",\"10\":\"Use Encoder\",\"11\":\"Use Backplane Proximity\",\"13\":\"Enable Stall Detection\",\"14\":"
+									"\"Disable Antiresonance\"}},\"Param2\":{\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\","
+									"\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\",\"Name\":\"CONFIGURATION WORD 1\",\"Units\":\"individual bit-fields\","
+									"\"HelpString\":\"Configuration Word 1\",\"DataValues\":{\"min\":\"null\",\"max\":\"null\",\"default\":\"771\"},"
+									"\"Scaling\":{\"mult\":\"null\",\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"Links\":{\"mult\":\"null\","
+									"\"div\":\"null\",\"base\":\"null\",\"offset\":\"null\"},\"DecimalPlaces\":\"0\"}}";
+
+		size_t good_json_chars = 1142;
+		size_t output_json_chars = 0;
+		size_t output_buf_size = 1142;
+		char output_buf[output_buf_size] = {0};
+
+		ERR_LIBEDS_t err = convert_section2json(EDS_PARAMS, input, output_buf, output_buf_size, &output_json_chars);
+
+		ASSERT_EQ(good_json_chars, output_json_chars);
+       	ASSERT_EQ(1, err);
+	}
+
 	TEST(libedsTests, convert_section2json_params_section_toJSON)
 	{
 		const char *input = "Param1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
