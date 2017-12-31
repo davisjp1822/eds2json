@@ -283,9 +283,9 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 						{
 							//strncat(json_array, section_name_buf, strlen(section_name_buf));
 							//strncat(json_array, section_data_buf, strlen(section_data_buf));
-							PARSABLE_EDS_SECTIONS_t s_type = _section_enum_from_section_name(section_name_buf);
+							section_type = _section_enum_from_section_name(section_name_buf);
 
-							ERR_LIBEDS_t err = convert_section2json(s_type, section_data_buf, json_array, json_array_size, json_chars);
+							ERR_LIBEDS_t err = convert_section2json(section_type, section_data_buf, json_array, json_array_size, json_chars);
 
 							if(err != 0)
 							{
@@ -303,6 +303,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 						memset(section_data_buf, 0, LARGE_BUF*sizeof(char));
 						section_name_buf_idx = 0;
 						section_data_buf_idx = 0;
+						section_type = EDS_FILE;
 
 						current_state = eds_file_parsing_section_name;
 						break;
@@ -322,6 +323,46 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 						break;
 					}
 
+					// always insert a newline after a ; (if there isn't already one)
+					case(';'):
+					{
+						size_t idx = 0;
+						if(section_data_buf_idx > 0)
+						{
+							++idx;
+						}
+
+						if(section_data_buf[section_data_buf_idx-idx] == '\n')
+						{
+							break;
+						}
+
+						else
+						{
+							if(strlen(section_data_buf)+2 < LARGE_BUF)
+							{
+								section_data_buf[section_data_buf_idx] = ';';
+								++section_data_buf_idx;
+
+								section_data_buf[section_data_buf_idx] = '\n';
+								++section_data_buf_idx;
+							}
+							else
+							{
+								output_buf_overflowed = true;
+							}
+						}
+
+						current_state = eds_file_parsing_section_contents;
+						break;
+					}
+
+					// new lines only come after a ;
+					case('\n'):
+					{
+						break;
+					}
+
 					// ignore these characters
 					case('\r'):
 					case('\t'):
@@ -335,28 +376,55 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 						// if c is a space, but outside of quotes, then ignore it
 						if(c != ' ')
 						{
+							if(strlen(section_data_buf)+1 < LARGE_BUF)
+							{
+								section_data_buf[section_data_buf_idx] = c;
+								++section_data_buf_idx;
+							}
+							else
+							{
+								output_buf_overflowed = true;
+							}
+
+							current_state = eds_file_parsing_section_contents;
+							break;
+
 							// remove blank lines
-							if(strlen(section_data_buf) > 0 
+							/*if(section_data_buf_idx > 0 
 								&& section_data_buf[section_data_buf_idx-1] == '\n'
 								&& c == '\n')
 							{
 								break;
 							}
+
+							// if the last character is not a ;, there shouldn't be a newline
+							else if(section_data_buf_idx > 0 
+								&& section_data_buf[section_data_buf_idx-1] == ','
+								&& c == '\n')
+							{
+								break;
+							}
+
+							// remove newline after = sign
+							else if(section_data_buf_idx > 0 
+								&& section_data_buf[section_data_buf_idx-1] == '='
+								&& c == '\n')
+							{
+								break;
+							}
+
+							if(strlen(section_data_buf)+1 < LARGE_BUF)
+							{
+								section_data_buf[section_data_buf_idx] = c;
+								++section_data_buf_idx;
+							}
 							else
 							{
-								if(strlen(section_data_buf)+1 < LARGE_BUF)
-								{
-									section_data_buf[section_data_buf_idx] = c;
-									++section_data_buf_idx;
-								}
-								else
-								{
-									output_buf_overflowed = true;
-								}
+								output_buf_overflowed = true;
 							}
 
 							current_state = eds_file_parsing_section_contents;
-							break;
+							break;*/
 						}
 
 						else
@@ -1246,7 +1314,7 @@ PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const secti
 
 	for(i=0; i< len; i++)
 	{
-		int8_t result = strncmp(eds_parsable_section_names[i], section_name, strlen(eds_parsable_section_names[i]));
+		int8_t result = strncmp(eds_parsable_section_names[i], section_name, strlen(section_name));
 
 		if(result == 0)
 		{

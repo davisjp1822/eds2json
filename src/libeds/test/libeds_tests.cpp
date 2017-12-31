@@ -394,7 +394,7 @@ namespace
 
 	TEST(libedsTests, convert_section2json_params_section_toJSON_buf_overflow)
 	{
-		const char *input = "Param1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
+		const char *input = "\nParam1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
 							"Enum1=0,\"IN1 function bit 0\",1,"
 							"\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\",4,\"IN2 function bit 1\","
 							"5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\",13,"
@@ -428,7 +428,7 @@ namespace
 
 	TEST(libedsTests, convert_section2json_params_section_toJSON)
 	{
-		const char *input = "Param1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
+		const char *input = "\nParam1=0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,;\n"
 							"Enum1=0,\"IN1 function bit 0\",1,"
 							"\"IN1 function bit 1\",2,\"IN1 function bit 2\",3,\"IN2 function bit 0\",4,\"IN2 function bit 1\","
 							"5,\"IN2 function bit 2\",10,\"Use Encoder\",11,\"Use Backplane Proximity\",13,"
