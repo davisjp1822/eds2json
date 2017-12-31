@@ -32,12 +32,11 @@
 #define VAL_BUF_LEN 30001
 
 // how many chars we want to read into memory - should be enough to read in the entire EDS File
+// if not, the program will return ERR_OBUFF and you can tweak this as necessary
 #define LARGE_BUF 1000000
 
-// used to store larger strings (such as the Params section)
-#define MED_BUF 100000
-
 // the length of the longest EDS Section name string
+// which, happens to be "Connection Configuration", which is 24 char. This gives us some buffer.
 #define EDS_SECTION_NAME_LEN 32
 
 #ifdef __cplusplus
@@ -57,7 +56,9 @@ typedef enum
 {
 	ERR_OBUFF = 1,
 	ERR_PARSEFAIL,
-	ERR_EDSFILEFAIL
+	ERR_EDSFILEFAIL,
+	ERR_EDSFILENOTFOUND,
+	ERR_EDSFILEINUSE
 } ERR_LIBEDS_t;
 
 /**
@@ -67,7 +68,7 @@ typedef enum
  */ 
 typedef enum
 {
-	EDS_FILE,
+	EDS_FILE = 1,
 	EDS_DEVICE,
 	EDS_DEVICE_CLASSIFICATION,
 	EDS_PARAMS,
@@ -83,9 +84,8 @@ typedef enum
  * 
  * @brief Certain data types require special processing for their value strings.
  *
- * The types below - as returned by _parsing_factory_colon_delimited_toJSON() - tell
- * the following _parsing_factory functions whether or not additional parsing needs to be done before
- * returning a complete JSON string to the caller.
+ * The types below tell the _parsing_ functions whether or not additional parsing needs to be done before
+ * returning a complete JSON string to the caller. 
  *
  */ 
 typedef enum
@@ -95,6 +95,25 @@ typedef enum
 	DATATYPE_SPEC_ENUM
 } SPECIAL_DATA_TYPES_t;
 
+/**
+ *
+ * @ brief Defines what types of EDS sections are currently supported for parsing.
+ *
+ * Corresponding parsing logic MUST be added to _parse_eds_keyval() and _parse_comma_delimited_val() before
+ * adding sections to this list!
+ *
+ */
+const char * const eds_parsable_section_names[] = 
+{
+	"File",
+	"Device",
+	"Device Classification",
+	"Params",
+	"Port",
+	"Capacity",
+	"DLR Class",
+	"Ethernet Link Class"
+};
 
 /**
  * @brief Converts an EDS file created by EZ-EDS to a JSON object.
@@ -105,22 +124,24 @@ typedef enum
  * @param eds_file_path Absolute path to the EDS file to be converted.
  * @param json_array Pointer to char array that will hold the converted EDS file
  * @param json_array_size Size of json_array char array
+ * @param json_chars the number of characters in the returned JSON array. If json_array is too small to hold all of
+ * the characters, this value will still be populated so that the caller knows how large to make the receiving buffer.
  * @return Returns 0 if success
  * @see https://www.rockwellautomation.com/resources/downloads/rockwellautomation/pdf/sales-partners/technology-licensing/Logix_EDS_AOP_Guidelines.pdf
  *
  */
 
-ERR_LIBEDS_t convert_eds2json(const char * 
-								const eds_file_path, 
+ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, 
 								char * const json_array, 
-								const size_t json_array_size);
+								const size_t json_array_size,
+								size_t *json_chars);
 
 /**
 * 
 * @brief The following function parses EDS file sections as defined by PARSABLE_EDS_SECTIONS_t.
 * 
 * The function is passed the char buffer (input_buf) that is in between the closing ] of the header and the starting [
-* of the next header.
+* of the next header. This string typically comes from convert_eds2json. 
 *
 * Once parsed, they write the JSON string to output_buf and return the size of output_buf.
 * 
@@ -130,7 +151,7 @@ ERR_LIBEDS_t convert_eds2json(const char *
 * @param output_buf_size Size of the output buffer. Should *always* be considerably larger than sizeof(input_buf)!
 * @note output_buf_size should ALWAYS be larger than sizeof(input_buf) by a considerable margin!!
 * @param num_json_chars How many JSON characters are present in the output. If output_buffer is too small, the function
-* still runs and gives an accurate number of characters. The function will still return an error, but num_json_chars will remain set.
+* still runs and provides the resulting number of JSON characters in *num_json_chars. Use this to size output_buf.
 *
 * @return Success: Returns 0 if success
 * @return Fail: ERR_OBUFF if output_buf not large enough

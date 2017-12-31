@@ -25,6 +25,7 @@
 #include "libeds.h"
 
 #include <stdint.h>
+#include <fstream>
 
 #define TESTING
 #define TEST_EDS_PATH1 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds"
@@ -86,10 +87,28 @@ namespace
 	{
 		char fp[128] = "/tmp/foo.foo";
 		char json_array[256] = {0};
+		size_t json_chars = 0;
 
-		ERR_LIBEDS_t r = convert_eds2json(fp, json_array, 256);
+		ERR_LIBEDS_t r = convert_eds2json(fp, json_array, 256, &json_chars);
 
-		ASSERT_EQ(r, ERR_EDSFILEFAIL);
+		ASSERT_EQ(r, ERR_EDSFILENOTFOUND);
+	}
+
+	TEST(libedsTests, read_eds_file)
+	{
+		const char *path = TEST_EDS_PATH1;
+		char output_buf[2000000] = {0};
+		size_t json_chars = 0;
+
+		ERR_LIBEDS_t err = convert_eds2json(path, output_buf, 2000000, &json_chars);
+
+		std::ofstream myfile;
+		myfile.open ("example.txt");
+		myfile << output_buf;
+		myfile.close();
+
+		ASSERT_EQ(err, 0);
+		ASSERT_STREQ("foo", output_buf);
 	}
 
 	/*

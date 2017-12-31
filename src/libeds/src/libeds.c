@@ -66,6 +66,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
  * @param return_type the type of data returned as specified in SPECIAL_DATA_TYPES_t
  * @return Success: 0
  * @return Fail: error code of type ERR_LIBEDS_t
+ *
  */
 ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 								char * const key_buf,
@@ -74,6 +75,16 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 								const size_t output_buf_size,
 								size_t *json_chars);
 
+/**
+* @brief Provides a PARSABLE_EDS_SECTIONS_t for the string section_name
+*
+* @param section_name Name of the section copied verbatim from the EDS file, such as File or Device
+* @return SUCCESS: value corresponding to enum PARSABLE_EDS_SECTIONS_t
+* @return FAIL: 0
+*
+*/
+PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const section_name);
+
 /********************** 
 *
 * Header Scope functions
@@ -81,51 +92,341 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 ***********************/
 ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path, 
 								char * const json_array, 
-								const size_t json_array_size)
+								const size_t json_array_size,
+								size_t *json_chars)
 {
 	/**
+	* 
 	* This is the main caller for the EDS conversion. It takes the file from eds_file_path, opens the file,
 	* locks it with flock() and starts reading character by character through the file. When we see a section header,
 	* such as [Device], we parse out what type of section is about to be scanned, and then call convert_section2json
 	* with the section data.
 	*
-	* To prep the data for parsing, this function *will* remove all spaces, tabs, and comments
-	* Comments start with a $
+	* The general operation is as follows:
+	*
+	* 1. Once the file is open, now start scanning and looking for a section header.
+	* 2. Once a section header is found, compare it to eds_parsable_section_names to see if it is something that can be parsed.
+	* 3. Store the section text in a temp buffer of size LARGE_BUF until the section is read complete, and then call on convert_section2json to 
+	* 		do the actual conversion
+	*
+	* 4. Concatenate the result from convert_section2json() to json_array.
+	*
+	* ===PARSING RULES===
+	* 1. Remove all tabs and spaces not inside of quotes!
+	* 2. Leave newlines intact (but remove \r and other non-printables)!
+	* 3. Remove comments ($---->\n) but leave $'s inside of quotes alone!
+	* 4. Remove spaces before and after = signs!
+	* 5. Section names are always enclosed in []'s
+	* 6. Section data is always between ] and [
 	*
 	*/
 
-	FILE *eds_file = fopen(eds_file_path, "r");
+	typedef enum
+	{	
+		// initial state - reading char by char until a name is found
+		eds_file_parsing_searching,
 
+		// parsing the name of the section (in between the brackets), e.g. [Foo]
+		eds_file_parsing_section_name,
+
+		// parsing the section contents
+		eds_file_parsing_section_contents,
+
+		// still parsing the section contents, but now reading inside a pair of quotes
+		// basically, we allow spaces, tabs, and all manner of other symbols
+		eds_file_parsing_section_contents_inside_quotes,
+
+		// currently parsing a comment - skip everything between $ and \n
+		eds_file_parsing_comment,
+
+	} file_parsing_state_t;
+
+	PARSABLE_EDS_SECTIONS_t section_type = EDS_FILE;
+
+	bool output_buf_overflowed = false;
+	file_parsing_state_t current_state = eds_file_parsing_searching;
+	
+	char section_name_buf[EDS_SECTION_NAME_LEN] = {0};
+	size_t section_name_buf_idx = 0;
+
+	char section_data_buf[LARGE_BUF] = {0};
+	size_t section_data_buf_idx = 0;
+
+	// open the file
+	FILE *eds_file = fopen(eds_file_path, "r");
 	if(eds_file == NULL)
 	{
-		return ERR_EDSFILEFAIL;
+		return ERR_EDSFILENOTFOUND;
 	}
 
-	/*
+	
 	// once the file is open, get a lock so that it doesn't change while we are reading it
-	if(flock(fileno(eds_file), LOCK_EX | LOCK_UN) != 0)
+	if(flock(fileno(eds_file), LOCK_EX) != 0)
 	{
 		fclose(eds_file);
-		return ERR_EDSFILEFAIL;
-	}*/
+		return ERR_EDSFILEINUSE;
+	}
 
-	// okay, the file is open, now start scanning and looking for a section header ...
+	// file is opened and ready to go. start parsing!
 
-	//while(!feof(eds_file))
-	//{
-		/** 
-		* Rules of scanning:
-		* 1. This function does not parse text, it just grabs sections and sends the resulting string to convert_section2json
-		* 2. This function *does* remove comments. When it sees a $ that is not inside ""'s, it discards that data until seeing a \n
-		* 3. The section name is what is inside of the []. The data is between ] and [.
-		* 4. This function removes /r characters but leaves new lines!
-		*/
+	while(!feof(eds_file))
+	{
+		char c = fgetc(eds_file);
 
-		//char c = fgetc(eds_file);
-	//}
+		switch(current_state)
+		{
+			case(eds_file_parsing_searching):
+			{
+				if(c == '[')
+				{
+					current_state = eds_file_parsing_section_name;
+				}
+				else
+				{	
+					current_state = eds_file_parsing_searching;
+				}
 
-	// clean-up after ourselves
-	//fclose(eds_file);
+				break;
+			}
+
+			case(eds_file_parsing_section_name):
+			{
+				// once at the end ], compare section_name_buf to eds_parsable_section_names to see
+				// if we should process this name
+				bool section_match = false;
+
+				// while not at the end of the name, read and save char to the buffer
+				if(c != ']')
+				{
+					if(strlen(section_name_buf)+1 < EDS_SECTION_NAME_LEN)
+					{
+						section_name_buf[section_name_buf_idx] = c;
+						++section_name_buf_idx;
+					}
+
+					else
+					{
+						output_buf_overflowed = true;
+					}
+
+					current_state = eds_file_parsing_section_name;
+				}
+
+				if(c == ']')
+				{
+					size_t i = 0;
+					size_t len = sizeof(eds_parsable_section_names)/sizeof(char *);
+
+					for(i=0; i< len; i++)
+					{
+						int8_t result = strncmp(eds_parsable_section_names[i], section_name_buf, strlen(eds_parsable_section_names[i]));
+						
+						// if we find a comparison, proceed to parsing contents
+						if(result == 0)
+						{
+							section_match = true;
+
+							if(strlen(section_name_buf)+1 < EDS_SECTION_NAME_LEN)
+							{
+								section_name_buf[strlen(section_name_buf)] = '\0';
+							}
+
+							else
+							{
+								section_name_buf[strlen(section_name_buf)-1] = '\0';
+								output_buf_overflowed = true;
+							}
+					
+							break;
+						}
+
+						// if no match, revert to searching
+						//TODO: test if [ in EDS variable name
+						else
+						{
+							section_match = false;
+						}
+					}
+
+					// evaluate and set state based on result of section matching
+					if(section_match)
+					{
+						current_state = eds_file_parsing_section_contents;
+					}
+					else
+					{
+						//reset all variables
+						memset(section_name_buf, 0, EDS_SECTION_NAME_LEN*sizeof(char));
+						memset(section_data_buf, 0, LARGE_BUF*sizeof(char));
+						section_name_buf_idx = 0;
+						section_data_buf_idx = 0;
+
+						current_state = eds_file_parsing_searching;
+					}
+				}
+
+				break;
+			}
+
+			case(eds_file_parsing_section_contents):
+			{
+				switch(c)
+				{
+					// this is the end of this section and the beginning of the next
+					// convert this section and then restart
+					case('['):
+					{
+						//+2 is for null terminating chars
+						size_t len = strlen(section_name_buf) + strlen(section_data_buf) + 2;
+
+						if(len < json_array_size)
+						{
+							//strncat(json_array, section_name_buf, strlen(section_name_buf));
+							//strncat(json_array, section_data_buf, strlen(section_data_buf));
+							PARSABLE_EDS_SECTIONS_t s_type = _section_enum_from_section_name(section_name_buf);
+
+							ERR_LIBEDS_t err = convert_section2json(s_type, section_data_buf, json_array, json_array_size, json_chars);
+
+							if(err != 0)
+							{
+								return err;
+							}
+						}
+
+						else
+						{
+							output_buf_overflowed = true;
+						}
+
+						//reset all variables
+						memset(section_name_buf, 0, EDS_SECTION_NAME_LEN*sizeof(char));
+						memset(section_data_buf, 0, LARGE_BUF*sizeof(char));
+						section_name_buf_idx = 0;
+						section_data_buf_idx = 0;
+
+						current_state = eds_file_parsing_section_name;
+						break;
+					}
+
+					// if starting a quoted section, move states
+					case('"'):
+					{
+						current_state = eds_file_parsing_section_contents_inside_quotes;
+						break;
+					}
+
+					// if starting a comment, move to that state
+					case('$'):
+					{
+						current_state = eds_file_parsing_comment;
+						break;
+					}
+
+					// ignore these characters
+					case('\r'):
+					case('\t'):
+					{
+						break;
+					}
+
+					// no other conditions met, just add the character to our output buffer
+					default:
+					{
+						// if c is a space, but outside of quotes, then ignore it
+						if(c != ' ')
+						{
+							// remove blank lines
+							if(strlen(section_data_buf) > 0 
+								&& section_data_buf[section_data_buf_idx-1] == '\n'
+								&& c == '\n')
+							{
+								break;
+							}
+							else
+							{
+								if(strlen(section_data_buf)+1 < LARGE_BUF)
+								{
+									section_data_buf[section_data_buf_idx] = c;
+									++section_data_buf_idx;
+								}
+								else
+								{
+									output_buf_overflowed = true;
+								}
+							}
+
+							current_state = eds_file_parsing_section_contents;
+							break;
+						}
+
+						else
+						{
+							current_state = eds_file_parsing_section_contents;
+							break;
+						}
+					}
+				}
+
+				break;
+			}
+
+			case(eds_file_parsing_section_contents_inside_quotes):
+			{
+				if(c != '"')
+				{
+					if(strlen(section_data_buf)+1 < LARGE_BUF)
+					{
+						section_data_buf[section_data_buf_idx] = c;
+						++section_data_buf_idx;
+					}
+					else
+					{
+						output_buf_overflowed = true;
+					}
+				}
+				
+				if(c == '"')
+				{
+					current_state = eds_file_parsing_section_contents;
+				}
+
+				break;
+			}
+
+			case(eds_file_parsing_comment):
+			{
+				if(c == '\n')
+				{
+					current_state = eds_file_parsing_section_contents;
+					break;
+				}
+
+				else
+				{
+					current_state = eds_file_parsing_comment;
+					break;
+				}
+
+				break;
+			}
+
+			default:
+			{
+				return ERR_PARSEFAIL;
+				break;
+			}
+		}
+	}
+
+	// uh-oh. buffer overflow. return an error
+	if(output_buf_overflowed)
+	{
+		fclose(eds_file);
+		return ERR_OBUFF;
+	}
+
+	// SUCCESS: clean-up after ourselves
+	fclose(eds_file);
 	return 0;
 }
 
@@ -248,7 +549,14 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	 * set the error state but still return the appropriate amount of json_chars
 	 *
 	 */
-	snprintf(section_name, EDS_SECTION_NAME_LEN, "\"%s\":{", section_key);
+	if(strlen(output_buf) > 0)
+	{
+		snprintf(section_name, EDS_SECTION_NAME_LEN, ",\"%s\":{", section_key);
+	}
+	else
+	{
+		snprintf(section_name, EDS_SECTION_NAME_LEN, "\"%s\":{", section_key);
+	}
 
 	// test buffer size here. if this fails, continue, b/c we still want to return the proper number of json chars
 	if(output_buf_size > strlen(section_name))
@@ -334,6 +642,24 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 				break;
 			}
 
+			case ERR_EDSFILENOTFOUND:
+			{
+				const char em[128] = "Error (libeds): EDS file not found";
+				snprintf(err_string, err_string_size, "%s", em);
+
+				return 0;
+				break;
+			}
+
+			case ERR_EDSFILEINUSE:
+			{
+				const char em[128] = "Error (libeds): EDS file in use";
+				snprintf(err_string, err_string_size, "%s", em);
+
+				return 0;
+				break;
+			}
+
 			default:
 			{
 				const char em[128] = "Error (libeds): unknown error";
@@ -381,8 +707,11 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 			{
 				if(key_i < KEY_BUF_LEN)
 				{
-					key_buf[key_i] = input_buf[i];
-					++key_i;
+					if(input_buf[i] != '\n')
+					{
+						key_buf[key_i] = input_buf[i];
+						++key_i;
+					}
 				}
 			}
 			else
@@ -907,5 +1236,73 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 	}
 
 	// should never reach here
+	return 0;
+}
+
+PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const section_name)
+{
+	size_t len = sizeof(eds_parsable_section_names)/sizeof(char *);
+	size_t i = 0;
+
+	for(i=0; i< len; i++)
+	{
+		int8_t result = strncmp(eds_parsable_section_names[i], section_name, strlen(eds_parsable_section_names[i]));
+
+		if(result == 0)
+		{
+			switch(i)
+			{
+				case(0):
+				{
+					return EDS_FILE;
+					break;
+				}
+
+				case(1):
+				{
+					return EDS_DEVICE;
+					break;
+				}
+
+				case(2):
+				{
+					return EDS_DEVICE_CLASSIFICATION;
+					break;
+				}
+
+				case(3):
+				{
+					return EDS_PARAMS;
+					break;
+				}
+
+				case(4):
+				{
+					return EDS_PORT;
+					break;
+				}
+
+				case(5):
+				{
+					return EDS_CAPACITY;
+					break;
+				}
+
+				case(6):
+				{
+					return EDS_DLR_CLASS;
+					break;
+				}
+
+				case(7):
+				{
+					return EDS_ETHERNET_LINK_CLASS;
+					break;
+				}
+			}
+		}
+	}
+
+	// if we made it to here, there is an error
 	return 0;
 }
