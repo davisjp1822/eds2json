@@ -281,6 +281,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 						if(len < json_array_size)
 						{
+							// these are helpful for debugging
 							//strncat(json_array, section_name_buf, strlen(section_name_buf));
 							//strncat(json_array, section_data_buf, strlen(section_data_buf));
 							section_type = _section_enum_from_section_name(section_name_buf);
@@ -388,43 +389,6 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 							current_state = eds_file_parsing_section_contents;
 							break;
-
-							// remove blank lines
-							/*if(section_data_buf_idx > 0 
-								&& section_data_buf[section_data_buf_idx-1] == '\n'
-								&& c == '\n')
-							{
-								break;
-							}
-
-							// if the last character is not a ;, there shouldn't be a newline
-							else if(section_data_buf_idx > 0 
-								&& section_data_buf[section_data_buf_idx-1] == ','
-								&& c == '\n')
-							{
-								break;
-							}
-
-							// remove newline after = sign
-							else if(section_data_buf_idx > 0 
-								&& section_data_buf[section_data_buf_idx-1] == '='
-								&& c == '\n')
-							{
-								break;
-							}
-
-							if(strlen(section_data_buf)+1 < LARGE_BUF)
-							{
-								section_data_buf[section_data_buf_idx] = c;
-								++section_data_buf_idx;
-							}
-							else
-							{
-								output_buf_overflowed = true;
-							}
-
-							current_state = eds_file_parsing_section_contents;
-							break;*/
 						}
 
 						else
