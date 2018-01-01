@@ -28,9 +28,6 @@
 #include <fstream>
 
 #define TESTING
-#define TEST_EDS_PATH1 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/SMD23E2_v1_6.eds"
-#define TEST_EDS_PATH2 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/024D002B09320100.eds"
-#define TEST_EDS_PATH3 "/home/davisjp/Development/eds2json/src/libeds/test/eds_files/HI 1769-2WS.eds"
 
 extern "C" 
 {
@@ -94,7 +91,7 @@ namespace
 		ASSERT_EQ(r, ERR_EDSFILENOTFOUND);
 	}
 
-	TEST(libedsTests, read_eds_file)
+/*	TEST(libedsTests, read_eds_file)
 	{
 		const char *path = TEST_EDS_PATH1;
 		char output_buf[2000000] = {0};
@@ -109,7 +106,7 @@ namespace
 
 		ASSERT_EQ(err, 0);
 		ASSERT_STREQ("foo", output_buf);
-	}
+	}*/
 
 	/*
 	 * 
@@ -119,7 +116,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_output_buf_too_small)
 	{
-		char eds_path[] = TEST_EDS_PATH1;
 		const char *input = "DescText=\"SMD23E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
 							"ModDate=05-24-2016;\nModTime=13:57:27;\nRevision=1.6;\n"
         					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";\n"
@@ -137,8 +133,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_unknown_section)
 	{
-		char eds_path[] = TEST_EDS_PATH1;
-
 		const char *input = "DescText=\"SMD23E2\";CreateDate=03-29-2012;CreateTime=14:01:47;"
 							"ModDate=05-24-2016;ModTime=13:57:27;Revision=1.6;"
         					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";"
@@ -165,8 +159,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_value_embedded_semicolon)
 	{
-		char eds_path[] = TEST_EDS_PATH1;
-
 		const char *input = "DescText=\"SMD23;E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
 							"ModDate=05-24-2016;\nModTime=13:57:27;\nRevision=1.6;\n"
         					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";\n"
@@ -195,8 +187,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_file_section_toJSON)
 	{
-		char eds_path[] = TEST_EDS_PATH1;
-
 		const char *input = "DescText=\"SMD23E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
 							"ModDate=05-24-2016;\nModTime=13:57:27;\nRevision=1.6;\n"
         					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\";\n"
@@ -225,8 +215,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_device_section_toJSON)
 	{
-		char eds_path[] = TEST_EDS_PATH2;
-
 		const char *input = "VendCode=589;\nVendName=\"LinMot\";\nProdType=43;\nProdTypeStr=\"GenericDevice\";\nProdCode=2354;\nMajRev=1;\nMinRev=1;\n"
 							"ProdName=\"E1450IPQN1S\";\nCatalog=\"LMDrive\";\nIcon=\"E1250_SC_xx.ico\";\n"
 							"IconContents="
@@ -287,7 +275,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_comma_value_parsing_param)
 	{
-
 		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,";
 
 		const char *good_json = "\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\",\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\","
@@ -309,7 +296,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_comma_value_parsing_param_buf_overrun)
 	{
-
 		const char *input = "0,,,0x0000,0xD2,2,\"CONFIGURATION WORD 0\",\"individual bit-fields\",\"Configuration Word 0\",,,1024,,,,,,,,,";
 
 		const char *good_json = "\"Reserved\":\"0\",\"PathSize\":\"null\",\"Path\":\"null\",\"Descriptor\":\"0x0000\",\"DataType\":\"0xD2\",\"DataSizeInBytes\":\"2\","
@@ -330,7 +316,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_comma_value_parsing_enum)
 	{
-
 		const char *input = "0,IN1 function bit 0,1,IN1 function bit 1,2,IN1 function bit 2,3,IN2 function bit 0,4,IN2 function bit 1,5,IN2 function bit 2,10,"
 							"Use Encoder,11,Use Backplane Proximity,13,Enable Stall Detection,14,Disable Antiresonance";
 
@@ -353,7 +338,6 @@ namespace
 
 	TEST(libedsTests, convert_section2json_comma_value_parsing_enum_buf_overrun)
 	{
-
 		const char *input = "0,IN1 function bit 0,1,IN1 function bit 1,2,IN1 function bit 2,3,IN2 function bit 0,4,IN2 function bit 1,5,IN2 function bit 2,10,"
 							"Use Encoder,11,Use Backplane Proximity,13,Enable Stall Detection,14,Disable Antiresonance";
 

@@ -22,6 +22,7 @@
 **/
 
 #include "simple_example.h"
+#include "libeds.h"
 
 #include <stdio.h>
 #include <stdint.h>

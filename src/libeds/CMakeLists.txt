@@ -84,10 +84,10 @@ include_directories("${source_dir}/googletest/include"
                     "${source_dir}/googlemock/include")
 
 # finally, execute the tests
-add_executable(eds2json_tests
+add_executable(libeds2json_tests
     test/libeds_tests.cpp)
 
-target_link_libraries(eds2json_tests
+target_link_libraries(libeds2json_tests
     eds2json
     libgtest
     libgmock)
