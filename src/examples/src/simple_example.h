@@ -1,6 +1,6 @@
 /**
 
-	@file eds2json.c
+	@file simple_example.h
 	@author John Davis <jd@three-ml.com>
 	@date 30 Nov 2017
 	@brief eds2json - Converts an ODVA EDS file to a JSON object.
@@ -21,13 +21,7 @@
 
 **/
 
-#include "eds2json.h"
+#ifndef _SIMPLEEXAMPLE_H
+#define _SIMPLEEXAMPLE_H
 
-#include <stdio.h>
-#include <stdint.h>
-
-int8_t main(int8_t argc, char **argv)
-{
-	fprintf(stderr, "%s\n", "Hello world from eds2json!");
-	return 0;
-}
+#endif /* _SIMPLEEXAMPLE_H */

@@ -1,14 +1,16 @@
 # Define library. Only source files here!
-project(libeds VERSION 1.0 LANGUAGES C CXX)
+project(libeds2json VERSION 1.0 LANGUAGES C CXX)
 
-add_library(eds
+add_library(eds2json
     SHARED
     src/libeds.c)
+
+set_target_properties(eds2json PROPERTIES SOVERSION 1)
 
 # Define headers for this library. PUBLIC headers are used for
 # compiling the library, and will be added to consumers' build
 # paths.
-target_include_directories(eds
+target_include_directories(eds2json
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -16,21 +18,16 @@ target_include_directories(eds
 
 # If we have compiler requirements for this library, list them
 # here
-target_compile_features(eds
+target_compile_features(eds2json
     PUBLIC c_function_prototypes
     c_restrict
     c_static_assert
     c_variadic_macros)
 
-set_target_properties(eds PROPERTIES COMPILE_FLAGS "-Wextra -Wall -Wpedantic")
-
-# Depend on a library that we defined in the top-level file
-#target_link_libraries(lib
-#    boost
-#    MyOtherLibrary)
+set_target_properties(eds2json PROPERTIES COMPILE_FLAGS "-Wextra -Wall -Wpedantic")
 
 # 'make install' to the correct locations (provided by GNUInstallDirs).
-install(TARGETS eds EXPORT libedsConfig
+install(TARGETS eds2json EXPORT libeds2jsonConfig
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
@@ -38,10 +35,10 @@ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 # This makes the project importable from the install directory
 # Put config file in per-project dir (name MUST match), can also
 # just go into 'cmake'.
-install(EXPORT libedsConfig DESTINATION share/libeds/cmake)
+install(EXPORT libeds2jsonConfig DESTINATION share/libeds2json/cmake)
 
 # This makes the project importable from the build directory
-export(TARGETS eds FILE libedsConfig.cmake)
+export(TARGETS eds2json FILE libeds2jsonConfig.cmake)
 
 # install GoogleTest so that we can unit test our code
 # We need thread support
@@ -87,12 +84,12 @@ include_directories("${source_dir}/googletest/include"
                     "${source_dir}/googlemock/include")
 
 # finally, execute the tests
-add_executable(libeds_tests
+add_executable(eds2json_tests
     test/libeds_tests.cpp)
 
-target_link_libraries(libeds_tests
-    eds
+target_link_libraries(eds2json_tests
+    eds2json
     libgtest
     libgmock)
 
-add_test(libeds_tests libeds_tests)
+add_test(libeds2json_tests eds2json_tests)

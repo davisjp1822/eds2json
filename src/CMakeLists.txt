@@ -6,16 +6,6 @@ project(eds2json VERSION 1.0 LANGUAGES C CXX)
 # locations on all platforms.
 include(GNUInstallDirs)
 
-# Include Boost as an imported target
-# find_package(Boost REQUIRED)
-#add_library(boost INTERFACE IMPORTED)
-# set_property(TARGET boost PROPERTY
-#    INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR})
-
-# Some other library that we import that was also built using CMake
-# and has an exported target.
-# find_package(MyOtherLibrary REQUIRED)
-
 # Targets that we develop here
 add_subdirectory(libeds)
-add_subdirectory(eds2json)
+add_subdirectory(examples)
