@@ -145,6 +145,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 	bool output_buf_overflowed = false;
 	file_parsing_state_t current_state = eds_file_parsing_searching;
+	file_parsing_state_t previous_state = eds_file_parsing_searching;
 	
 	char section_name_buf[EDS_SECTION_NAME_LEN] = {0};
 	size_t section_name_buf_idx = 0;
@@ -168,7 +169,6 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 	}
 
 	// file is opened and ready to go. start parsing!
-
 	while(!feof(eds_file))
 	{
 		char c = fgetc(eds_file);
@@ -177,7 +177,12 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 		{
 			case(eds_file_parsing_searching):
 			{
-				if(c == '[')
+				if (c == '$')
+				{
+					previous_state = current_state;
+					current_state = eds_file_parsing_comment;
+				}
+				else if(c == '[')
 				{
 					current_state = eds_file_parsing_section_name;
 				}
@@ -320,6 +325,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 					// if starting a comment, move to that state
 					case('$'):
 					{
+						previous_state = current_state;
 						current_state = eds_file_parsing_comment;
 						break;
 					}
@@ -429,7 +435,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 			{
 				if(c == '\n')
 				{
-					current_state = eds_file_parsing_section_contents;
+					current_state = previous_state;
 					break;
 				}
 
