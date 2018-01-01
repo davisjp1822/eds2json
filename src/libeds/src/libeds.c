@@ -798,6 +798,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 
 			// check the key to see if it is one of the types that requires special processing	
 			strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
+			strncmp(key_buf, "ProxiedParam", 12) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
 			strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
 
 			switch(spec_type)
