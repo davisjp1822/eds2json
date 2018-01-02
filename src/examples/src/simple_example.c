@@ -116,7 +116,6 @@ int8_t main(int8_t argc, char **argv)
 
 	if(err != 0)
 	{
-
 		// 128 is the minimum length for error buffers
 		char e_string[128] = {0};
 
