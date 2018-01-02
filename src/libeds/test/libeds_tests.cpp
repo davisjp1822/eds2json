@@ -36,6 +36,8 @@ extern "C"
 											char * const output_buf,
 											const size_t output_buf_size,
 											size_t *json_chars);
+
+	PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const section_name);
 }
 
 namespace 
@@ -443,6 +445,14 @@ namespace
 		ASSERT_STREQ(output_buf, good_json);
 		ASSERT_EQ(good_json_chars, output_json_chars);
        	ASSERT_EQ(0, err);
+	}
+
+	TEST(libedsTests, test_section_enum_from_section_name)
+	{
+		const char *section_name = "Connection Manager";
+		PARSABLE_EDS_SECTIONS_t s = _section_enum_from_section_name(section_name);
+
+		ASSERT_EQ(s, EDS_CONNECTION_MANAGER);
 	}
 }
 

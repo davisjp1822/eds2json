@@ -76,7 +76,8 @@ typedef enum
 	EDS_PORT,
 	EDS_CAPACITY,
 	EDS_DLR_CLASS,
-	EDS_ETHERNET_LINK_CLASS
+	EDS_ETHERNET_LINK_CLASS,
+	EDS_FILE_CLASS
 } PARSABLE_EDS_SECTIONS_t;
 
 /**
@@ -111,7 +112,8 @@ const char * const eds_parsable_section_names[] =
 	"Port",
 	"Capacity",
 	"DLR Class",
-	"Ethernet Link Class"
+	"Ethernet Link Class",
+	"Connection Manager"
 };
 
 /**

@@ -1284,10 +1284,11 @@ PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const secti
 {
 	size_t len = sizeof(eds_parsable_section_names)/sizeof(char *);
 	size_t i = 0;
+	int8_t result = 0;
 
 	for(i=0; i< len; i++)
 	{
-		int8_t result = strncmp(eds_parsable_section_names[i], section_name, strlen(section_name));
+		result = strncmp(eds_parsable_section_names[i], section_name, strlen(section_name));
 
 		if(result == 0)
 		{
@@ -1340,10 +1341,15 @@ PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const secti
 					return EDS_ETHERNET_LINK_CLASS;
 					break;
 				}
+				case(8):
+				{
+					return EDS_CONNECTION_MANAGER;
+					break;
+				}
 			}
 		}
 	}
 
 	// if we made it to here, there is an error
-	return 0;
+	return ERR_EDSFILEFAIL;
 }
