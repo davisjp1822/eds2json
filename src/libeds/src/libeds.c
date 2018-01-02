@@ -521,7 +521,6 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 
 		case(EDS_PARAMS):
 		{	
-			////TODO!!! What happens if there is no =?
 			char *n = "Params";
 			section_key = n;
 			break;
