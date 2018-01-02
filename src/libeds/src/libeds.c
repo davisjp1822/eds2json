@@ -410,7 +410,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 			case(eds_file_parsing_section_contents_inside_quotes):
 			{
-				if(c != '"')
+				if(c != '"' && c != '\n' && c != '\r' && c != ',' && c != '\t')
 				{
 					if(strlen(section_data_buf)+1 < LARGE_BUF)
 					{
