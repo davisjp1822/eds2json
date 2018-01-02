@@ -169,7 +169,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 	}
 
 	// file is opened and ready to go. start parsing!
-	while(!feof(eds_file))
+	while(true)
 	{
 		char c = fgetc(eds_file);
 
@@ -453,6 +453,41 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 				return ERR_PARSEFAIL;
 				break;
 			}
+		}
+
+		// if we get to the end of the file, we have to process whatever was in the buffer when we got here.
+		// otherwise, the loop stops at case(eds_file_parsing_section_contents) b/c it can't find a starting '[', and whatever
+		// is in the buffer is not processed
+		if(feof(eds_file))
+		{
+			size_t len = strlen(section_name_buf) + strlen(section_data_buf) + 2;
+
+			if(len < json_array_size)
+			{
+				section_type = _section_enum_from_section_name(section_name_buf);
+
+				ERR_LIBEDS_t err = convert_section2json(section_type, section_data_buf, json_array, json_array_size, json_chars);
+
+				if(err != 0)
+				{
+					return err;
+				}
+			}
+
+			else
+			{
+				output_buf_overflowed = true;
+			}
+
+			//reset all variables
+			memset(section_name_buf, 0, EDS_SECTION_NAME_LEN*sizeof(char));
+			memset(section_data_buf, 0, LARGE_BUF*sizeof(char));
+			section_name_buf_idx = 0;
+			section_data_buf_idx = 0;
+			section_type = EDS_FILE;
+
+			// kill the while loop
+			break;
 		}
 	}
 
