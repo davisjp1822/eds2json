@@ -36,8 +36,7 @@
 #define LARGE_BUF 1000000
 
 // the length of the longest EDS Section name string
-// which, happens to be "Connection Configuration", which is 24 char. This gives us some buffer.
-#define EDS_SECTION_NAME_LEN 32
+#define EDS_SECTION_NAME_LEN 256
 
 #ifdef __cplusplus
 extern "C" {
