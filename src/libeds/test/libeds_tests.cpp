@@ -187,6 +187,34 @@ namespace
         ASSERT_EQ(good_json_chars, output_json_chars);
 	}
 
+	TEST(libedsTests, convert_section2json_value_remove_escaped_characters)
+	{
+		const char *input = "DescText=\"SMD23E2\\n\";\nCreateDate=03-29-\\a2012;\nCreateTime=14:01:47;\n"
+							"ModDate=05-24-2016\\b;\nModTime=13:57:27;\nRevision=\"1\\\".6;\n"
+        					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\\\'\";\n"
+        					"1_IOC_Details_License=0x\\v;DFE\\t80\\?39A;\n";
+
+        const char *good_json = "\"File\":{\"DescText\":\"SMD23E2\",\"CreateDate\":\"03-29-2012\","
+        							"\"CreateTime\":\"14:01:47\",\"ModDate\":\"05-24-2016\","
+        							"\"ModTime\":\"13:57:27\",\"Revision\":\"1.6\","
+        							"\"HomeURL\":\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\","
+        							"\"1_IOC_Details_License\":\"0x;DFE8039A\"}";
+
+        //std::cout << good_json << std::endl;
+
+        size_t good_json_chars = 240;
+        char output_buf[1024] = {0};
+        size_t output_json_chars = 0;
+
+        ERR_LIBEDS_t err = convert_section2json(EDS_FILE, input, output_buf, 1024, &output_json_chars);
+
+        //std::cout << output_buf << std::endl;
+
+        ASSERT_EQ(0, err);
+        ASSERT_STREQ(good_json, output_buf);
+        ASSERT_EQ(good_json_chars, output_json_chars);
+	}
+
 	TEST(libedsTests, convert_section2json_file_section_toJSON)
 	{
 		const char *input = "DescText=\"SMD23E2\";\nCreateDate=03-29-2012;\nCreateTime=14:01:47;\n"
