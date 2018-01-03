@@ -1191,6 +1191,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 					}
 				}
 
+				// exclude new lines and quotations from the data
 				if(val_buf[i] != '"' && val_buf[i] != '\n')
 				{
 					if(output_buf_idx+1 < output_buf_size)
@@ -1205,11 +1206,11 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 						++*json_chars;
 						output_buf_overflowed = true;
 					}
-
 				}
 			}
 
 			// first comma, this splits the difference between the bit value and the bit desc
+			// converted to "value":"bit desc" in json
 			else if(val_buf[i] == ',' && reading_bit_desc == false)
 			{
 				reading_bit_desc = true;
@@ -1237,6 +1238,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 			}
 
 			// second comma is the delimeter between values
+			// converted to ..","other_val":"foo desc"
 			else if(val_buf[i] == ',' && reading_bit_desc == true)
 			{
 				reading_bit_desc = false;
