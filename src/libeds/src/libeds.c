@@ -60,6 +60,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
  *
  * @note key_buf and value_buf are constants defined by KEY_BUF_LEN and LARGE_BUF, respectively
  * @param input_buf formatted input string with the section data. Processing is done in eds2json()
+ * @param s_type the type of section that is to be parsed
  * @param key_buf buffer of size KEY_BUF_LEN to hold the output key name
  * @param value_buf buffer of size LARGE_BUF to hold the output value data
  * @param json_chars number of json chars returned
@@ -68,7 +69,8 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
  * @return Fail: error code of type ERR_LIBEDS_t
  *
  */
-ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
+ERR_LIBEDS_t _parse_eds_keyval(const PARSABLE_EDS_SECTIONS_t s_type,
+								const char * const input_buf,
 								char * const key_buf,
 								char * const val_buf,
 								char * const output_buf, 
@@ -219,38 +221,30 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 				if(c == ']')
 				{
-					size_t i = 0;
-					size_t len = sizeof(eds_parsable_section_names)/sizeof(char *);
+					PARSABLE_EDS_SECTIONS_t result = _section_enum_from_section_name(section_name_buf);
 
-					for(i=0; i< len; i++)
+					// if we find a comparison, proceed to parsing contents
+					if(result > 0)
 					{
-						int8_t result = strncmp(eds_parsable_section_names[i], section_name_buf, strlen(eds_parsable_section_names[i]));
-						
-						// if we find a comparison, proceed to parsing contents
-						if(result == 0)
+						section_match = true;
+
+						if(strlen(section_name_buf)+1 < EDS_SECTION_NAME_LEN)
 						{
-							section_match = true;
-
-							if(strlen(section_name_buf)+1 < EDS_SECTION_NAME_LEN)
-							{
-								section_name_buf[strlen(section_name_buf)] = '\0';
-							}
-
-							else
-							{
-								section_name_buf[strlen(section_name_buf)-1] = '\0';
-								output_buf_overflowed = true;
-							}
-					
-							break;
+							section_name_buf[strlen(section_name_buf)] = '\0';
 						}
 
-						// if no match, revert to searching
-						//TODO: test if [ in EDS variable name
 						else
 						{
-							section_match = false;
+							section_name_buf[strlen(section_name_buf)-1] = '\0';
+							output_buf_overflowed = true;
 						}
+					}
+
+					// if no match, revert to searching
+					//TODO: test if [ in EDS variable name
+					else
+					{
+						section_match = false;
 					}
 
 					// evaluate and set state based on result of section matching
@@ -295,7 +289,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 							if(err != 0)
 							{
-								return err;
+								return 5000;
 							}
 						}
 
@@ -513,7 +507,6 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 									const size_t output_buf_size,
 									size_t * const num_json_chars)
 {
-	char *section_key = 0;
 	char section_name[EDS_SECTION_NAME_LEN] = {0};
 
 	// generic error var
@@ -528,92 +521,15 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	memset(val_buf, 0, VAL_BUF_LEN*sizeof(char));
 
 	/**
-	*
+	* OVERVIEW
+	* ---------
 	* The actual JSON is created by the _parser* helper functions. This calling function just stitches everything together, 
 	* giving it a JSON section name and handling the braces.
 	*
 	*/
-
-	switch(s_type)
+	if(s_type <= 0 || s_type >= sizeof(eds_parsable_section_names)/sizeof(char *))
 	{
-		case(EDS_FILE):
-		{
-			char *n = "File";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_DEVICE):
-		{
-			char *n = "Device";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_DEVICE_CLASSIFICATION):
-		{
-			char *n = "DeviceClassification";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_PARAMS):
-		{	
-			char *n = "Params";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_ASSEMBLY):
-		{
-			char *n = "Assembly";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_CONNECTION_MANAGER):
-		{
-
-			char *n = "ConnectionManager";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_PORT):
-		{
-
-			char *n = "Port";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_CAPACITY):
-		{
-			char *n = "Capacity";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_DLR_CLASS):
-		{
-			char *n = "DLRClass";
-			section_key = n;
-			break;
-		}
-
-		case(EDS_ETHERNET_LINK_CLASS):
-		{
-			char *n = "EthernetLinkClass";
-			section_key = n;
-			break;
-		}
-
-		// the type is unknown, so return with an error
-		default:
-		{
-			return ERR_PARSEFAIL;
-			break;
-		}
+		return ERR_PARSEFAIL;	
 	}
 
 	/** 
@@ -626,11 +542,11 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	 */
 	if(strlen(output_buf) > 0)
 	{
-		snprintf(section_name, EDS_SECTION_NAME_LEN, ",\"%s\":{", section_key);
+		snprintf(section_name, EDS_SECTION_NAME_LEN, ",\"%s\":{", eds_parsable_section_names[s_type-1]);
 	}
 	else
 	{
-		snprintf(section_name, EDS_SECTION_NAME_LEN, "\"%s\":{", section_key);
+		snprintf(section_name, EDS_SECTION_NAME_LEN, "\"%s\":{", eds_parsable_section_names[s_type-1]);
 	}
 
 	// test buffer size here. if this fails, continue, b/c we still want to return the proper number of json chars
@@ -647,7 +563,8 @@ ERR_LIBEDS_t convert_section2json(const PARSABLE_EDS_SECTIONS_t s_type,
 	 * Call _parse_eds_keyval() to get val_buf and key_buf
 	 *
 	 */
-	err = _parse_eds_keyval(input_buf, 
+	err = _parse_eds_keyval(s_type,
+							input_buf, 
 							key_buf, 
 							val_buf, 
 							output_buf, 
@@ -752,7 +669,8 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 * Local Scope functions
 *
 ***********************/
-ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
+ERR_LIBEDS_t _parse_eds_keyval(const PARSABLE_EDS_SECTIONS_t s_type,
+								const char * const input_buf,
 								char * const key_buf,
 								char * const val_buf,
 								char * const output_buf, 
@@ -887,13 +805,21 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 		if(write_pair)
 		{
 
-			// check the key to see if it is one of the types that requires special processing	
-			strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
-			strncmp(key_buf, "ProxiedParam", 12) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
-			strncmp(key_buf, "ProxyParam", 10) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
-			strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
-			strncmp(key_buf, "ProxiedEnum", 11) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
-			strncmp(key_buf, "ProxyEnum", 9) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
+			// check the key to see if it is one of the types that requires special processing
+			// for now, internationalization is not working. so don't parse it as a comma separated value
+			if(s_type != EDS_INTERNATIONALIZATION)
+			{
+				strncmp(key_buf, "Param", 5) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
+				strncmp(key_buf, "ProxiedParam", 12) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
+				strncmp(key_buf, "ProxyParam", 10) == 0 ? spec_type = DATATYPE_SPEC_PARAM : DATATYPE_SPEC_NONE;
+				strncmp(key_buf, "Enum", 4) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
+				strncmp(key_buf, "ProxiedEnum", 11) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
+				strncmp(key_buf, "ProxyEnum", 9) == 0 ? spec_type = DATATYPE_SPEC_ENUM : DATATYPE_SPEC_NONE;
+			}
+			else
+			{
+				spec_type = DATATYPE_SPEC_NONE;
+			}
 
 			switch(spec_type)
 			{
@@ -1378,72 +1304,28 @@ PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const secti
 {
 	size_t len = sizeof(eds_parsable_section_names)/sizeof(char *);
 	size_t i = 0;
-	int8_t result = 0;
+	int8_t eds_result = 0;
 
 	for(i=0; i< len; i++)
 	{
-		result = strncmp(eds_parsable_section_names[i], section_name, strlen(section_name));
-
-		if(result == 0)
+		if(strncmp(eds_parsable_section_names[i], section_name, strlen(section_name)) == 0)
 		{
-			switch(i)
-			{
-				case(0):
-				{
-					return EDS_FILE;
-					break;
-				}
-
-				case(1):
-				{
-					return EDS_DEVICE;
-					break;
-				}
-
-				case(2):
-				{
-					return EDS_DEVICE_CLASSIFICATION;
-					break;
-				}
-
-				case(3):
-				{
-					return EDS_PARAMS;
-					break;
-				}
-
-				case(4):
-				{
-					return EDS_PORT;
-					break;
-				}
-
-				case(5):
-				{
-					return EDS_CAPACITY;
-					break;
-				}
-
-				case(6):
-				{
-					return EDS_DLR_CLASS;
-					break;
-				}
-
-				case(7):
-				{
-					return EDS_ETHERNET_LINK_CLASS;
-					break;
-				}
-				case(8):
-				{
-					return EDS_CONNECTION_MANAGER;
-					break;
-				}
-			}
+			eds_result = i + 1;
+			break;
+		}
+		else
+		{
+			eds_result = 0;
 		}
 	}
 
-	// if we made it to here, there is an error
-	return ERR_EDSFILEFAIL;
+	if(eds_result > 0)
+	{
+		return eds_result;
+	}
+
+	else
+	{
+		return EDS_UNKNOWNSECTION;
+	}
 }

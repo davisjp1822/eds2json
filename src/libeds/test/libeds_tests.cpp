@@ -481,6 +481,21 @@ namespace
 		PARSABLE_EDS_SECTIONS_t s = _section_enum_from_section_name(section_name);
 
 		ASSERT_EQ(s, EDS_CONNECTION_MANAGER);
+
+		const char *s2 = "File";
+		s = _section_enum_from_section_name(s2);
+
+		ASSERT_EQ(s, EDS_FILE);
+
+		const char *s3 = "Modbus Mapper";
+		s = _section_enum_from_section_name(s3);
+
+		ASSERT_EQ(s, EDS_MODBUS_MAPPER);
+
+		const char *s4 = "Internationalization";
+		s = _section_enum_from_section_name(s4);
+
+		ASSERT_EQ(s, EDS_INTERNATIONALIZATION);
 	}
 }
 

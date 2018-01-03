@@ -63,22 +63,65 @@ typedef enum
 /**
  * 
  * @brief Valid parseable EDS sections.
- *
+ * MUST be in the same order as eds_parsable_section_names[]!
  */ 
 typedef enum
 {
-	EDS_FILE = 1,
+	EDS_UNKNOWNSECTION,
+	EDS_FILE,
+	EDS_FILE_CLASS,
 	EDS_DEVICE,
 	EDS_DEVICE_CLASSIFICATION,
+	EDS_SYMBOLIC_TRANSLATION,
+	EDS_PARAMCLASS,
 	EDS_PARAMS,
+	EDS_GROUPS,
 	EDS_ASSEMBLY,
 	EDS_CONNECTION_MANAGER,
 	EDS_PORT,
+	EDS_MODULAR,
 	EDS_CAPACITY,
+	EDS_EVENTENUM,
+	EDS_CONNECTION_CONFIGURATION,
 	EDS_DLR_CLASS,
+	EDS_TCPIP_INTERFACE_CLASS,
 	EDS_ETHERNET_LINK_CLASS,
-	EDS_FILE_CLASS
+	EDS_INTERNATIONALIZATION,
+	EDS_MODBUS_MAPPER
 } PARSABLE_EDS_SECTIONS_t;
+
+/**
+ *
+ * @ brief Defines what types of EDS sections are currently supported for parsing.
+ *
+ * Corresponding parsing logic MUST be added to _parse_eds_keyval() and _parse_comma_delimited_val() before
+ * adding sections to this list!
+ *
+ * MUST be in the same order as PARSABLE_EDS_SECTIONS_t
+ */
+const char * const eds_parsable_section_names[] = 
+{
+	"File",
+	"File Class",
+	"Device",
+	"Device Classification",
+	"SymbolicTranslation",
+	"ParamClass",
+	"Params",
+	"Groups",
+	"Assembly",
+	"Connection Manager",
+	"Port",
+	"Modular",
+	"Capacity",
+	"EventEnum",
+	"Connection Configuration",
+	"DLR Class",
+	"TCP/IP Interface Class",
+	"Ethernet Link Class",
+	"Internationalization",
+	"Modbus Mapper"
+};
 
 /**
  * 
@@ -94,27 +137,6 @@ typedef enum
 	DATATYPE_SPEC_PARAM,
 	DATATYPE_SPEC_ENUM
 } SPECIAL_DATA_TYPES_t;
-
-/**
- *
- * @ brief Defines what types of EDS sections are currently supported for parsing.
- *
- * Corresponding parsing logic MUST be added to _parse_eds_keyval() and _parse_comma_delimited_val() before
- * adding sections to this list!
- *
- */
-const char * const eds_parsable_section_names[] = 
-{
-	"File",
-	"Device",
-	"Device Classification",
-	"Params",
-	"Port",
-	"Capacity",
-	"DLR Class",
-	"Ethernet Link Class",
-	"Connection Manager"
-};
 
 /**
  * @brief Converts an EDS file created by EZ-EDS to a JSON object.
