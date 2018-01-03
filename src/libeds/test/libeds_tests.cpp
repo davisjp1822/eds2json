@@ -194,7 +194,7 @@ namespace
         					"HomeURL=\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\\\'\";\n"
         					"1_IOC_Details_License=0x\\v;DFE\\t80\\?39A;\n";
 
-        const char *good_json = "\"File\":{\"DescText\":\"SMD23E2\",\"CreateDate\":\"03-29-2012\","
+        const char *good_json = "\"File\":{\"DescText\":\"SMD23E2 \",\"CreateDate\":\"03-29-2012\","
         							"\"CreateTime\":\"14:01:47\",\"ModDate\":\"05-24-2016\","
         							"\"ModTime\":\"13:57:27\",\"Revision\":\"1.6\","
         							"\"HomeURL\":\"http://www.amci.com/driver files/SMD23E2_v1_5.eds\","
@@ -202,7 +202,7 @@ namespace
 
         //std::cout << good_json << std::endl;
 
-        size_t good_json_chars = 240;
+        size_t good_json_chars = 241;
         char output_buf[1024] = {0};
         size_t output_json_chars = 0;
 

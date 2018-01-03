@@ -822,30 +822,42 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 					// also strip out all escape chars that are represented as string literals in the file
 					switch(input_buf[i])
 					{
+						//strip these values out entirely
 						case('"'):
 						case('\n'):
 						{
 							break;
 						}
 
+						// for escaped chars, replace them with a space and increment i to skip over the escaped character at i+1
 						case('\\'):
 						{
-							if(i+1 < strlen(input_buf) && 
-								(input_buf[i+1] == 'n' ||
-								input_buf[i+1] == 'a' ||
-								input_buf[i+1] == 'b' ||
-								input_buf[i+1] == 'f' ||
-								input_buf[i+1] == 'r' ||
-								input_buf[i+1] == 't' ||
-								input_buf[i+1] == 'v' ||
-								input_buf[i+1] == '"' ||
-								input_buf[i+1] == '\'' ||
-								input_buf[i+1] == '\\' ||
-								input_buf[i+1] == '?'))
+							if(i+1 < strlen(input_buf))
 							{
-								++i;
-								break;
-							}
+								if(	input_buf[i+1] == 'n')
+								{
+									val_buf[val_i] = ' ';
+									++i;
+									++val_i;
+								}
+
+								else if(
+									input_buf[i+1] == 'a' ||
+									input_buf[i+1] == 'b' ||
+									input_buf[i+1] == 'f' ||
+									input_buf[i+1] == 'r' ||
+									input_buf[i+1] == 't' ||
+									input_buf[i+1] == 'v' ||
+									input_buf[i+1] == '"' ||
+									input_buf[i+1] == '\'' ||
+									input_buf[i+1] == '\\' ||
+									input_buf[i+1] == '?')
+								{
+									++i;
+								}
+							} 
+							
+							break;
 						}
 
 						default:
@@ -859,6 +871,12 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 							break;
 						}
 					}			
+				}
+
+				// not enough room ...
+				else
+				{
+					output_buf_overflowed = true;
 				}
 			}
 		}
