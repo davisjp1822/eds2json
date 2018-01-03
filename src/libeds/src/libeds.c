@@ -460,32 +460,35 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 		// is in the buffer is not processed
 		if(feof(eds_file))
 		{
-			size_t len = strlen(section_name_buf) + strlen(section_data_buf) + 2;
-
-			if(len < json_array_size)
+			if(strlen(section_data_buf) > 0)
 			{
-				section_type = _section_enum_from_section_name(section_name_buf);
+				size_t len = strlen(section_name_buf) + strlen(section_data_buf) + 2;
 
-				ERR_LIBEDS_t err = convert_section2json(section_type, section_data_buf, json_array, json_array_size, json_chars);
-
-				if(err != 0)
+				if(len < json_array_size)
 				{
-					return err;
+					section_type = _section_enum_from_section_name(section_name_buf);
+
+					ERR_LIBEDS_t err = convert_section2json(section_type, section_data_buf, json_array, json_array_size, json_chars);
+
+					if(err != 0)
+					{
+						return err;
+					}
 				}
+
+				else
+				{
+					output_buf_overflowed = true;
+				}
+
+				//reset all variables
+				memset(section_name_buf, 0, EDS_SECTION_NAME_LEN*sizeof(char));
+				memset(section_data_buf, 0, LARGE_BUF*sizeof(char));
+				section_name_buf_idx = 0;
+				section_data_buf_idx = 0;
+				section_type = EDS_FILE;
 			}
-
-			else
-			{
-				output_buf_overflowed = true;
-			}
-
-			//reset all variables
-			memset(section_name_buf, 0, EDS_SECTION_NAME_LEN*sizeof(char));
-			memset(section_data_buf, 0, LARGE_BUF*sizeof(char));
-			section_name_buf_idx = 0;
-			section_data_buf_idx = 0;
-			section_type = EDS_FILE;
-
+			
 			// kill the while loop
 			break;
 		}
