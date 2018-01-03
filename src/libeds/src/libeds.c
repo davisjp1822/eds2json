@@ -801,7 +801,7 @@ ERR_LIBEDS_t _parse_eds_keyval(const char * const input_buf,
 		{
 			// if we reach the ; - set storing_val to false so that we start at the top and write out the pair to
 			// output_buf
-			if(input_buf[i] == ';' && input_buf[i+1] == '\n')
+			if(i+1 < strlen(input_buf) && (input_buf[i] == ';' && input_buf[i+1] == '\n'))
 			{	
 				storing_val = false;
 				write_pair = true;
