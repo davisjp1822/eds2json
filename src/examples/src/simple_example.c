@@ -181,7 +181,7 @@ void print_usage()
 					"-h prints this message\n"
 					"\n"
 					"-f is always required\n"
-					"If -o is not specified, this program defaults to printing the data to stdout\n\n";
+					"If -o or -s are not specified, this program just runs without any output (useful for timing)\n\n";
 
 	fprintf(stderr, "%s", s);
 }
