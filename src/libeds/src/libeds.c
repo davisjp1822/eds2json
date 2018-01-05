@@ -289,7 +289,7 @@ ERR_LIBEDS_t convert_eds2json(const char * const eds_file_path,
 
 							if(err != 0)
 							{
-								return 5000;
+								return err;
 							}
 						}
 
