@@ -953,11 +953,11 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 	*/
 	if(type == DATATYPE_SPEC_PARAM)
 	{
-		const int8_t num_params_vals = 21;
-		const int8_t num_key_vals = 24;
+		const size_t num_params_vals = 21;
+		const size_t num_key_vals = 24;
 		
-		int8_t params_val_idx = 0;
-		int32_t val_string_idx = 0;
+		size_t params_val_idx = 0;
+		size_t val_string_idx = 0;
 
 		size_t i = 0;
 
@@ -1005,6 +1005,12 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 			// if not a comma (and not a quote mark), add character to correct spot in the value array
 			if(val_buf[i] != ',')
 			{
+				// do a sanity check - if params_val_idx is out of bounds, kill the loop and return
+				if(params_val_idx >= num_params_vals)
+				{
+					return ERR_OBUFF;
+				}
+
 				if(val_buf[i] != '"' && val_buf[i] != '\n' && val_buf[i] != ';')
 				{
 					if(strlen(params_vals[params_val_idx])+1 < VAL_BUF_LEN)
