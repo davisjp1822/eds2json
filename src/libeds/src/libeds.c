@@ -953,7 +953,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 	*/
 	if(type == DATATYPE_SPEC_PARAM)
 	{
-		const size_t num_params_vals = 21;
+		size_t num_params_vals = 21;
 		const size_t num_key_vals = 24;
 		
 		size_t params_val_idx = 0;
@@ -1002,10 +1002,10 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 		// now, loop through the val_buf separating out the data values into the correct spot in params_vals
 		for(i=0; i < strlen(val_buf); i++)
 		{
-			// do a sanity check - if params_val_idx is out of bounds, kill the loop and return
+			// do a sanity check - if params_val_idx is out of bounds, kill the loop
 			if(params_val_idx >= num_params_vals)
 			{
-				return ERR_PARSEFAIL;
+				break;
 			}
 
 			// if not a comma (and not a quote mark), add character to correct spot in the value array
@@ -1335,3 +1335,4 @@ PARSABLE_EDS_SECTIONS_t _section_enum_from_section_name(const char * const secti
 		return EDS_UNKNOWNSECTION;
 	}
 }
+
