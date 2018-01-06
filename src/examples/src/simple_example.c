@@ -34,7 +34,7 @@
 
 void print_usage();
 
-int8_t main(int8_t argc, char **argv)
+int main(int argc, char **argv)
 {
 
 	int8_t opt = 0;
@@ -127,7 +127,7 @@ int8_t main(int8_t argc, char **argv)
 		}
 		else
 		{
-			fprintf(stderr, "Fatal EDS Parsing Error: %s\n", "Unknown error and also error parsing libeds2json error code!");
+			fprintf(stderr, "Fatal EDS Parsing Error: Unknown error and also error parsing libeds2json error code (%d)!\n", err);
 		}
 
 		return 1;
