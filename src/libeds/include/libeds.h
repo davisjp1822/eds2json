@@ -207,3 +207,4 @@ int8_t err_string(const ERR_LIBEDS_t err_code, char * const err_string, const si
 #endif
 
 #endif /* _LIBEDS_H */
+
