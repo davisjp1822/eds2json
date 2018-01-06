@@ -1002,15 +1002,15 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 		// now, loop through the val_buf separating out the data values into the correct spot in params_vals
 		for(i=0; i < strlen(val_buf); i++)
 		{
+			// do a sanity check - if params_val_idx is out of bounds, kill the loop and return
+			if(params_val_idx >= num_params_vals)
+			{
+				return ERR_PARSEFAIL;
+			}
+
 			// if not a comma (and not a quote mark), add character to correct spot in the value array
 			if(val_buf[i] != ',')
 			{
-				// do a sanity check - if params_val_idx is out of bounds, kill the loop and return
-				if(params_val_idx >= num_params_vals)
-				{
-					return ERR_OBUFF;
-				}
-
 				if(val_buf[i] != '"' && val_buf[i] != '\n' && val_buf[i] != ';')
 				{
 					if(strlen(params_vals[params_val_idx])+1 < VAL_BUF_LEN)
@@ -1041,7 +1041,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 				// ... then, record this value as "null"
 				if(val_buf[i+1] == ',' || val_buf[i+1] == '\0')
 				{
-					char *s = 0;
+					char *s = NULL;
 
 					if(val_buf[i+1] == '\0')
 					{
@@ -1073,7 +1073,7 @@ ERR_LIBEDS_t _parse_comma_delimited_val(const SPECIAL_DATA_TYPES_t type,
 				}
 			}
 
-			// stop parsing when we see a semicolon
+			// stop parsing when we get to the end of the line
 			else if(val_buf[i] == '\0')
 			{
 				break;
