@@ -29,7 +29,7 @@ For speed and thread safety, all buffers are pre-allocated and dynamic memory al
 
 All large static buffers are defined in *libeds.h*. These can be changed to fit your specific application.
 
-****RPI PERFORMANCE NUMBERS***
+***RPI PERFORMANCE NUMBERS***
 
 #Installation
 Installation is straight forward. In brief, once you have changed directory to the *build* directory, all you need to do is run *cmake* and then decide what target you would like to build against. 
