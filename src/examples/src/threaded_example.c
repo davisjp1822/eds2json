@@ -34,6 +34,7 @@
 #include <pthread.h>
 
 void print_usage();
+void *converting_thread(void *eds_file_path);
 
 
 int main(int argc, char **argv)
@@ -90,75 +91,67 @@ int main(int argc, char **argv)
 	}
 
 	// must specify a file path!
-	if(!eds_file_path)
+	if(!eds_file_paths)
 	{
 		fprintf(stderr, "%s", "You must specify a valid path to a file with paths to EDS files!\n");
 		return 1;
 	}
 
 	// parse the file and spool up threads
+	FILE *fp = NULL;
 
+	size_t num_files = 50;
+	size_t file_counter = 0;
+	ssize_t chars_read = 0;
+	char **files_list = NULL;
 
+	char *line_ptr = NULL;
+	size_t line_len = 0;
 
+	fp = fopen(eds_file_paths, "r");
+    
+    if (fp == NULL)
+    {
+        return -1;
+    }
 
+    // read each file name into memory, reallocate it to files_list, and then increment num_files
+    // start with allocating memory for at least one file name
+	files_list = malloc(sizeof(char *) * num_files);
 
-	// now the good stuff
-	/*char json_output[LARGE_BUF] = {0};
-	size_t output_json_chars = 0;
+    while ((chars_read = getline(&line_ptr, &line_len, fp)) != -1) 
+    {
+    	files_list[file_counter] = malloc(sizeof(char) * line_len);
+    	memset(files_list[file_counter], 0, sizeof(files_list[file_counter]));
 
-	ERR_LIBEDS_t err = convert_eds2json(eds_file_path, json_output, sizeof(json_output), &output_json_chars);
+    	memcpy(files_list[file_counter], line_ptr, line_len);
+    	++file_counter;
+    }
 
-	if(err != 0)
-	{
-		// 128 is the minimum length for error buffers
-		char e_string[128] = {0};
+    // time to do some work
+    size_t i = 0;
+    pthread_t threads[file_counter];
 
-		int8_t r = err_string(err, e_string, sizeof(e_string));
-		
-		if(r==0)
-		{
-			fprintf(stderr, "Fatal EDS Parsing Error: %s\n", e_string);
-		}
-		else
-		{
-			fprintf(stderr, "Fatal EDS Parsing Error: Unknown error and also error parsing libeds2json error code (%d)!\n", err);
-		}
+    //spool up threads and do the conversion
+    for(i=0; i < file_counter; i++)
+    {
+    	pthread_create(&threads[i], NULL, converting_thread, files_list[i]);
+    }
 
-		return 1;
+    /* wait for the threads to finish */
+	for (i=0; i < file_counter; i++) {
+		pthread_join(threads[i], NULL);
 	}
 
-	else
-	{
-		if(print_json_to_stdout)
-		{
-			fprintf(stdout, "{%s}\n", json_output);
-			fflush(stdout);
-		}
+    // free memory
+    for(i=0; i < file_counter; i++)
+    {
+    	free(files_list[i]);
+    }
 
-		if(output_json_file_path)
-		{
-			FILE *f = fopen(output_json_file_path, "w");
-
-			if(f)
-			{
-				size_t fbuf_size = strlen(json_output)+4;
-				char fbuf[fbuf_size];
-
-				memset(fbuf, 0, fbuf_size);
-				snprintf(fbuf, fbuf_size, "{%s}\n", json_output);
-
-
-				fwrite(fbuf, fbuf_size-1, 1, f);
-				fclose(f);
-				return 0;
-			}
-			else
-			{
-				fprintf(stderr, "Fatal EDS Parsing Error: %s\n", strerror(errno));
-				return 1;
-			}
-		}
-	} */
+    free(files_list);
+    fclose(fp);
+    free(line_ptr);
 
 	return 0;
 }
@@ -176,4 +169,61 @@ void print_usage()
 					"If -s is not specified, this program will output the JSON to files with the same name as the input EDS file but with the extension .json\n\n";
 
 	fprintf(stderr, "%s", s);
+}
+
+void *converting_thread(void *eds_file_path)
+{
+	char json_output[LARGE_BUF] = {0};
+	size_t output_json_chars = 0;
+
+	// create a temporary buffer and process out the non-printable characters
+	// once done, call convert_eds2json
+	char *efp = (char *)eds_file_path;
+
+	char temp_buf[strlen(efp)+1];
+	memset(temp_buf, 0, sizeof(temp_buf));
+
+	memcpy(temp_buf, efp, sizeof(temp_buf));
+	temp_buf[strcspn(temp_buf, "\r\n")] = 0;
+	temp_buf[strlen(temp_buf)] = '\0';
+
+	ERR_LIBEDS_t err = convert_eds2json(temp_buf, json_output, sizeof(json_output), &output_json_chars);
+
+	// return the error if there is an issue
+	if(err != 0)
+	{
+		pthread_exit(NULL);
+	}
+
+	// otherwise, just write the file
+	else
+	{
+		FILE *f = NULL;
+
+		// .json.conv
+		size_t filename_len = strlen(temp_buf)+11;
+		char filename[filename_len];
+
+		memset(filename, 0, sizeof(filename));
+
+		snprintf(filename, filename_len, "%s.json.conv", temp_buf);
+
+		f = fopen(filename, "w");
+    
+	    if (f == NULL)
+	    {
+	        pthread_exit(NULL);
+	    }
+
+	    size_t fbuf_size = strlen(json_output)+4;
+	    char fbuf[fbuf_size];
+
+	    memset(fbuf, 0, fbuf_size);
+	    snprintf(fbuf, fbuf_size, "{%s}\n", json_output);
+	    
+	    fwrite(fbuf, fbuf_size-1, 1, f);
+	    fclose(f);
+
+		pthread_exit(NULL);
+	}
 }
