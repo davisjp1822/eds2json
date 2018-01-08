@@ -29,7 +29,8 @@ For speed and thread safety, all buffers are pre-allocated and dynamic memory al
 
 All large static buffers are defined in *libeds.h*. These can be changed to fit your specific application.
 
-***RPI PERFORMANCE NUMBERS***
+### Raspberry Pi 3
+Using *simple_example*, which is sequential, single-threaded execution, *libeds2json* processes 2400 EDS files in 301 seconds, or ~125ms per EDS file.
 
 # Installation
 Installation is straight forward. In brief, once you have changed directory to the *build* directory, all you need to do is run *cmake* and then decide what target you would like to build against. 
