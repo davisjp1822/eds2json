@@ -33,6 +33,8 @@
 #include <string.h>
 #include <pthread.h>
 
+#define MAX_THREADS 500
+
 void print_usage();
 void *converting_thread(void *eds_file_path);
 
@@ -100,7 +102,7 @@ int main(int argc, char **argv)
 	// parse the file and spool up threads
 	FILE *fp = NULL;
 
-	size_t num_files = 50;
+	size_t num_files = 2400;
 	size_t file_counter = 0;
 	ssize_t chars_read = 0;
 	char **files_list = NULL;
@@ -121,8 +123,8 @@ int main(int argc, char **argv)
 
     while ((chars_read = getline(&line_ptr, &line_len, fp)) != -1) 
     {
-    	files_list[file_counter] = malloc(sizeof(char) * line_len);
-    	memset(files_list[file_counter], 0, sizeof(files_list[file_counter]));
+		files_list[file_counter] = malloc(sizeof(char) * line_len);
+    	memset(files_list[file_counter], 0, sizeof(char) * line_len);
 
     	memcpy(files_list[file_counter], line_ptr, line_len);
     	++file_counter;
@@ -130,18 +132,27 @@ int main(int argc, char **argv)
 
     // time to do some work
     size_t i = 0;
-    pthread_t threads[file_counter];
+    size_t j = 0;
+    pthread_t threads[MAX_THREADS];
+    size_t thread_counter = 0;
 
-    //spool up threads and do the conversion
-    for(i=0; i < file_counter; i++)
+    for(j=0; j < file_counter; j++)
     {
-    	pthread_create(&threads[i], NULL, converting_thread, files_list[i]);
-    }
+		pthread_create(&threads[thread_counter], NULL, converting_thread, files_list[j]);
+		++thread_counter;
 
-    /* wait for the threads to finish */
-	for (i=0; i < file_counter; i++) {
-		pthread_join(threads[i], NULL);
-	}
+    	if(thread_counter == MAX_THREADS-1)
+    	{
+   			/* wait for the threads to finish */
+    		for (i=0; i < MAX_THREADS; i++) 
+    		{
+    			pthread_join(threads[i], NULL);
+    			//fprintf(stdout, "Joined Thread %lu\n", i);
+    		}
+
+    		thread_counter = 0;
+    	}
+    }
 
     // free memory
     for(i=0; i < file_counter; i++)
@@ -220,7 +231,7 @@ void *converting_thread(void *eds_file_path)
 
 	    memset(fbuf, 0, fbuf_size);
 	    snprintf(fbuf, fbuf_size, "{%s}\n", json_output);
-	    
+
 	    fwrite(fbuf, fbuf_size-1, 1, f);
 	    fclose(f);
 
